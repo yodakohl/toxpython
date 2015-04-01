@@ -16,7 +16,5 @@
 
 from .tox import Tox
 
-from .tox import \
-    TOX_USER_STATUS_NONE
-
-
+from .tox import TOX_USER_STATUS_NONE 
+from .tox import TOX_MESSAGE_TYPE_NORMAL

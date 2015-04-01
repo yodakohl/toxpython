@@ -90,12 +90,21 @@ class Tox():
 			self._fRefs.append(cb)
 			tox_callback_self_connection_status(self._p, cb, py_object(self))
 
+			cb = tox_friend_connection_status_cb(self.friend_connection_status_callback)
+			self._fRefs.append(cb)
+			tox_callback_friend_connection_status(self._p, cb, py_object(self))
+
+			cb = tox_friend_status_cb(self.friend_status_callback)
+			self._fRefs.append(cb)
+			tox_callback_friend_status(self._p, cb, py_object(self))
+
+
 		else:
 			print("Self is None")
 
 
 	def bootstrap(self,bootstrap_address,port,public_key):
-		tox_bootstrap(self._p, bootstrap_address.encode('ascii') ,port , hex_to_buffer(public_key), None);
+		return tox_bootstrap(self._p, bootstrap_address.encode('ascii') ,port , hex_to_buffer(public_key), None);
 
 	@staticmethod
 	def connection_status_callback(tox,connection_status,userdata):
@@ -113,13 +122,26 @@ class Tox():
 	def on_friend_request(self,public_key, message):
 		pass
 
-	def friend_add_norequest(self,address):
+	def add_friend_norequest(self,address):
 		ret = tox_friend_add_norequest(self._p,hex_to_buffer(address) ,None)
 		if (ret == 4294967295):
-			print("Adding Friend: " + address + " failed") 
-		else:
-			print("Added Friend: " + address)
-		print (ret)
+			return -1
+
+		return ret
+
+
+	#untested
+	def add_friend(self,address,message):
+		buffer = create_string_buffer(message_send, len(message))
+		ret = tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,None)
+		if (ret == 4294967295):
+			return -1
+
+		return ret
+
+
+	def set_status(self, userstatus):
+		tox_self_set_status(self._p,userstatus)
 
 
 	def set_status(self, userstatus):
@@ -127,10 +149,14 @@ class Tox():
 
 
 	def send_message(self,friend_id,message_type,message):
-		message = message.encode('utf-8')
-		buffer = create_string_buffer(message, len(message))
-		tox_friend_send_message(self._p,friend_id,message_type,buffer,len(buffer),None)
+		message_send = None
+		try:
+			message_send = message.encode('utf-8')
+		except: 
+			message_send = message
 
+		buffer = create_string_buffer(message_send, len(message_send))
+		tox_friend_send_message(self._p,friend_id,message_type,buffer,len(buffer),None)
 
 	@staticmethod
 	def friend_message_callback(tox, friend_id,message_type, message, length, userdata):
@@ -155,6 +181,59 @@ class Tox():
 		public_key = create_string_buffer(TOX_PUBLIC_KEY_SIZE)
 		tox_self_get_public_key(self._p,public_key)
 		return buffer_to_hex(public_key)
+
+
+	@staticmethod
+	def friend_connection_status_callback (tox,friendId,connection_status,userdata):
+		self = cast(userdata, py_object).value
+		self.on_friend_connection_status(friendId,connection_status)
+
+	def on_friend_connection_status(self,friendId, connection_status):
+		pass
+
+
+	@staticmethod
+	def friend_status_callback (tox,friendId,status,userdata):
+		self = cast(userdata, py_object).value
+		self.on_friend_connection_status(friendId,status)
+
+	def on_friend_status(self,friendId,status):
+		pass
+
+
+	def get_friend_list_size(self):
+		return tox_self_get_friend_list_size(self._p)
+
+	def getFriendList(self):
+		size = tox_self_get_friend_list_size(self._p)
+		friendList = name_len_array = (c_uint16 * size)()
+		tox_self_get_friend_list(self._p,friendList)
+		return friendList
+
+#tox_friend_get_name_size
+#tox_friend_get_name
+#tox_friend_get_status
+#tox_friend_get_connection_status 
+
+
+
+#To test
+#	def file_control(self):
+#		return tox_file_control ( self._p,friend_number,file_number,control,None) 
+
+#	def get_file_id(self):
+#		tox_file_get_file_id ( self._p,friend_number,file_number,file_id,None)
+
+#	def file_seek(self):
+#		bool tox_file_seek (self._p,friend_number,file_number,position,None)
+
+
+#	def file_send():
+#		tox_file_send (self._p,uint32_t friend_number,uint32_t kind,uint64_t file_size,const uint8_t * file_id,const uint8_t * filename,size_t filename_length,None)
+
+
+#	def file_send_chunk():
+#		bool tox_file_send_chunk (self._p, uint32_t friend_number,uint32_t file_number,uint64_t position,const uint8_t * data,size_t length,None)
 
 
 
