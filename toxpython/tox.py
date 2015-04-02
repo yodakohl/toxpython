@@ -98,6 +98,10 @@ class Tox():
 			self._fRefs.append(cb)
 			tox_callback_friend_status(self._p, cb, py_object(self))
 
+			cb = tox_friend_name_cb(self.friend_name_callback)
+			self._fRefs.append(cb)
+			tox_callback_friend_name(self._p, cb, py_object(self))
+
 
 		else:
 			print("Self is None")
@@ -200,21 +204,37 @@ class Tox():
 	def on_friend_status(self,friendId,status):
 		pass
 
-
 	def get_friend_list_size(self):
-		return tox_self_get_friend_list_size(self._p)
+		return tox_self_get_friend_list_size(self._p,None)
 
 	def getFriendList(self):
 		size = tox_self_get_friend_list_size(self._p)
 		friendList = name_len_array = (c_uint16 * size)()
-		tox_self_get_friend_list(self._p,friendList)
+		tox_self_get_friend_list(self._p,friendList,None)
 		return friendList
 
-#tox_friend_get_name_size
-#tox_friend_get_name
-#tox_friend_get_status
-#tox_friend_get_connection_status 
+	def friend_get_name_size(self,friendId):
+		return tox_friend_get_name_size(self._p,None)
 
+	def friend_get_name(self,friendId):
+		size = tox_friend_get_name_size(self._p,friendId,None)
+		buffer = create_string_buffer(size)
+		tox_friend_get_name(self._p,friendId,buffer,None)
+		return buffer.value.decode('utf-8')
+
+	@staticmethod
+	def friend_name_callback(tox,friendId,name,length,userdata):
+		self = cast(userdata, py_object).value
+		self.on_friend_name(friendId,ptr_to_string(name, length))
+
+	def on_friend_name(self,friendId,name):
+		pass
+
+
+#tox_friend_get_status
+#tox_friend_get_connection_status
+#void tox_callback_friend_name 
+#typedef void tox_friend_name_cb(Tox *tox, uint32_t friend_number, const uint8_t *name, size_t length, void *user_data)
 
 
 #To test
