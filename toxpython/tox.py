@@ -135,7 +135,7 @@ class Tox():
 
 
 	#untested
-	def add_friend(self,address,message):
+	def friend_add(self,address,message):
 
 		message_send = None
 		try:
@@ -144,9 +144,10 @@ class Tox():
 			message_send = message
 
 		buffer = create_string_buffer(message_send, len(message_send))
-		ret = tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,None)
-		if (ret == 4294967295):
-			return -1
+		ret = int(tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,None))
+		#print(str(ret))
+		#if (ret == 4294967295):
+		#	return -1
 
 		return ret
 
@@ -177,11 +178,6 @@ class Tox():
 	def on_friend_message(self,friend_id, message_type,message):
 		pass
 
-	def friend_add(self,address, message):
-		message = message.encode('utf-8')
-		buffer = create_string_buffer(message, len(message))
-		address = hex_to_buffer(address)
-		tox_friend_add(self._p,address,buffer,len(buffer),None)
 
 	def get_address(self):
 		address = create_string_buffer(TOX_ADDRESS_SIZE)
@@ -216,12 +212,12 @@ class Tox():
 
 	def getFriendList(self):
 		size = tox_self_get_friend_list_size(self._p)
-		friendList = name_len_array = (c_uint16 * size)()
+		friendList = name_len_array = (c_uint32 * size)()
 		tox_self_get_friend_list(self._p,friendList,None)
 		return friendList
 
 	def friend_get_name_size(self,friendId):
-		return tox_friend_get_name_size(self._p,None)
+		return tox_friend_get_name_size(self._p,friendId,None)
 
 	def friend_get_name(self,friendId):
 		size = tox_friend_get_name_size(self._p,friendId,None)
