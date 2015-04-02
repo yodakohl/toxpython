@@ -136,7 +136,14 @@ class Tox():
 
 	#untested
 	def add_friend(self,address,message):
-		buffer = create_string_buffer(message_send, len(message))
+
+		message_send = None
+		try:
+			message_send = message.encode('utf-8')
+		except: 
+			message_send = message
+
+		buffer = create_string_buffer(message_send, len(message_send))
 		ret = tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,None)
 		if (ret == 4294967295):
 			return -1
@@ -222,6 +229,17 @@ class Tox():
 		tox_friend_get_name(self._p,friendId,buffer,None)
 		return buffer.value.decode('utf-8')
 
+
+	def self_get_name_size(self):
+		return tox_self_get_name_size(self._p,None)
+
+	def self_get_name(self):
+		size = tox_self_get_name_size(self._p,None)
+		buffer = create_string_buffer(size)
+		tox_self_get_name(self._p,buffer,None)
+		return buffer.value.decode('utf-8')
+
+
 	@staticmethod
 	def friend_name_callback(tox,friendId,name,length,userdata):
 		self = cast(userdata, py_object).value
@@ -230,9 +248,18 @@ class Tox():
 	def on_friend_name(self,friendId,name):
 		pass
 
+	def friend_get_status(self,friendId):
+		status = tox_friend_get_status(self._p,friendId)
+		return status
 
-#tox_friend_get_status
-#tox_friend_get_connection_status
+	def friend_get_connection_status(self,friendId):
+		status = tox_friend_get_connection_status(self._p,friendId,None)
+		if (status == TOX_CONNECTION_NONE):
+			return False
+		return True
+
+
+
 #void tox_callback_friend_name 
 #typedef void tox_friend_name_cb(Tox *tox, uint32_t friend_number, const uint8_t *name, size_t length, void *user_data)
 

@@ -18,3 +18,7 @@ from .tox import Tox
 
 from .tox import TOX_USER_STATUS_NONE 
 from .tox import TOX_MESSAGE_TYPE_NORMAL
+
+from .tox import TOX_CONNECTION_TCP
+from .tox import TOX_CONNECTION_UDP 
+from .tox import TOX_CONNECTION_NONE
