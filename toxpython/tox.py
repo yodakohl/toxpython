@@ -7,6 +7,17 @@ from .util import *
 ## Todo: Proper error handling
 ## Todo: Implement missing API
 
+
+class ToxAV():
+
+	_p = None
+
+
+	def init(self,ToxInstance):
+
+		self._p = toxav_new (ToxInstance, 100) #max calls = 100
+
+
 class Tox():
 
 	_p = None

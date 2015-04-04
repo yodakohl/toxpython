@@ -51,7 +51,8 @@ def hex_to_buffer(string):
 
 
 def ptr_to_string(p, length):
-    return ptr_to_buffer(p, length).decode('utf-8')
+    #return ptr_to_buffer(p, length).decode('utf-8')
+    return ptr_to_buffer(p, length)
 
 
 def ptr_to_buffer(p, length):
