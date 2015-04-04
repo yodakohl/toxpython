@@ -172,6 +172,9 @@ class Tox():
 
 
 	def send_message(self,friend_id,message_type,message):
+		if message == None:
+			return 
+
 		message_send = None
 		try:
 			message_send = message.encode('utf-8')
