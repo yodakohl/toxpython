@@ -308,6 +308,14 @@ class Tox():
 		return tox_version_is_compatible (major, minor, patch )
 
 
+	def group_get_type(self,groupnumber)
+		return tox_group_get_type (self._p,groupnumber)
+
+	def self_set_typing(self,friendId,is_typing):
+		return tox_self_set_typing(self._p,friendId,is_typing,None)
+
+
+
 	#def get_dht_id(self):
 		#void tox_self_get_dht_id 	( 	const Tox *  	tox,uint8_t *  	dht_id )
 
@@ -357,6 +365,8 @@ class Tox():
 #		uint32_t  	list_size 
 #	) 	
 
+
+
 #int tox_group_get_names 	( 	const Tox *  	tox,
 #		int  	groupnumber,
 #		uint8_t  	names[][TOX_MAX_NAME_LENGTH],
@@ -371,17 +381,7 @@ class Tox():
 #		uint32_t  	max_length 
 #	) 	
 
-#int tox_group_get_type 	( 	const Tox *  	tox,
-#		int  	groupnumber 
-#	) 	
 
-
-
-#bool tox_self_set_typing 	( 	Tox *  	tox,
-#		uint32_t  	friend_number,
-#		bool  	is_typing,
-#		TOX_ERR_SET_TYPING *  	error 
-#	) 	
 
 
 
