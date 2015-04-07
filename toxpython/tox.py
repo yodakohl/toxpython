@@ -275,25 +275,41 @@ class Tox():
 		return True
 
 
-
-#bool tox_friend_get_status_message 	( 	const Tox *  	tox,
-#		uint32_t  	friend_number,
-#		uint8_t *  	message,
-#		TOX_ERR_FRIEND_QUERY *  	error 
-#	) 	
-
+	def friend_get_status_message(self,friendId):
+		size = tox_friend_get_status_message_size(self._p,friendId,None)
+		buffer = create_string_buffer(size)
+		tox_friend_get_status_message(self._p,friendId,buffer,None)
+		return buffer.value.decode('utf-8')
 
 
-#size_t tox_friend_get_status_message_size 	( 	const Tox *  	tox,
-#		uint32_t  	friend_number,
-#		TOX_ERR_FRIEND_QUERY *  	error 
-#	) 	
+	def friend_get_status_message(self,friendId):
+		return tox_friend_get_status_message_size(self._p,friendId,None)
 
-#bool tox_friend_get_typing 	( 	const Tox *  	tox,
-#		uint32_t  	friend_number,
-#		TOX_ERR_FRIEND_QUERY *  	error 
-#	) 	
 
+	def friend_get_typing(self,friendId):
+		return tox_friend_get_typing ( self._p,friendId,None)
+
+	def self_get_udp_port(self):
+		return tox_self_get_udp_port (self._p,None)
+
+	def self_get_tcp_port(self):
+		return tox_self_get_tcp_port (self._p,None)
+
+	def version_major(self):
+		return tox_version_major()
+
+	def version_minor(self):
+		return tox_version_minor()
+
+	def version_patch(self):
+		return tox_version_patch()
+
+	def version_is_compatible(self,major,minor,patch):
+		return tox_version_is_compatible (major, minor, patch )
+
+
+	#def get_dht_id(self):
+		#void tox_self_get_dht_id 	( 	const Tox *  	tox,uint8_t *  	dht_id )
 
 
 #To test
@@ -315,7 +331,57 @@ class Tox():
 #		bool tox_file_send_chunk (self._p, uint32_t friend_number,uint32_t file_number,uint64_t position,const uint8_t * data,size_t length,None)
 
 
+#bool tox_self_set_status_message 	( 	Tox *  	tox,
+#		const uint8_t *  	status,
+#		size_t  	length,
+#		TOX_ERR_SET_INFO *  	error 
+#	) 	
 
+#bool tox_friend_send_lossless_packet 	( 	Tox *  	tox,
+#		uint32_t  	friend_number,
+#		const uint8_t *  	data,
+#		size_t  	length,
+#		TOX_ERR_FRIEND_CUSTOM_PACKET *  	error 
+#	)
+
+#bool tox_friend_send_lossy_packet 	( 	Tox *  	tox,
+#		uint32_t  	friend_number,
+#		const uint8_t *  	data,
+#		size_t  	length,
+#		TOX_ERR_FRIEND_CUSTOM_PACKET *  	error 
+#	) 	
+
+
+#uint32_t tox_get_chatlist 	( 	const Tox *  	tox,
+#		int32_t *  	out_list,
+#		uint32_t  	list_size 
+#	) 	
+
+#int tox_group_get_names 	( 	const Tox *  	tox,
+#		int  	groupnumber,
+#		uint8_t  	names[][TOX_MAX_NAME_LENGTH],
+#		uint16_t  	lengths[],
+#		uint16_t  	length 
+#	) 	
+
+
+#int tox_group_get_title 	( 	Tox *  	tox,
+#		int  	groupnumber,
+#		uint8_t *  	title,
+#		uint32_t  	max_length 
+#	) 	
+
+#int tox_group_get_type 	( 	const Tox *  	tox,
+#		int  	groupnumber 
+#	) 	
+
+
+
+#bool tox_self_set_typing 	( 	Tox *  	tox,
+#		uint32_t  	friend_number,
+#		bool  	is_typing,
+#		TOX_ERR_SET_TYPING *  	error 
+#	) 	
 
 
 
