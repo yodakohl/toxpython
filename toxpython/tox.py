@@ -184,6 +184,12 @@ class Tox():
 		buffer = create_string_buffer(message_send, len(message_send))
 		tox_friend_send_message(self._p,friend_id,message_type,buffer,len(buffer),None)
 
+
+	def self_set_status_message(self,status):
+		buffer = create_string_buffer(status, len(status))
+		return tox_self_set_status_message(self._p,buffer,len(buffer),None)
+
+
 	@staticmethod
 	def friend_message_callback(tox, friend_id,message_type, message, length, userdata):
 		self = cast(userdata, py_object).value
@@ -338,12 +344,6 @@ class Tox():
 #	def file_send_chunk():
 #		bool tox_file_send_chunk (self._p, uint32_t friend_number,uint32_t file_number,uint64_t position,const uint8_t * data,size_t length,None)
 
-
-#bool tox_self_set_status_message 	( 	Tox *  	tox,
-#		const uint8_t *  	status,
-#		size_t  	length,
-#		TOX_ERR_SET_INFO *  	error 
-#	) 	
 
 #bool tox_friend_send_lossless_packet 	( 	Tox *  	tox,
 #		uint32_t  	friend_number,
