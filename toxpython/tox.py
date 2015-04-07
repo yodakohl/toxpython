@@ -240,6 +240,12 @@ class Tox():
 		return buffer.value.decode('utf-8')
 
 
+	def friend_exists(self,friendId):
+		return tox_friend_exists(self._p,friendId)
+
+	def friend_delete(self,friendId):
+		return tox_friend_delete(self._p,friendId,None)
+
 	def self_get_name_size(self):
 		return tox_self_get_name_size(self._p,None)
 
@@ -270,8 +276,24 @@ class Tox():
 
 
 
-#void tox_callback_friend_name 
-#typedef void tox_friend_name_cb(Tox *tox, uint32_t friend_number, const uint8_t *name, size_t length, void *user_data)
+#bool tox_friend_get_status_message 	( 	const Tox *  	tox,
+#		uint32_t  	friend_number,
+#		uint8_t *  	message,
+#		TOX_ERR_FRIEND_QUERY *  	error 
+#	) 	
+
+
+
+#size_t tox_friend_get_status_message_size 	( 	const Tox *  	tox,
+#		uint32_t  	friend_number,
+#		TOX_ERR_FRIEND_QUERY *  	error 
+#	) 	
+
+#bool tox_friend_get_typing 	( 	const Tox *  	tox,
+#		uint32_t  	friend_number,
+#		TOX_ERR_FRIEND_QUERY *  	error 
+#	) 	
+
 
 
 #To test
