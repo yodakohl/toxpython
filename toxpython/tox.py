@@ -287,6 +287,10 @@ class Tox():
 		tox_friend_get_status_message(self._p,friendId,buffer,None)
 		return buffer.value.decode('utf-8')
 
+	#def group_get_title(self,groupnumber):
+	#	buffer = create_string_buffer(size)
+	#	return tox_group_get_title (self._p,groupnumber,uint8_t * title,uint32_t max_length )
+
 
 	def friend_get_status_message(self,friendId):
 		return tox_friend_get_status_message_size(self._p,friendId,None)
@@ -314,7 +318,7 @@ class Tox():
 		return tox_version_is_compatible (major, minor, patch )
 
 
-	def group_get_type(self,groupnumber)
+	def group_get_type(self,groupnumber):
 		return tox_group_get_type (self._p,groupnumber)
 
 	def self_set_typing(self,friendId,is_typing):
@@ -375,11 +379,6 @@ class Tox():
 #	) 	
 
 
-#int tox_group_get_title 	( 	Tox *  	tox,
-#		int  	groupnumber,
-#		uint8_t *  	title,
-#		uint32_t  	max_length 
-#	) 	
 
 
 
