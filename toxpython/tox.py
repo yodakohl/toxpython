@@ -287,11 +287,6 @@ class Tox():
 		tox_friend_get_status_message(self._p,friendId,buffer,None)
 		return buffer.value.decode('utf-8')
 
-	#def group_get_title(self,groupnumber):
-	#	buffer = create_string_buffer(size)
-	#	return tox_group_get_title (self._p,groupnumber,uint8_t * title,uint32_t max_length )
-
-
 	def friend_get_status_message(self,friendId):
 		return tox_friend_get_status_message_size(self._p,friendId,None)
 
@@ -346,6 +341,11 @@ class Tox():
 		bool tox_file_seek (self._p,friend_number,file_number,position,None)
 
 
+	def hash_data(self,data):
+		res_data = create_string_buffer(TOX_HASH_LENGTH)
+		tox_hash (res_data, data,length(data))
+		return res_data
+
 #	def file_send():
 #		tox_file_send (self._p,uint32_t friend_number,uint32_t kind,uint64_t file_size,const uint8_t * file_id,const uint8_t * filename,size_t filename_length,None)
 
@@ -353,38 +353,43 @@ class Tox():
 #	def file_send_chunk():
 #		bool tox_file_send_chunk (self._p, uint32_t friend_number,uint32_t file_number,uint64_t position,const uint8_t * data,size_t length,None)
 
+	#bool tox_friend_send_lossless_packet 	( 	Tox *  	tox,
+	#		uint32_t  	friend_number,
+	#		const uint8_t *  	data,
+	#		size_t  	length,
+	#		TOX_ERR_FRIEND_CUSTOM_PACKET *  	error 
+	#	)
 
-#bool tox_friend_send_lossless_packet 	( 	Tox *  	tox,
-#		uint32_t  	friend_number,
-#		const uint8_t *  	data,
-#		size_t  	length,
-#		TOX_ERR_FRIEND_CUSTOM_PACKET *  	error 
-#	)
-
-#bool tox_friend_send_lossy_packet 	( 	Tox *  	tox,
-#		uint32_t  	friend_number,
-#		const uint8_t *  	data,
-#		size_t  	length,
-#		TOX_ERR_FRIEND_CUSTOM_PACKET *  	error 
-#	) 	
-
-
-#uint32_t tox_get_chatlist 	( 	const Tox *  	tox,
-#		int32_t *  	out_list,
-#		uint32_t  	list_size 
-#	) 	
+	#bool tox_friend_send_lossy_packet 	( 	Tox *  	tox,
+	#		uint32_t  	friend_number,
+	#		const uint8_t *  	data,
+	#		size_t  	length,
+	#		TOX_ERR_FRIEND_CUSTOM_PACKET *  	error 
+	#	) 	
 
 
-
-#int tox_group_get_names 	( 	const Tox *  	tox,
-#		int  	groupnumber,
-#		uint8_t  	names[][TOX_MAX_NAME_LENGTH],
-#		uint16_t  	lengths[],
-#		uint16_t  	length 
-#	) 	
+	#uint32_t tox_get_chatlist 	( 	const Tox *  	tox,
+	#		int32_t *  	out_list,
+	#		uint32_t  	list_size 
+	#	) 	
 
 
 
+	#int tox_group_get_names 	( 	const Tox *  	tox,
+	#		int  	groupnumber,
+	#		uint8_t  	names[][TOX_MAX_NAME_LENGTH],
+	#		uint16_t  	lengths[],
+	#		uint16_t  	length 
+	#	) 	
+
+
+
+
+#void 	tox_options_default (struct Tox_Options *options)
+ 
+#struct Tox_Options * 	tox_options_new (TOX_ERR_OPTIONS_NEW *error)
+ 
+#void 	tox_options_free (struct Tox_Options *options)
 
 
 
