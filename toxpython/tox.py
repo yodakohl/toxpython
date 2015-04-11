@@ -329,8 +329,10 @@ class Tox():
 		tox_kill(self._p)
 		self._p = None
 
-	#def get_dht_id(self):
-		#void tox_self_get_dht_id 	( 	const Tox *  	tox,uint8_t *  	dht_id )
+	def get_dht_id(self):
+		dht_id = create_string_buffer(TOX_PUBLIC_KEY_SIZE)
+		tox_self_get_dht_id (self._p,dht_id )
+		return buffer_to_hex(dth_id)
 
 
 #To test
