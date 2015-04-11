@@ -334,16 +334,16 @@ class Tox():
 		tox_self_get_dht_id (self._p,dht_id )
 		return buffer_to_hex(dth_id)
 
+	def file_control(self,friend_number,file_number,control):
+		return tox_file_control ( self._p,friend_number,file_number,control,None) 
 
-#To test
-#	def file_control(self):
-#		return tox_file_control ( self._p,friend_number,file_number,control,None) 
+	def get_file_id(self,file_number):
+		file_id = create_string_buffer(TOX_FILE_ID_LENGTH)
+		tox_file_get_file_id ( self._p,friend_number,file_number,file_id,None)
+		return file_id
 
-#	def get_file_id(self):
-#		tox_file_get_file_id ( self._p,friend_number,file_number,file_id,None)
-
-#	def file_seek(self):
-#		bool tox_file_seek (self._p,friend_number,file_number,position,None)
+	def file_seek(self,friend_number,file_number,position):
+		bool tox_file_seek (self._p,friend_number,file_number,position,None)
 
 
 #	def file_send():
