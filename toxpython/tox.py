@@ -325,6 +325,9 @@ class Tox():
 		return tox_self_set_typing(self._p,friendId,is_typing,None)
 
 
+	def kill(self):
+		tox_kill(self._p)
+		self._p = None
 
 	#def get_dht_id(self):
 		#void tox_self_get_dht_id 	( 	const Tox *  	tox,uint8_t *  	dht_id )
