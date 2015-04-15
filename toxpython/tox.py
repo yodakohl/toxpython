@@ -173,7 +173,10 @@ class Tox():
 
 	def send_message(self,friend_id,message_type,message):
 		if message == None:
-			return 
+			return
+
+		if(friend_id == None):
+			return
 
 		message_send = None
 		try:
@@ -312,7 +315,6 @@ class Tox():
 	def version_is_compatible(self,major,minor,patch):
 		return tox_version_is_compatible (major, minor, patch )
 
-
 	def group_get_type(self,groupnumber):
 		return tox_group_get_type (self._p,groupnumber)
 
@@ -338,7 +340,7 @@ class Tox():
 		return file_id
 
 	def file_seek(self,friend_number,file_number,position):
-		bool tox_file_seek (self._p,friend_number,file_number,position,None)
+		return tox_file_seek (self._p,friend_number,file_number,position,None)
 
 
 	def hash_data(self,data):
