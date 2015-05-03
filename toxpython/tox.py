@@ -12,9 +12,7 @@ class ToxAV():
 
 	_p = None
 
-
 	def init(self,ToxInstance):
-
 		self._p = toxav_new (ToxInstance, 100) #max calls = 100
 
 
@@ -113,6 +111,14 @@ class Tox():
 			self._fRefs.append(cb)
 			tox_callback_friend_name(self._p, cb, py_object(self))
 
+			cb = tox_file_recv_control_cb(self.file_recv_control_cb)
+			self._fRefs.append(cb)
+			tox_callback_file_recv_control(self._p, cb, py_object(self))
+
+			cb = tox_file_recv_cb(self.file_recv_cb)
+			self._fRefs.append(cb)
+			tox_callback_file_recv(self._p, cb, py_object(self))
+
 
 		else:
 			print("Self is None")
@@ -133,6 +139,19 @@ class Tox():
 	def friend_request_callback(tox, public_key, message, length, userdata):
 		self = cast(userdata, py_object).value
 		self.on_friend_request(buffer_to_hex(public_key, TOX_PUBLIC_KEY_SIZE), ptr_to_string(message, length))
+
+
+	@staticmethod
+	def file_recv_control_cb(tox, friend_number, file_number, control, userdata):
+		self = cast(userdata, py_object).value
+		self.on_file_recv_control(friend_number,file_number,control)
+
+	@staticmethod
+	def file_recv_cb(tox, friend_number, file_number, kind, file_size, filename, filename_length,userdata):
+		self = cast(userdata, py_object).value
+		self.on_file_recv(friend_number,file_number,kind,file_size,ptr_to_string(filename, filename_length))
+
+
 
 	def on_friend_request(self,public_key, message):
 		pass
@@ -341,6 +360,54 @@ class Tox():
 
 	def file_seek(self,friend_number,file_number,position):
 		return tox_file_seek (self._p,friend_number,file_number,position,None)
+
+
+	def on_file_recv_control(self,friend_number, file_number,control):
+		print("On file control recv")
+		pass
+
+	#def on_file_recv_chunk(self):
+
+	def on_file_recv(self,friend_number,file_number,kind,file_size,filename):
+		print("On file recv")
+		print(filename)
+		print(str(file_size))
+
+
+	#def on_file_chunk_request(self):
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#typedef void tox_file_recv_control_cb(Tox *tox, uint32_t friend_number, uint32_t file_number, TOX_FILE_CONTROL control, void *user_data)
+#typedef void tox_file_recv_chunk_cb(Tox *tox, uint32_t friend_number, uint32_t file_number, uint64_t position, const uint8_t *data, size_t length, void *user_data)
+#typedef void tox_file_recv_cb(Tox *tox, uint32_t friend_number, uint32_t file_number, uint32_t kind, uint64_t file_size, const uint8_t *filename, size_t filename_length, void *user_data)
+#typedef void tox_file_chunk_request_cb(Tox *tox, uint32_t friend_number, uint32_t file_number, uint64_t position, size_t length, void *user_data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	def hash_data(self,data):
