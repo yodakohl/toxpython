@@ -119,6 +119,13 @@ class Tox():
 			self._fRefs.append(cb)
 			tox_callback_file_recv(self._p, cb, py_object(self))
 
+			cb = tox_file_recv_chunk_cb(self.file_recv_chunk_cb)
+			self._fRefs.append(cb)
+			tox_callback_file_recv_chunk(self._p, cb, py_object(self))
+
+			cb = tox_file_chunk_request_cb(self.file_chunk_request_cb)
+			self._fRefs.append(cb)
+			tox_callback_file_chunk_request(self._p, cb, py_object(self))
 
 		else:
 			print("Self is None")
@@ -140,7 +147,6 @@ class Tox():
 		self = cast(userdata, py_object).value
 		self.on_friend_request(buffer_to_hex(public_key, TOX_PUBLIC_KEY_SIZE), ptr_to_string(message, length))
 
-
 	@staticmethod
 	def file_recv_control_cb(tox, friend_number, file_number, control, userdata):
 		self = cast(userdata, py_object).value
@@ -149,7 +155,31 @@ class Tox():
 	@staticmethod
 	def file_recv_cb(tox, friend_number, file_number, kind, file_size, filename, filename_length,userdata):
 		self = cast(userdata, py_object).value
-		self.on_file_recv(friend_number,file_number,kind,file_size,ptr_to_string(filename, filename_length))
+
+		try:
+			self.on_file_recv(friend_number,file_number,kind,file_size,ptr_to_string(filename, filename_length))
+		except Exception as e:
+			print("Error recieving file bla: " + str(e))
+
+	@staticmethod
+	def file_recv_chunk_cb(tox, friend_number, file_number, position, data, length,userdata):
+		self = cast(userdata, py_object).value
+
+		if( length ==0):
+			self.on_file_recv_chunk(friend_number,file_number,position,"")
+			return 
+		
+		try:
+			self.on_file_recv_chunk(friend_number,file_number,position,ptr_to_buffer(data,length))
+		except Exception as e:
+			print("Error recieving file chunk: " + str(e))
+
+
+	@staticmethod
+	def file_chunk_request_cb(tox, friend_number, file_number, position, length,userdata):
+		self = cast(userdata, py_object).value
+		self.on_file_chunk_request(friend_number,file_number,position,length)
+
 
 
 
@@ -363,50 +393,17 @@ class Tox():
 
 
 	def on_file_recv_control(self,friend_number, file_number,control):
-		print("On file control recv")
 		pass
 
-	#def on_file_recv_chunk(self):
+	def on_file_recv_chunk(self,friend_number,file_number,position,data):
+		pass
 
 	def on_file_recv(self,friend_number,file_number,kind,file_size,filename):
-		print("On file recv")
-		print(filename)
-		print(str(file_size))
+		pass
 
 
-	#def on_file_chunk_request(self):
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#typedef void tox_file_recv_control_cb(Tox *tox, uint32_t friend_number, uint32_t file_number, TOX_FILE_CONTROL control, void *user_data)
-#typedef void tox_file_recv_chunk_cb(Tox *tox, uint32_t friend_number, uint32_t file_number, uint64_t position, const uint8_t *data, size_t length, void *user_data)
-#typedef void tox_file_recv_cb(Tox *tox, uint32_t friend_number, uint32_t file_number, uint32_t kind, uint64_t file_size, const uint8_t *filename, size_t filename_length, void *user_data)
-#typedef void tox_file_chunk_request_cb(Tox *tox, uint32_t friend_number, uint32_t file_number, uint64_t position, size_t length, void *user_data)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	def on_file_chunk_request(self,friend_number,file_number,position,length):
+		pass
 
 
 

@@ -23,3 +23,6 @@ from .tox import TOX_CONNECTION_TCP
 from .tox import TOX_CONNECTION_UDP 
 from .tox import TOX_CONNECTION_NONE
 from .tox import *
+from .tox import TOX_FILE_CONTROL_RESUME
+from .tox import TOX_FILE_CONTROL_PAUSE
+from .tox import TOX_FILE_CONTROL_CANCEL
