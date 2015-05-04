@@ -406,33 +406,30 @@ class Tox():
 		pass
 
 
-
 	def hash_data(self,data):
 		res_data = create_string_buffer(TOX_HASH_LENGTH)
 		tox_hash (res_data, data,length(data))
 		return res_data
 
-#	def file_send():
-#		tox_file_send (self._p,uint32_t friend_number,uint32_t kind,uint64_t file_size,const uint8_t * file_id,const uint8_t * filename,size_t filename_length,None)
+	def file_send(friend_number,kind,file_size, file_id, filename):
+		buffer = create_string_buffer(filename, len(filename))
+		file_id_buffer = create_string_buffer(file_id,len(file_id)) #TOX_FILE_ID_LENGTH
+		tox_file_send (self._p,friend_number,kind,file_size,file_id_buffer,buffer,len(buffer),None)
 
 
-#	def file_send_chunk():
-#		bool tox_file_send_chunk (self._p, uint32_t friend_number,uint32_t file_number,uint64_t position,const uint8_t * data,size_t length,None)
+	def file_send_chunk(friend_number,file_number,position,data):
+		data_buffer = create_string_buffer(data,len(data))
+		tox_file_send_chunk (self._p,friend_number,file_number,position,data_buffer,len(data_buffer),None)
 
-	#bool tox_friend_send_lossless_packet 	( 	Tox *  	tox,
-	#		uint32_t  	friend_number,
-	#		const uint8_t *  	data,
-	#		size_t  	length,
-	#		TOX_ERR_FRIEND_CUSTOM_PACKET *  	error 
-	#	)
 
-	#bool tox_friend_send_lossy_packet 	( 	Tox *  	tox,
-	#		uint32_t  	friend_number,
-	#		const uint8_t *  	data,
-	#		size_t  	length,
-	#		TOX_ERR_FRIEND_CUSTOM_PACKET *  	error 
-	#	) 	
+	def friend_send_lossless_packet(friend_number,data):
+		data_buffer = create_string_buffer(data,len(data))
+		return tox_friend_send_lossless_packet(self._p,friend_number,data_buffer,len(data_buffer))
 
+
+	def friend_send_lossy_packet(friend_number,data):
+		data_buffer = create_string_buffer(data,len(data))
+		return tox_friend_send_lossy_packet(self._p,friend_number,data_buffer,len(data_buffer))
 
 	#uint32_t tox_get_chatlist 	( 	const Tox *  	tox,
 	#		int32_t *  	out_list,
