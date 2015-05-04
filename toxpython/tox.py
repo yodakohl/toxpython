@@ -165,7 +165,7 @@ class Tox():
 	def file_recv_chunk_cb(tox, friend_number, file_number, position, data, length,userdata):
 		self = cast(userdata, py_object).value
 
-		if( length ==0):
+		if(length==0):
 			self.on_file_recv_chunk(friend_number,file_number,position,"")
 			return 
 		
@@ -411,23 +411,23 @@ class Tox():
 		tox_hash (res_data, data,length(data))
 		return res_data
 
-	def file_send(friend_number,kind,file_size, file_id, filename):
+	def file_send(self,friend_number,kind,file_size, file_id, filename):
 		buffer = create_string_buffer(filename, len(filename))
 		file_id_buffer = create_string_buffer(file_id,len(file_id)) #TOX_FILE_ID_LENGTH
 		tox_file_send (self._p,friend_number,kind,file_size,file_id_buffer,buffer,len(buffer),None)
 
 
-	def file_send_chunk(friend_number,file_number,position,data):
+	def file_send_chunk(self,friend_number,file_number,position,data):
 		data_buffer = create_string_buffer(data,len(data))
 		tox_file_send_chunk (self._p,friend_number,file_number,position,data_buffer,len(data_buffer),None)
 
 
-	def friend_send_lossless_packet(friend_number,data):
+	def friend_send_lossless_packet(self,friend_number,data):
 		data_buffer = create_string_buffer(data,len(data))
 		return tox_friend_send_lossless_packet(self._p,friend_number,data_buffer,len(data_buffer))
 
 
-	def friend_send_lossy_packet(friend_number,data):
+	def friend_send_lossy_packet(self,friend_number,data):
 		data_buffer = create_string_buffer(data,len(data))
 		return tox_friend_send_lossy_packet(self._p,friend_number,data_buffer,len(data_buffer))
 
