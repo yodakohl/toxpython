@@ -202,14 +202,17 @@ class Tox():
 			message_send = message.encode('utf-8')
 		except: 
 			message_send = message
-
-		buffer = create_string_buffer(message_send, len(message_send))
-		ret = int(tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,None))
-		#print(str(ret))
-		#if (ret == 4294967295):
-		#	return -1
-
-		return ret
+               
+                ret = None
+                try:
+		    buffer = create_string_buffer(message_send, len(message_send))
+		    ret = int(tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,None))
+                except:
+                    return False
+                
+                if(ret == TOX_ERR_FRIEND_ADD_OK):
+                    return True
+		return False
 
 
 	def set_status(self, userstatus):
@@ -282,7 +285,7 @@ class Tox():
 	def get_friend_list_size(self):
 		return tox_self_get_friend_list_size(self._p,None)
 
-	def getFriendList(self):
+	def get_friend_list(self):
 		size = tox_self_get_friend_list_size(self._p)
 		friendList = name_len_array = (c_uint32 * size)()
 		tox_self_get_friend_list(self._p,friendList,None)
@@ -430,6 +433,12 @@ class Tox():
 	def friend_send_lossy_packet(self,friend_number,data):
 		data_buffer = create_string_buffer(data,len(data))
 		return tox_friend_send_lossy_packet(self._p,friend_number,data_buffer,len(data_buffer))
+
+
+        def self_get_connection_status(self):
+                return tox_self_get_connection_status(self._p)   
+
+
 
 	#uint32_t tox_get_chatlist 	( 	const Tox *  	tox,
 	#		int32_t *  	out_list,
