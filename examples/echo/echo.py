@@ -2,6 +2,8 @@ from toxpython import Tox
 from toxpython import TOX_USER_STATUS_NONE
 import time
 
+# Todo:
+# Recieve File and Echo it back (delete afterwards)
 
 class EchoClient(Tox):
 

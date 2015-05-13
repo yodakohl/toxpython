@@ -82,7 +82,7 @@ try:
 
             if (client.friend_add(inplist[1],"Invite Request") == True):
                 print ("Adding friend: " + inplist[1])
-	        self.save("./userdata")
+	        client.save("./userdata")
             else:
                 print ("Adding friend failed")
                 
@@ -94,8 +94,8 @@ try:
                 continue 
 
             print ("Deleting friend: " + inplist[1])
-            client.friend_delete(inplist[1])
-	    self.save("./userdata")
+            client.friend_delete(int(inplist[1]))
+	    client.save("./userdata")
 
 
         elif (cmd == "msg"):
@@ -126,7 +126,7 @@ try:
         else:
             print ("Unknown command")
 
-except KeyboardInterrupt:
+except:
     client.stop()
     exit(1)
 
