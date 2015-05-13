@@ -20,7 +20,8 @@ class EchoClient(Tox):
 
 
 	def on_friend_request(self,public_key, message):
-		self.friend_add_norequest(public_key)
+		self.add_friend_norequest(public_key)
+
 		self.save("./userdata")
 		print("Recieved Friend request")
 

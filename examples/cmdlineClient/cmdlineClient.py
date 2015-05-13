@@ -1,5 +1,7 @@
 from toxpython import Tox
 from toxpython import TOX_USER_STATUS_NONE
+from toxpython import TOX_MESSAGE_TYPE_NORMAL
+
 from threading import Thread
 import time
 
@@ -109,7 +111,7 @@ try:
                 message += " " 
                 message += inplist[i]
             print ("Sending Message to " + inplist[1] + ": " + message)
-            #client.send_message(friend,type,message)
+            client.send_message(int(inplist[1]),0,message)
 
         elif (cmd == "list"):
             print ("Showing friend list ")
