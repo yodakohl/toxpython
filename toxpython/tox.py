@@ -197,16 +197,18 @@ class Tox():
 	def friend_add(self,address,message):
 
 		message_send = None
+		ret = None
+
 		try:
 			message_send = message.encode('utf-8')
 		except: 
 			message_send = message
-			ret = None
-			try:
-				buffer = create_string_buffer(message_send, len(message_send))
-				ret = int(tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,None))
-			except:
-				return False
+			
+		try:
+			buffer = create_string_buffer(message_send, len(message_send))
+			ret = int(tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,None))
+		except:
+			return False
 
 		if(ret == TOX_ERR_FRIEND_ADD_OK):
 			return True
