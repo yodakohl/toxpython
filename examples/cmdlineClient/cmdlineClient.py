@@ -35,7 +35,7 @@ class CMDLineClient(Tox,Thread):
 	def on_connection_status(self,connection_status):
 		if(connection_status == True):
 			print("Connected")
-		else: 
+		else:
 			time.sleep(1)
 			if(self.self_get_connection_status == False):
 				print("Disconnected")
@@ -43,7 +43,7 @@ class CMDLineClient(Tox,Thread):
 
 
 	def on_friend_message(self,friend_id, message_type,message):
-		print(str(self.friend_get_name(friend_id) + ": " + str(message)))
+		print(self.friend_get_name(friend_id) + ": " + message)
 
 	def run(self):
 		self.running = True
@@ -61,7 +61,11 @@ class CMDLineClient(Tox,Thread):
 		self.fileTransferHandler.file_recv_chunk(friend_number,file_number,position,data)
 
 	def on_file_recv(self,friend_number,file_number,kind,file_size,filename):
+		#set callback
 		self.fileTransferHandler.recieveFile(friend_number,file_number,filename,file_size)
+
+	def on_file_transfer_finished(self):
+		print("File transfer finished")
 
 	def stop(self):
 		self.running = False
@@ -97,11 +101,12 @@ try:
 
 			if (client.friend_add(inplist[1],"Invite Request") == True):
 				print ("Adding friend: " + inplist[1])
-				client.save("./userdata")
 			else:
 				print ("Adding friend failed")
 
-		elif (cmd == "del"):
+			client.save("./userdata")
+
+		elif (cmd == "del" or cmd == "rm"):
 			if(len(inplist) <2):
 				print("Invalid Arguments")
 				continue 
@@ -118,15 +123,15 @@ try:
 				print("Invalid Arguments")
 				continue
 
-			message = ""
-			i = 2
-			for i in range (len(inplist)):
+			message = inplist[2]
+
+			for i in range (3,len(inplist)):
 				message += " " 
 				message += inplist[i]
 			print ("Sending Message to " + inplist[1] + ": " + message)
 			client.send_message(int(inplist[1]),0,message)
 
-		elif (cmd == "file"):
+		elif (cmd == "file" or cmd == "cp"):
 			if (len(inplist) <3):
 				print("Invalid Arguments")
 				continue
@@ -137,7 +142,7 @@ try:
 
 			client.fileTransferHandler.addFileTransfer(int(inplist[1]),inplist[2])
 
-		elif (cmd == "list"):
+		elif (cmd == "list" or cmd == "ls"):
 			print ("Showing friend list ")
 			friendList = client.get_friend_list()
 			for friend in friendList:

@@ -201,16 +201,15 @@ class Tox():
 			message_send = message.encode('utf-8')
 		except: 
 			message_send = message
-               
-                ret = None
-                try:
-		    buffer = create_string_buffer(message_send, len(message_send))
-		    ret = int(tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,None))
-                except:
-                    return False
-                
-                if(ret == TOX_ERR_FRIEND_ADD_OK):
-                    return True
+			ret = None
+			try:
+				buffer = create_string_buffer(message_send, len(message_send))
+				ret = int(tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,None))
+			except:
+				return False
+
+		if(ret == TOX_ERR_FRIEND_ADD_OK):
+			return True
 		return False
 
 
@@ -247,7 +246,7 @@ class Tox():
 	@staticmethod
 	def friend_message_callback(tox, friend_id,message_type, message, length, userdata):
 		self = cast(userdata, py_object).value
-		self.on_friend_message(friend_id,message_type, ptr_to_string(message, length))
+		self.on_friend_message(friend_id,message_type,ptr_to_string(message, length).decode('utf-8'))
 
 	def on_friend_message(self,friend_id, message_type,message):
 		pass
@@ -438,8 +437,8 @@ class Tox():
 		return tox_friend_send_lossy_packet(self._p,friend_number,data_buffer,len(data_buffer))
 
 
-        def self_get_connection_status(self):
-                return tox_self_get_connection_status(self._p)   
+	def self_get_connection_status(self):
+		return tox_self_get_connection_status(self._p)   
 
 
 
