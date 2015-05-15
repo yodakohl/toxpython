@@ -4,17 +4,12 @@ from toxpython import TOX_MESSAGE_TYPE_NORMAL
 
 from threading import Thread
 import time
-
 from fileTransfer import FiletransferList
 import os.path
-
 import traceback
-
 
 class CMDLineClient(Tox,Thread):
 
-
-	
 	fileTransferHandler = None
 	running = False 
 
@@ -28,7 +23,6 @@ class CMDLineClient(Tox,Thread):
 		self.fileTransferHandler = FiletransferList(self)
 
 		print(self.get_address())
-
 
 		self.bootstrap("104.219.184.206",443,"8CD087E31C67568103E8C2A28653337E90E6B8EDA0D765D57C6B5172B4F1F04C")
 
@@ -59,15 +53,19 @@ class CMDLineClient(Tox,Thread):
 
 	def on_file_chunk_request(self,friend_number,file_number,position,length):
 		self.fileTransferHandler.file_chunk_request(friend_number,file_number,position,length)
-		pass
-		#get Filepointer to number
-		#Read requested data to buffer 
-		#send chunk
+
+	def on_file_recv_control(self,friend_number, file_number,control):
+		self.fileTransferHandler.file_recv_control(friend_number,file_number,control)
+
+	def on_file_recv_chunk(self,friend_number,file_number,position,data):
+		self.fileTransferHandler.file_recv_chunk(friend_number,file_number,position,data)
+
+	def on_file_recv(self,friend_number,file_number,kind,file_size,filename):
+		self.fileTransferHandler.recieveFile(friend_number,file_number,filename,file_size)
 
 	def stop(self):
 		self.running = False
 		pass
-
 
 	def print_help(self):
 		print("Usage:")
@@ -103,16 +101,17 @@ try:
 			else:
 				print ("Adding friend failed")
 
-
 		elif (cmd == "del"):
 			if(len(inplist) <2):
 				print("Invalid Arguments")
 				continue 
 
 			print ("Deleting friend: " + inplist[1])
-			client.friend_delete(int(inplist[1]))
+			try:
+				client.friend_delete(int(inplist[1]))
+			except:
+				print("Couldn't delete friend")
 			client.save("./userdata")
-
 
 		elif (cmd == "msg"):
 			if (len(inplist) <3):
@@ -127,7 +126,6 @@ try:
 			print ("Sending Message to " + inplist[1] + ": " + message)
 			client.send_message(int(inplist[1]),0,message)
 
-
 		elif (cmd == "file"):
 			if (len(inplist) <3):
 				print("Invalid Arguments")
@@ -138,7 +136,6 @@ try:
 			print("Sending File " + inplist[2] + " to " + client.friend_get_name(int(inplist[1])))
 
 			client.fileTransferHandler.addFileTransfer(int(inplist[1]),inplist[2])
-
 
 		elif (cmd == "list"):
 			print ("Showing friend list ")

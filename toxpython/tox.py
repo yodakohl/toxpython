@@ -186,7 +186,7 @@ class Tox():
 	def on_friend_request(self,public_key, message):
 		pass
 
-	def add_friend_norequest(self,address):
+	def friend_add_norequest(self,address):
 		ret = tox_friend_add_norequest(self._p,hex_to_buffer(address) ,None)
 		if (ret == 4294967295):
 			return -1

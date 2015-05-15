@@ -1,7 +1,7 @@
 
 import os
 from toxpython import TOX_MESSAGE_TYPE_NORMAL
-
+from toxpython import TOX_FILE_CONTROL_RESUME
 
 class FileTransfer():
 	filePointer = None
@@ -30,18 +30,51 @@ class FiletransferList():
 		self.client.file_send_chunk(friend_number,file_number,position,data)
 
 
+
+	def file_recv_control(self,friend_number, file_number,control):
+		print("On file control recv")
+		pass
+
+
+	#Todo: check position
+	def file_recv_chunk(self,friend_number,file_number,position,data):
+		transfer = self.friendDicts[friend_number][file_number]
+		
+		if (len(data) == 0):
+			print("FILE TRANSFER FINISHED")
+			transfer.filePointer.close()
+			self.friendDicts[friend_number][file_number] = None
+		else:
+			transfer.filePointer.write(data)
+			print("On file recv chunk")
+
+	def recieveFile(self,friend_number,file_number,filename,size):
+		self.client.file_control(friend_number,file_number,TOX_FILE_CONTROL_RESUME)
+		
+		if friend_number not in self.friendDicts:
+			self.friendDicts[friend_number] = {}
+
+		fileptr = open(filename,"wb")
+
+		transfer = FileTransfer()
+		transfer.filePointer = fileptr
+		transfer.filePath = filename
+
+		self.friendDicts[friend_number][file_number] = transfer
+
+
 	#Send file, true if successfull
-	def addFileTransfer(self,userid,filename):
+	def addFileTransfer(self,friend_number,filename):
 
 		#file does not exist
 		if not os.path.isfile(filename):
 			return false 
 
 		file_size = os.path.getsize(filename)
- 		file_id = self.client.file_send(userid,TOX_MESSAGE_TYPE_NORMAL,file_size, None, filename)
+ 		file_id = self.client.file_send(friend_number,TOX_MESSAGE_TYPE_NORMAL,file_size, None, filename)
 
-		if userid not in self.friendDicts:
-			self.friendDicts[userid] = {}
+		if friend_number not in self.friendDicts:
+			self.friendDicts[friend_number] = {}
 
 		fileptr = open(filename,"rb")
 
@@ -49,7 +82,7 @@ class FiletransferList():
 		transfer.filePointer = fileptr
 		transfer.filePath = filename
 
-		self.friendDicts[userid][file_id] = transfer
+		self.friendDicts[friend_number][file_id] = transfer
 
 
 
