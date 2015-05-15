@@ -194,7 +194,6 @@ class Tox():
 		return ret
 
 
-	#untested
 	def friend_add(self,address,message):
 
 		message_send = None
@@ -415,9 +414,13 @@ class Tox():
 		return res_data
 
 	def file_send(self,friend_number,kind,file_size, file_id, filename):
+
 		buffer = create_string_buffer(filename, len(filename))
-		file_id_buffer = create_string_buffer(file_id,len(file_id)) #TOX_FILE_ID_LENGTH
-		tox_file_send (self._p,friend_number,kind,file_size,file_id_buffer,buffer,len(buffer),None)
+		file_id_buffer = None
+		if file_id:
+			file_id_buffer = create_string_buffer(file_id, TOX_FILE_ID_LENGTH) #TOX_FILE_ID_LENGTH
+
+		return tox_file_send (self._p,friend_number,kind,file_size,file_id_buffer,buffer,len(buffer),None)
 
 
 	def file_send_chunk(self,friend_number,file_number,position,data):
