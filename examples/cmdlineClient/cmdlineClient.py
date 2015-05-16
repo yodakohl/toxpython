@@ -50,6 +50,7 @@ class CMDLineClient(Tox,Thread):
 		while(self.running):
 			self.iterate()
 			time.sleep(self.sleepInterval()/1000000.0)
+		self.kill()
 
 	def on_file_chunk_request(self,friend_number,file_number,position,length):
 		self.fileTransferHandler.file_chunk_request(friend_number,file_number,position,length)
