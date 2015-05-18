@@ -63,9 +63,9 @@ class CMDLineClient(Tox,Thread):
 
 	def on_file_recv(self,friend_number,file_number,kind,file_size,filename):
 		#set callback
-		self.fileTransferHandler.recieveFile(friend_number,file_number,filename,file_size)
+		self.fileTransferHandler.recieveFile(friend_number,file_number,filename,file_size,self.on_file_transfer_finished)
 
-	def on_file_transfer_finished(self):
+	def on_file_transfer_finished(self,status):
 		print("File transfer finished")
 
 	def stop(self):
