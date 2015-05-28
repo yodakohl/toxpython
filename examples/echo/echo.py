@@ -34,7 +34,7 @@ class EchoClient(Tox):
 	def run(self):
 		while(True):
 			self.iterate()
-			time.sleep(self.sleepInterval()/1000000.0)
+			time.sleep(self.sleepInterval()/100000.0)
 
 
 client = EchoClient()

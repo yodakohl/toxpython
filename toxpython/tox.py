@@ -419,7 +419,7 @@ class Tox():
 		buffer = create_string_buffer(filename, len(filename))
 		file_id_buffer = None
 		if file_id:
-			file_id_buffer = create_string_buffer(file_id, TOX_FILE_ID_LENGTH) #TOX_FILE_ID_LENGTH
+			file_id_buffer = create_string_buffer(file_id, TOX_FILE_ID_LENGTH)
 
 		return tox_file_send (self._p,friend_number,kind,file_size,file_id_buffer,buffer,len(buffer),None)
 
@@ -440,7 +440,7 @@ class Tox():
 
 
 	def self_get_connection_status(self):
-		return tox_self_get_connection_status(self._p)   
+		return tox_self_get_connection_status(self._p)
 
 
 
@@ -461,11 +461,11 @@ class Tox():
 
 
 
-#void 	tox_options_default (struct Tox_Options *options)
- 
-#struct Tox_Options * 	tox_options_new (TOX_ERR_OPTIONS_NEW *error)
- 
-#void 	tox_options_free (struct Tox_Options *options)
+	#void 	tox_options_default (struct Tox_Options *options)
+	 
+	#struct Tox_Options * 	tox_options_new (TOX_ERR_OPTIONS_NEW *error)
+	 
+	#void 	tox_options_free (struct Tox_Options *options)
 
 
 

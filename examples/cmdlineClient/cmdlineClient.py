@@ -49,7 +49,7 @@ class CMDLineClient(Tox,Thread):
 		self.running = True
 		while(self.running):
 			self.iterate()
-			time.sleep(self.sleepInterval()/1000000.0)
+			time.sleep(self.sleepInterval()/100000.0)
 		self.kill()
 
 	def on_file_chunk_request(self,friend_number,file_number,position,length):
