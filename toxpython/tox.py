@@ -32,20 +32,9 @@ class Tox():
 				with open(fileName, 'rb') as f:
 					userdata = f.read() 
 					datalen = len(userdata)
-					mbuffer = (c_char * datalen) ()
-					i = 0
-					for b in userdata:
-						bb = c_char(b)
-						mbuffer[i] = bb
-						i = i+1
+					mubb = create_string_buffer(userdata,datalen)
+					mbuffer = cast(mubb, POINTER(c_uint8)).contents
 
-					mbuffer2 = cast(mbuffer, POINTER(c_uint8)).contents
-					#user_buffer = create_string_buffer(userdata, datalen)
-					#buffer = ptr_to_uint8(userdata,datalen)
-					#buffer = cast(user_buffer, c_uint8)
-					#mbuffer = pointer(user_buffer)
-					#mbuffer = cast(bufferpointer, pointer(c_uint8))
-					#mbuffer = ptr_to_uint8(pointer(user_buffer), datalen)
 			except Exception as e:
 				print("Error loading savedata: " +str(e) )
 
@@ -76,29 +65,13 @@ class Tox():
 
 		if(mbuffer != None):
 			opt.savedata_type = TOX_SAVEDATA_TYPE_TOX_SAVE
-			opt.savedata_data = pointer(mbuffer2)
+			opt.savedata_data = pointer(mbuffer)
 			opt.savedata_length = datalen
 		else:
 			opt.savedata_type = TOX_SAVEDATA_TYPE_NONE
 
-    #TOX_SAVEDATA_TYPE_NONE,
-
-    #Savedata is one that was obtained from tox_get_savedata
-    #TOX_SAVEDATA_TYPE_TOX_SAVE,
-
-    #Savedata is a secret key of length TOX_SECRET_KEY_SIZE
-    #TOX_SAVEDATA_TYPE_SECRET_KEY,
-
-	#TOX_SAVEDATA_TYPE;
-
-
-
-
-
 		self._p = tox_new(pointer(opt),None)
-
 		self.registerCallbacks()
-
 
 
 	def save(self,fileName):
