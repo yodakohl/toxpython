@@ -26,3 +26,10 @@ from .tox import *
 from .tox import TOX_FILE_CONTROL_RESUME
 from .tox import TOX_FILE_CONTROL_PAUSE
 from .tox import TOX_FILE_CONTROL_CANCEL
+
+
+from .tox import TOX_SAVEDATA_TYPE_TOX_SAVE
+
+
+from .tox import TOX_SAVEDATA_TYPE_NONE
+
