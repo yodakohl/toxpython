@@ -8,17 +8,21 @@ from fileTransfer import FiletransferList
 import os.path
 import traceback
 
+import sys
+
+
 class CMDLineClient(Tox,Thread):
 
 	fileTransferHandler = None
 	running = False 
 
-	def __init__(self):
+	def __init__(self,path):
 
 		Thread.__init__(self)
-		self.init("./userdata")
+		self.datapath = path
+		self.init(self.datapath )
 		self.setName("Command Line Client")
-		self.save("./userdata")
+		self.save(self.datapath )
 		self.set_status(TOX_USER_STATUS_NONE)
 		self.fileTransferHandler = FiletransferList(self)
 
@@ -33,7 +37,7 @@ class CMDLineClient(Tox,Thread):
 	def on_friend_request(self,public_key, message):
 		#On friend request ask user if he wants to accept
 		self.friend_add_norequest(public_key)
-		self.save("./userdata")
+		self.save(self.datapath)
 		print("Recieved Friend request")
 
 	def on_connection_status(self,connection_status):
@@ -91,7 +95,14 @@ class CMDLineClient(Tox,Thread):
 		print("Help: help")
 
 
-client = CMDLineClient()
+print 'Number of arguments:', len(sys.argv), 'arguments.'
+print 'Argument List:', str(sys.argv)
+
+path= "./userdata"
+if(len(sys.argv) == 2):
+	path = str(sys.argv[1])
+
+client = CMDLineClient(path)
 client.start()
 
 try:
