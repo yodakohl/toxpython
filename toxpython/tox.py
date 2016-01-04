@@ -46,22 +46,24 @@ class Tox():
 			'proxy_host': '',
 			'proxy_port': 0,
 			'start_port': 0,
-			'end_port': 10000,
+			'tcp_port' : 0,
+			'end_port': 33545,
 		}
 
 		if(options == None):
 			options = defaults
 
 		opt = Tox_Options()
-		for k, v in defaults.items():
-			if k not in options:
-				options[k] = v
-				opt.ipv6_enabled = c_bool(options['ipv6_enabled'])
-				opt.udp_disabled = c_bool(options['udp_disabled'])
-				opt.proxy_host = options['proxy_host'][:255].encode('ascii') + b'\0'
-				opt.proxy_port = c_uint16(options['proxy_port'])
-				opt.start_port = c_uint16(options['start_port'])
-				opt.end_port = c_uint16(options['end_port'])
+		#for k, v in defaults.items():
+		#	if k not in options:
+		#		options[k] = v
+		opt.ipv6_enabled = c_bool(True)
+		opt.udp_enabled = c_bool(True)
+		opt.proxy_type = TOX_PROXY_TYPE_NONE
+		opt.proxy_host = String(None)
+		opt.proxy_port =0
+		opt.start_port = 0
+		opt.end_port =0
 
 		if(mbuffer != None):
 			opt.savedata_type = TOX_SAVEDATA_TYPE_TOX_SAVE
@@ -70,7 +72,11 @@ class Tox():
 		else:
 			opt.savedata_type = TOX_SAVEDATA_TYPE_NONE
 
-		self._p = tox_new(pointer(opt),None)
+		response = pointer(c_int(9))
+		self._p = tox_new(pointer(opt),response)
+		#self._p = tox_new(None,None)
+		if response.contents.value != TOX_ERR_NEW_OK:
+			print("Tox init failed: " + str(response.contents.value))
 		self.registerCallbacks()
 
 
@@ -141,10 +147,19 @@ class Tox():
 
 
 	def bootstrap(self,bootstrap_address,port,public_key):
-		return tox_bootstrap(self._p, bootstrap_address.encode('ascii') ,port , hex_to_buffer(public_key), None);
+		response = pointer(c_int(1))
+		print("Bootstraping: " + str(public_key))
+		ret = tox_bootstrap(self._p, bootstrap_address.encode('ascii') ,port , hex_to_buffer(public_key), response);
+		if(response.contents.value != TOX_ERR_BOOTSTRAP_OK):
+			print("Bootstrap  failed: " + str(response.contents.value))
+		if(ret == False):
+			print("Bootstrap failed")
+		print("Bootstrap done")
+		return ret
 
 	@staticmethod
 	def connection_status_callback(tox,connection_status,userdata):
+		print("connection_status_callback")
 		self = cast(userdata, py_object).value
 		self.on_connection_status(connection_status)
 
@@ -216,7 +231,8 @@ class Tox():
 		try:
 			buffer = create_string_buffer(message_send, len(message_send))
 			ret = int(tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,None))
-		except:
+		except Exception as e:
+			print("Friend add failed: " + str(e)) 
 			return False
 
 		if(ret == TOX_ERR_FRIEND_ADD_OK):
@@ -449,7 +465,7 @@ class Tox():
 
 
 	def self_get_connection_status(self):
-		return tox_self_get_connection_status(self._p)
+		return tox_self_get_connection_status(self._p) != TOX_CONNECTION_NONE
 
 
 

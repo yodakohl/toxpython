@@ -33,3 +33,6 @@ from .tox import TOX_SAVEDATA_TYPE_TOX_SAVE
 
 from .tox import TOX_SAVEDATA_TYPE_NONE
 
+from .tox import TOX_ERR_NEW_OK
+from .tox import TOX_ERR_BOOTSTRAP_OK
+
