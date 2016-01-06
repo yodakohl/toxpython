@@ -35,7 +35,7 @@ class CMDLineClient(Tox,Thread):
 			print("Connected")
 
 	def on_friend_request(self,public_key, message):
-		#On friend request ask user if he wants to accept
+		#TODO: On friend request ask user if he wants to accept
 		self.friend_add_norequest(public_key)
 		self.save(self.datapath)
 		print("Recieved Friend request")
@@ -49,8 +49,6 @@ class CMDLineClient(Tox,Thread):
 			if(self.self_get_connection_status() == False):
 				print("Disconnected")
 				self.bootstrap("195.154.119.113",33445,"E398A69646B8CEACA9F0B84F553726C1C49270558C57DF5F3C368F05A7D71354")
-				#self.bootstrap("46.101.197.175",443,"CD133B521159541FB1D326DE9850F5E56A6C724B5B8E5EB5CD8D950408E95707")
-
 
 	def on_friend_message(self,friend_id, message_type,message):
 		print(self.friend_get_name(friend_id) + ": " + message)
@@ -62,7 +60,6 @@ class CMDLineClient(Tox,Thread):
 			time.sleep(self.sleepInterval()/1000.0)
 
 		self.kill()
-		print("Killed");
 
 	def on_file_chunk_request(self,friend_number,file_number,position,length):
 		self.fileTransferHandler.file_chunk_request(friend_number,file_number,position,length)

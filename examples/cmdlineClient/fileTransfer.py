@@ -45,6 +45,7 @@ class FiletransferList():
 			transfer.callback(True)
 			#Maby callback for file transfer finished
 		else:
+			print("Writing: " + str(len(data)))
 			transfer.filePointer.write(data)
 
 	def recieveFile(self,friend_number,file_number,filename,size,callback):
