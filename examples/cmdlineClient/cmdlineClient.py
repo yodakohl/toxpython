@@ -14,18 +14,17 @@ import sys
 class CMDLineClient(Tox,Thread):
 
 	fileTransferHandler = None
-	running = False 
+	running = False
 
 	def __init__(self,path):
-
 		Thread.__init__(self)
 		self.datapath = path
+                print("Using data path: " + str(self.datapath))
 		self.init(self.datapath )
 		self.setName("Command Line Client")
 		self.save(self.datapath )
 		self.set_status(TOX_USER_STATUS_NONE)
 		self.fileTransferHandler = FiletransferList(self)
-
 		print(self.get_address())
 
 		self.bootstrap("195.154.119.113",33445,"E398A69646B8CEACA9F0B84F553726C1C49270558C57DF5F3C368F05A7D71354")
@@ -117,16 +116,16 @@ try:
 				continue
 
 			if (client.friend_add(inplist[1],"Invite Request") == True):
-				print ("Adding friend: " + inplist[1])
+				print ("Adding friend successful: " + inplist[1])
 			else:
 				print ("Adding friend failed")
 
-			client.save("./userdata")
+			client.save(client.datapath)
 
 		elif (cmd == "del" or cmd == "rm"):
 			if(len(inplist) <2):
 				print("Invalid Arguments")
-				continue 
+				continue
 
 			print ("Deleting friend: " + inplist[1])
 			try:
@@ -143,7 +142,7 @@ try:
 			message = inplist[2]
 
 			for i in range (3,len(inplist)):
-				message += " " 
+				message += " "
 				message += inplist[i]
 			print ("Sending Message to " + inplist[1] + ": " + message)
 			client.send_message(int(inplist[1]),0,message)
@@ -152,7 +151,7 @@ try:
 			if (len(inplist) <3):
 				print("Invalid Arguments")
 				continue
-			if not os.path.isfile(inplist[2]): 
+			if not os.path.isfile(inplist[2]):
 				print("File does not exist")
 				continue
 			print("Sending File " + inplist[2] + " to " + client.friend_get_name(int(inplist[1])))
@@ -174,30 +173,10 @@ try:
 		else:
 			print ("Unknown command")
 
-except Exception,e: 
+except Exception,e:
 	print str(e)
 	traceback.print_stack(file=sys.stdout)
 
 finally:
 	client.stop()
 	exit(1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

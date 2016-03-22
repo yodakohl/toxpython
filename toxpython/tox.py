@@ -74,7 +74,7 @@ class Tox():
 
 		response = pointer(c_int(9))
 		self._p = tox_new(pointer(opt),response)
-		#self._p = tox_new(None,None)
+
 		if response.contents.value != TOX_ERR_NEW_OK:
 			print("Tox init failed: " + str(response.contents.value))
 		self.registerCallbacks()
@@ -222,6 +222,7 @@ class Tox():
 
 		message_send = None
 		ret = None
+		response = pointer(c_int(9))
 
 		try:
 			message_send = message.encode('utf-8')
@@ -229,14 +230,18 @@ class Tox():
 			message_send = message
 			
 		try:
+
+
+			print("Tox init failed: " + str(response.contents.value))
 			buffer = create_string_buffer(message_send, len(message_send))
-			ret = int(tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,None))
+			ret = int(tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,response))
 		except Exception as e:
 			print("Friend add failed: " + str(e)) 
 			return False
 
-		if(ret == TOX_ERR_FRIEND_ADD_OK):
+		if response.contents.value == TOX_ERR_FRIEND_ADD_OK:
 			return True
+                print("friend_add failed: " + str(response.contents.value))
 		return False
 
 
