@@ -711,10 +711,18 @@ add_library_search_dirs([])
 
 # Begin libraries
 
-_libs["toxcore"] = load_library("toxcore")
-_libs["toxdns"] = load_library("toxdns")
-_libs["toxav"] = load_library("toxav")
-_libs["toxencryptsave"] = load_library("toxencryptsave")
+try:
+    _libs["toxcore"] = load_library("toxcore")
+    _libs["toxdns"] = load_library("toxdns")
+    _libs["toxav"] = load_library("toxav")
+    _libs["toxencryptsave"] = load_library("toxencryptsave")
+except:
+    #libtox Loading
+    #On Windows download https://build.tox.chat/view/libtoxcore/
+    _libs["toxcore"] = load_library("libtox")
+    _libs["toxdns"] = load_library("libtox")
+    _libs["toxav"] = load_library("libtox")
+    _libs["toxencryptsave"] = load_library("libtox")
 
 # 4 libraries
 # End libraries
