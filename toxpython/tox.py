@@ -30,7 +30,7 @@ class Tox():
 		if( fileName != None):
 			try:
 				with open(fileName, 'rb') as f:
-					userdata = f.read() 
+					userdata = f.read()
 					datalen = len(userdata)
 					mubb = create_string_buffer(userdata,datalen)
 					mbuffer = cast(mubb, POINTER(c_uint8)).contents
@@ -83,7 +83,7 @@ class Tox():
 	def save(self,fileName):
 		buffersize = tox_get_savedata_size(self._p)
 		userdata = create_string_buffer(buffersize)
-		tox_get_savedata(self._p,userdata) 
+		tox_get_savedata(self._p,userdata)
 		with open(fileName, 'w+b') as f:
 			f.write(userdata.raw)
 
@@ -191,8 +191,8 @@ class Tox():
 
 		if(length==0):
 			self.on_file_recv_chunk(friend_number,file_number,position,"")
-			return 
-		
+			return
+
 		try:
 			self.on_file_recv_chunk(friend_number,file_number,position,ptr_to_buffer(data,length))
 		except Exception as e:
@@ -226,9 +226,9 @@ class Tox():
 
 		try:
 			message_send = message.encode('utf-8')
-		except: 
+		except:
 			message_send = message
-			
+
 		try:
 
 
@@ -236,7 +236,7 @@ class Tox():
 			buffer = create_string_buffer(message_send, len(message_send))
 			ret = int(tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,response))
 		except Exception as e:
-			print("Friend add failed: " + str(e)) 
+			print("Friend add failed: " + str(e))
 			return False
 
 		if response.contents.value == TOX_ERR_FRIEND_ADD_OK:
@@ -263,7 +263,7 @@ class Tox():
 		message_send = None
 		try:
 			message_send = message.encode('utf-8')
-		except: 
+		except:
 			message_send = message
 
 		buffer = create_string_buffer(message_send, len(message_send))
@@ -414,7 +414,7 @@ class Tox():
 		return buffer_to_hex(dth_id)
 
 	def file_control(self,friend_number,file_number,control):
-		return tox_file_control ( self._p,friend_number,file_number,control,None) 
+		return tox_file_control ( self._p,friend_number,file_number,control,None)
 
 	def get_file_id(self,file_number):
 		file_id = create_string_buffer(TOX_FILE_ID_LENGTH)
@@ -461,12 +461,12 @@ class Tox():
 
 	def friend_send_lossless_packet(self,friend_number,data):
 		data_buffer = create_string_buffer(data,len(data))
-		return tox_friend_send_lossless_packet(self._p,friend_number,data_buffer,len(data_buffer))
+		return tox_friend_send_lossless_packet(self._p,friend_number,data_buffer,len(data_buffer),None)
 
 
 	def friend_send_lossy_packet(self,friend_number,data):
 		data_buffer = create_string_buffer(data,len(data))
-		return tox_friend_send_lossy_packet(self._p,friend_number,data_buffer,len(data_buffer))
+		return tox_friend_send_lossy_packet(self._p,friend_number,data_buffer,len(data_buffer),None)
 
 
 	def self_get_connection_status(self):
@@ -476,8 +476,8 @@ class Tox():
 
 	#uint32_t tox_get_chatlist 	( 	const Tox *  	tox,
 	#		int32_t *  	out_list,
-	#		uint32_t  	list_size 
-	#	) 	
+	#		uint32_t  	list_size
+	#	)
 
 
 
@@ -485,16 +485,16 @@ class Tox():
 	#		int  	groupnumber,
 	#		uint8_t  	names[][TOX_MAX_NAME_LENGTH],
 	#		uint16_t  	lengths[],
-	#		uint16_t  	length 
-	#	) 	
+	#		uint16_t  	length
+	#	)
 
 
 
 
 	#void 	tox_options_default (struct Tox_Options *options)
-	 
+
 	#struct Tox_Options * 	tox_options_new (TOX_ERR_OPTIONS_NEW *error)
-	 
+
 	#void 	tox_options_free (struct Tox_Options *options)
 
 
