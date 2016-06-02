@@ -315,16 +315,18 @@ class Tox():
 		self.on_friend_connection_status(friendId,status)
 
 
-
-
-	def on_friend_lossless_packet_callback(tox,friendId,message):
-		print("LOSSLESS PACKAGE CALLBACK: " + str(friendId) + " " + message)
+	def on_friend_lossless_packet_callback(tox,friendId,message_type,message):
+		pass
 
 	@staticmethod
 	def friend_lossless_packet_callback(tox,friendId,message,length,userdata):
 		self = cast(userdata, py_object).value
-		self.on_friend_lossless_packet_callback(friendId,buffer_to_hex(message, length))
-
+		buffer = ptr_to_buffer(message, length)
+		#first byte is message type
+		message_type = ctypes.c_uint8()
+		ctypes.memmove(addressof(message_type),buffer,1)
+		
+		self.on_friend_lossless_packet_callback(friendId,message_type.value,buffer[1:])
 
 
 	def on_friend_status(self,friendId,status):
@@ -477,15 +479,19 @@ class Tox():
 		tox_file_send_chunk (self._p,friend_number,file_number,position,data_buffer,len(data_buffer),None)
 
 
-	def friend_send_lossless_packet(self,friend_number,data):
+	def friend_send_lossless_packet(self,friend_number,message_type,data):
 		response = pointer(c_int(TOX_ERR_FRIEND_CUSTOM_PACKET_OK))
 		datalen = len(data)
-		buff = (c_ubyte * (datalen+1) )(*[161])
+		message_type = c_ubyte(message_type)
+		buff = (c_ubyte * (datalen+1) )()
+		
+		ctypes.memmove(addressof(buff),addressof(message_type),ctypes.sizeof(message_type))
 		ctypes.memmove(addressof(buff)+1,addressof(data),ctypes.sizeof(data))
 	
 		tox_friend_send_lossless_packet(self._p,friend_number,buff,len(buff),response)
 		if ( response.contents.value == TOX_ERR_FRIEND_CUSTOM_PACKET_OK):
 			return True
+
 		print("Lossless package failed: " + str(response.contents.value))
 		return False
 

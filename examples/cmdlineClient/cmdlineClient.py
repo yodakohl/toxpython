@@ -20,7 +20,7 @@ class CMDLineClient(Tox,Thread):
 	def __init__(self,path):
 		Thread.__init__(self)
 		self.datapath = path
-                print("Using data path: " + str(self.datapath))
+		print("Using data path: " + str(self.datapath))
 		self.init(self.datapath )
 		self.setName("Command Line Client")
 		self.save(self.datapath )
@@ -61,6 +61,10 @@ class CMDLineClient(Tox,Thread):
 
 		self.kill()
 
+	
+	def on_friend_lossless_packet_callback(tox,friendId,message_type,message):
+		print("Got lossless packet: " + str(message_type) + " " + str(message))
+	
 	def on_file_chunk_request(self,friend_number,file_number,position,length):
 		self.fileTransferHandler.file_chunk_request(friend_number,file_number,position,length)
 
@@ -148,7 +152,7 @@ try:
 				message += inplist[i]
 			print ("Sending lossless Message to " + inplist[1] + ": " + message)
 			raw_bytes = (c_ubyte * len(message)).from_buffer_copy(message)
-			ret = client.friend_send_lossless_packet(int(inplist[1]),raw_bytes)
+			ret = client.friend_send_lossless_packet(int(inplist[1]),161,raw_bytes)
 			if(ret == False):
 				print("Sending lossless message failed")
 			else:
