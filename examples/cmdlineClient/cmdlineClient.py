@@ -5,6 +5,7 @@ from toxpython import TOX_MESSAGE_TYPE_NORMAL
 from threading import Thread
 import time
 from fileTransfer import FiletransferList
+from ctypes import *
 import os.path
 import traceback
 
@@ -85,6 +86,7 @@ class CMDLineClient(Tox,Thread):
 		print("Add friend: add <key>")
 		print("Delete friend: del <key>")
 		print("Send Message: msg <friend> <message>")
+		print("Send lossless Message: lossless <friend> <message>")
 		print("List friends: list")
 		print("Send file:  file <friend> <path>")
 		print("Exit: exit")
@@ -133,6 +135,25 @@ try:
 			except:
 				print("Couldn't delete friend")
 			client.save("./userdata")
+
+		elif (cmd == "lossless"):
+			if (len(inplist) <3):
+				print("Invalid Arguments")
+				continue
+
+			message = inplist[2]
+
+			for i in range (3,len(inplist)):
+				message += " "
+				message += inplist[i]
+			print ("Sending lossless Message to " + inplist[1] + ": " + message)
+			raw_bytes = (c_ubyte * len(message)).from_buffer_copy(message)
+			ret = client.friend_send_lossless_packet(int(inplist[1]),raw_bytes)
+			if(ret == False):
+				print("Sending lossless message failed")
+			else:
+				print("Sending lossless message successful")
+
 
 		elif (cmd == "msg"):
 			if (len(inplist) <3):
