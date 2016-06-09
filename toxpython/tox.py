@@ -230,7 +230,7 @@ class Tox():
         if (ret == 4294967295):
             logger.error("Add Friend Norequest Failed: %s"%address)
             return -1
-        
+
         logger.error("Added as FriendID: %s"%ret)
         return ret
 
@@ -267,7 +267,7 @@ class Tox():
 
     def send_message(self,friend_id,message_type,message):
         logger.info('Sending Message to: %s Type: %s Length: %s'%friend_id,message_type,len(message))
-        
+
         if message == None:
             logger.warning('No Message')
             return
@@ -339,7 +339,7 @@ class Tox():
 
     @staticmethod
     def friend_lossless_packet_callback(tox,friendId,message,length,userdata):
-        logger.info('Recieved Lossless Packet from: %s length: %s'%(friendId,length))
+        logger.debug('Recieved Lossless Packet from: %s length: %s'%(friendId,length))
         self = cast(userdata, py_object).value
         buffer = ptr_to_buffer(message, length)
         #first byte is message type
@@ -366,8 +366,15 @@ class Tox():
         name_size = tox_friend_get_name_size(self._p,friendId,None)
         logger.info('Get Name Size (%s): %s'%(friendId,size))
         return name_size
+
+    def friend_get_public_key(self,friendId):
+        public_key = create_string_buffer(TOX_PUBLIC_KEY_SIZE)
+        tox_friend_get_public_key(self._p,friendId,public_key,None)
+        hex_public_key = buffer_to_hex(public_key)
+        logger.info('Get Pubkey (%s): %s'%(friendId,hex_public_key))
+        return hex_public_key
         
-        
+
     def friend_get_name(self,friendId):
         size = tox_friend_get_name_size(self._p,friendId,None)
         buffer = create_string_buffer(size)
@@ -402,9 +409,10 @@ class Tox():
 
     @staticmethod
     def friend_name_callback(tox,friendId,name,length,userdata):
-        logger.info('Friend (%s) changed name to: %s'%(friendId,name))
         self = cast(userdata, py_object).value
-        self.on_friend_name(friendId,ptr_to_string(name, length))
+        name = ptr_to_string(name, length)
+        logger.info('Friend (%s) changed name to: %s'%(friendId,name))
+        self.on_friend_name(friendId,name)
 
     def on_friend_name(self,friendId,name):
         pass
@@ -417,9 +425,9 @@ class Tox():
     def friend_get_connection_status(self,friendId):
         status = tox_friend_get_connection_status(self._p,friendId,None)
         if (status == TOX_CONNECTION_NONE):
-            logger.info('Friend (%s) Not Connected'%friendId)
+            logger.debug('Friend (%s) Not Connected'%friendId)
             return False
-        logger.info('Friend (%s) Connected'%friendId)
+        logger.debug('Friend (%s) Connected'%friendId)
         return True
 
 
@@ -547,10 +555,10 @@ class Tox():
 
         tox_friend_send_lossless_packet(self._p,friend_number,buff,len(buff),response)
         if ( response.contents.value == TOX_ERR_FRIEND_CUSTOM_PACKET_OK):
-            logger.info("Lossless package sent: " + str(response.contents.value))
+            logger.debug("Lossless package sent: " + str(response.contents.value))
             return True
 
-        logger.warning("Lossless package failed: " + str(response.contents.value))
+        logger.debug("Lossless package failed: " + str(response.contents.value))
         return False
 
 
