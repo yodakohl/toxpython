@@ -266,7 +266,7 @@ class Tox():
         tox_self_set_status(self._p,userstatus)
 
     def send_message(self,friend_id,message_type,message):
-        logger.info('Sending Message to: %s Type: %s Length: %s'%friend_id,message_type,len(message))
+        logger.info('Sending Message to: %s Type: %s Length: %s'%(friend_id,message_type,len(message)))
 
         if message == None:
             logger.warning('No Message')
