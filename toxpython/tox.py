@@ -418,7 +418,7 @@ class Tox():
         pass
 
     def friend_get_status(self,friendId):
-        status = tox_friend_get_status(self._p,friendId)
+        status = tox_friend_get_status(self._p,friendId,None)
         logger.info('Friend (%s) get status: %s'%(friendId,status))
         return status
 
