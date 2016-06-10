@@ -359,7 +359,7 @@ class Tox():
         size = tox_self_get_friend_list_size(self._p)
         friendList = name_len_array = (c_uint32 * size)()
         tox_self_get_friend_list(self._p,friendList,None)
-        logger.info('Friend List: %s'%repr(friendList))
+        logger.info('Friend List: %s'%list(friendList))
         return friendList
 
     def friend_get_name_size(self,friendId):
@@ -418,7 +418,7 @@ class Tox():
         pass
 
     def friend_get_status(self,friendId):
-        status = tox_friend_get_status(self._p,friendId)
+        status = tox_friend_get_status(self._p,friendId,None)
         logger.info('Friend (%s) get status: %s'%(friendId,status))
         return status
 
