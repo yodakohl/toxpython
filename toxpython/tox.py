@@ -78,7 +78,7 @@ class Tox():
         self._p = tox_new(pointer(opt),response)
 
         if response.contents.value != TOX_ERR_NEW_OK:
-            logger.error("Tox init failed: " + str(response.contents.value))
+            logger.error("Tox init failed: %s"%response.contents.value)
         self.registerCallbacks()
 
 
@@ -97,7 +97,7 @@ class Tox():
         return tox_iteration_interval(self._p)
 
     def setName(self,name):
-        logger.info('Setting Name to: %s'%name)
+        logger.debug('Setting Name to: %s'%name)
         name = name.encode('utf-8')
         buffer = create_string_buffer(name, len(name))
         tox_self_set_name(self._p, buffer, len(buffer),None)
@@ -157,13 +157,13 @@ class Tox():
 
     def bootstrap(self,bootstrap_address,port,public_key):
         response = pointer(c_int(1))
-        logger.info("Bootstraping: " + str(public_key))
+        logger.debug("Bootstraping: " + str(public_key))
         ret = tox_bootstrap(self._p, bootstrap_address.encode('ascii') ,port , hex_to_buffer(public_key), response);
         if(response.contents.value != TOX_ERR_BOOTSTRAP_OK):
             logger.warning("Bootstrap  failed: " + str(response.contents.value))
         if(ret == False):
             logger.warning("Bootstrap failed")
-        logger.info("Bootstrap done")
+        logger.debug("Bootstrap done")
         return ret
 
     @staticmethod
@@ -231,13 +231,13 @@ class Tox():
             logger.error("Add Friend Norequest Failed: %s"%address)
             return -1
 
-        logger.error("Added as FriendID: %s"%ret)
+        logger.info("Added as FriendID: %s"%ret)
         return ret
 
 
     def friend_add(self,address,message):
-        logger.info('Add Friend: %s'%address)
-        logger.info('Message: %s'%message)
+        logger.debug('Add Friend: %s'%address)
+        logger.debug('Message: %s'%message)
         message_send = None
         ret = None
         response = pointer(c_int(9))
@@ -248,7 +248,8 @@ class Tox():
             message_send = message
 
         try:
-            logger.error("Tox init failed: " + str(response.contents.value))
+            #Is this Message correct???
+            #~ logger.error("Tox init failed: " + str(response.contents.value))
             buffer = create_string_buffer(message_send, len(message_send))
             ret = int(tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,response))
         except Exception as e:
@@ -256,13 +257,14 @@ class Tox():
             return False
 
         if response.contents.value == TOX_ERR_FRIEND_ADD_OK:
+            logger.info("Added as FriendID: %s"%ret)
             return True
         logger.error("friend_add failed: " + str(response.contents.value))
         return False
 
 
     def set_status(self, userstatus):
-        logger.info('Setting Status to: %s'%userstatus)
+        logger.debug('Setting Status to: %s'%userstatus)
         tox_self_set_status(self._p,userstatus)
 
     def send_message(self,friend_id,message_type,message):
@@ -289,7 +291,7 @@ class Tox():
 
 
     def self_set_status_message(self,status):
-        logger.info('Setting Status Message to: %s'%status)
+        logger.debug('Setting Status Message to: %s'%status)
         buffer = create_string_buffer(status, len(status))
         return tox_self_set_status_message(self._p,buffer,len(buffer),None)
 
@@ -308,20 +310,20 @@ class Tox():
         address = create_string_buffer(TOX_ADDRESS_SIZE)
         tox_self_get_address(self._p,address)
         hex_address = buffer_to_hex(address)
-        logger.info('Get own address: %s'%hex_address)
+        logger.debug('Get own address: %s'%hex_address)
         return hex_address
 
     def get_public_key(self):
         public_key = create_string_buffer(TOX_PUBLIC_KEY_SIZE)
         tox_self_get_public_key(self._p,public_key)
         hex_public_key = buffer_to_hex(public_key)
-        logger.info('Get own Pubkey: %s'%hex_public_key)
+        logger.debug('Get own Pubkey: %s'%hex_public_key)
         return hex_public_key
 
 
     @staticmethod
     def friend_connection_status_callback (tox,friendId,connection_status,userdata):
-        logger.info('Friend Connection (%s) changed to: %s'%(friendId,connection_status))
+        logger.debug('Friend Connection (%s) changed to: %s'%(friendId,connection_status))
         self = cast(userdata, py_object).value
         self.on_friend_connection_status(friendId,connection_status)
 
@@ -352,26 +354,26 @@ class Tox():
 
     def get_friend_list_size(self):
         size = tox_self_get_friend_list_size(self._p,None)
-        logger.info('Friend List Size: %s'%size)
+        logger.debug('Friend List Size: %s'%size)
         return size
 
     def get_friend_list(self):
         size = tox_self_get_friend_list_size(self._p)
         friendList = name_len_array = (c_uint32 * size)()
         tox_self_get_friend_list(self._p,friendList,None)
-        logger.info('Friend List: %s'%list(friendList))
+        logger.debug('Friend List: %s'%list(friendList))
         return friendList
 
     def friend_get_name_size(self,friendId):
         name_size = tox_friend_get_name_size(self._p,friendId,None)
-        logger.info('Get Name Size (%s): %s'%(friendId,size))
+        logger.debug('Get Name Size (%s): %s'%(friendId,size))
         return name_size
 
     def friend_get_public_key(self,friendId):
         public_key = create_string_buffer(TOX_PUBLIC_KEY_SIZE)
         tox_friend_get_public_key(self._p,friendId,public_key,None)
         hex_public_key = buffer_to_hex(public_key)
-        logger.info('Get Pubkey (%s): %s'%(friendId,hex_public_key))
+        logger.debug('Get Pubkey (%s): %s'%(friendId,hex_public_key))
         return hex_public_key
         
 
@@ -380,13 +382,13 @@ class Tox():
         buffer = create_string_buffer(size)
         tox_friend_get_name(self._p,friendId,buffer,None)
         dec_name = buffer.value.decode('utf-8')
-        logger.info('Get Name (%s): %s'%(friendId,dec_name))
+        logger.debug('Get Name (%s): %s'%(friendId,dec_name))
         return dec_name
 
 
     def friend_exists(self,friendId):
         retval = tox_friend_exists(self._p,friendId)
-        logger.info('Friend exists (%s): %s'%retval)
+        logger.debug('Friend exists (%s): %s'%retval)
         return retval
 
     def friend_delete(self,friendId):
@@ -396,7 +398,7 @@ class Tox():
 
     def self_get_name_size(self):
         size = tox_self_get_name_size(self._p,None)
-        logger.info('Get Own Name Size: %s'%(size))
+        logger.debug('Get Own Name Size: %s'%(size))
         return size
 
     def self_get_name(self):
@@ -404,14 +406,14 @@ class Tox():
         buffer = create_string_buffer(size)
         tox_self_get_name(self._p,buffer,None)
         dec_name = buffer.value.decode('utf-8')
-        logger.info('Get Own Name: %s'%dec_name)
+        logger.debug('Get Own Name: %s'%dec_name)
         return dec_name
 
     @staticmethod
     def friend_name_callback(tox,friendId,name,length,userdata):
         self = cast(userdata, py_object).value
         name = ptr_to_string(name, length)
-        logger.info('Friend (%s) changed name to: %s'%(friendId,name))
+        logger.debug('Friend (%s) changed name to: %s'%(friendId,name))
         self.on_friend_name(friendId,name)
 
     def on_friend_name(self,friendId,name):
@@ -419,7 +421,7 @@ class Tox():
 
     def friend_get_status(self,friendId):
         status = tox_friend_get_status(self._p,friendId,None)
-        logger.info('Friend (%s) get status: %s'%(friendId,status))
+        logger.debug('Friend (%s) get status: %s'%(friendId,status))
         return status
 
     def friend_get_connection_status(self,friendId):
@@ -436,53 +438,53 @@ class Tox():
         buffer = create_string_buffer(size)
         tox_friend_get_status_message(self._p,friendId,buffer,None)
         dec_message = buffer.value.decode('utf-8')
-        logger.info('Friend (%s) Status Message: %s'%(friendId,dec_message))
+        logger.debug('Friend (%s) Status Message: %s'%(friendId,dec_message))
         return dec_message
 
     def friend_get_typing(self,friendId):
         retval = tox_friend_get_typing ( self._p,friendId,None)
-        logger.info('Get Typing(%s): %s'%(friendId,retval))
+        logger.debug('Get Typing(%s): %s'%(friendId,retval))
         return retval
 
     def self_get_udp_port(self):
         retval = tox_self_get_udp_port (self._p,None)
-        logger.info('UDP Port: %s'%retval)
+        logger.debug('UDP Port: %s'%retval)
         return retval
 
     def self_get_tcp_port(self):
         retval = tox_self_get_tcp_port (self._p,None)
-        logger.info('TCP Port: %s'%retval)
+        logger.debug('TCP Port: %s'%retval)
         return retval
 
     def version_major(self):
         retval = tox_version_major()
-        logger.info('Major Version: %s'%retval)
+        logger.debug('Major Version: %s'%retval)
         return retval
 
     def version_minor(self):
         retval = tox_version_minor()
-        logger.info('Minor Version: %s'%retval)
+        logger.debug('Minor Version: %s'%retval)
         return retval
 
     def version_patch(self):
         retval = tox_version_patch()
-        logger.info('Patch Version: %s'%retval)
+        logger.debug('Patch Version: %s'%retval)
         return retval
 
     def version_is_compatible(self,major,minor,patch):
         retval = tox_version_is_compatible (major, minor, patch )
-        logger.info('Version Compatible: %s'%retval)
+        logger.debug('Version Compatible: %s'%retval)
         return retval
 
     def group_get_type(self,groupnumber):
         retval = tox_group_get_type (self._p,groupnumber)
-        logger.info('Group Type(%s): %s'%(groupnumber,retval))
+        logger.debug('Group Type(%s): %s'%(groupnumber,retval))
         return retval
 
     def self_set_typing(self,friendId,is_typing):
         """Set typing needs a friendID?"""
         retval = tox_self_set_typing(self._p,friendId,is_typing,None)
-        logger.info('Set Typing(%s): %s'%(friendId,is_typing))
+        logger.debug('Set Typing(%s): %s'%(friendId,is_typing))
         return retval
 
     def kill(self):
@@ -495,7 +497,7 @@ class Tox():
         dht_id = create_string_buffer(TOX_PUBLIC_KEY_SIZE)
         tox_self_get_dht_id (self._p,dht_id )
         hex_dht_id = buffer_to_hex(dth_id)
-        logger.info('DHT ID: %s'%hex_dht_id)
+        logger.debug('DHT ID: %s'%hex_dht_id)
         return hex_dht_id
 
     def file_control(self,friend_number,file_number,control):
