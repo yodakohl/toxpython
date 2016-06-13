@@ -231,7 +231,7 @@ class Tox():
             logger.error("Add Friend Norequest Failed: %s"%address)
             return -1
 
-        logger.error("Added as FriendID: %s"%ret)
+        logger.info("Added as FriendID: %s"%ret)
         return ret
 
 
@@ -248,7 +248,8 @@ class Tox():
             message_send = message
 
         try:
-            logger.error("Tox init failed: " + str(response.contents.value))
+            #Is this Message correct???
+            #~ logger.error("Tox init failed: " + str(response.contents.value))
             buffer = create_string_buffer(message_send, len(message_send))
             ret = int(tox_friend_add(self._p,hex_to_buffer(address),buffer,len(buffer) ,response))
         except Exception as e:
@@ -256,6 +257,7 @@ class Tox():
             return False
 
         if response.contents.value == TOX_ERR_FRIEND_ADD_OK:
+            logger.info("Added as FriendID: %s"%ret)
             return True
         logger.error("friend_add failed: " + str(response.contents.value))
         return False
