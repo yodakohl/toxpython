@@ -10,13 +10,6 @@ from .util import *
 
 logger = logging.getLogger('TOX')
 
-class ToxAV():
-
-    _p = None
-
-    def init(self,ToxInstance):
-        self._p = toxav_new (ToxInstance, 100) #max calls = 100
-
 
 class Tox():
 
@@ -594,9 +587,6 @@ class Tox():
     #struct Tox_Options *   tox_options_new (TOX_ERR_OPTIONS_NEW *error)
 
     #void   tox_options_free (struct Tox_Options *options)
-
-
-
 
 
 
