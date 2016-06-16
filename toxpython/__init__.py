@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from .tox import Tox
+from .toxav import ToxAVC
 
 from .tox import TOX_USER_STATUS_NONE 
 from .tox import TOX_MESSAGE_TYPE_NORMAL

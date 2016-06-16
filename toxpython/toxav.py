@@ -8,13 +8,15 @@ from .util import *
 
 logger = logging.getLogger('TOXAV')
 
-class ToxAV():
+class ToxAVC():
 
     _p = None
     _fRefs = []
+    
+    def __init__(self,ToxInstance):
+        self._p = toxav_new (ToxInstance, None)
+        self.registerCallbacks()  
 
-    def init(self,ToxInstance):
-        self._p = toxav_new (ToxInstance, 100) #max calls = 100
 
     def registerCallbacks(self):
         logger.debug('Register Callbacks')
@@ -32,23 +34,28 @@ class ToxAV():
             self._fRefs.append(cb)
             toxav_callback_audio_receive_frame(self._p,cb,py_object(self))
 
-            cb = toxav_bit_rate_status_cb(self.bit_rate_status_callback)
-            self._fRefs.append(cb)
-            toxav_bit_rate_status_cb(self._p,cb,py_object(self))
+            #cb = toxav_bit_rate_status_cb(self.bit_rate_status_callback)
+            #self._fRefs.append(cb)
+            #toxav_bit_rate_status_cb(self._p,cb,py_object(self))
 
-            cb = toxav_call_state_cb(self.call_state_callback)
-            self._fRefs.append(cb)
-            toxav_call_state_cb(self._p,cb,py_object(self))
+            #cb = toxav_call_state_cb(self.call_state_callback)
+            #self._fRefs.append(cb)
+            #toxav_call_state_cb(self._p,cb,py_object(self))
 
 
     def iterate(self):
-       toxav_iterate(self._p)
+        if(self._p != None):
+            toxav_iterate(self._p)
+
+    def sleepInterval(self):
+        if(self._p != None):
+            return toxav_iteration_interval(self._p)
 
     def call(toxav,friend_number,audio_bit_rate,video_bit_rate):
         toxav_call(self._p, friend_number, audio_bit_rate,video_bit_rate, None); #bool
 
 
-    def answer(toxav,friend_number,audio_bit_rate,video_bit_rate):
+    def answer(self,friend_number,audio_bit_rate,video_bit_rate):
         toxav_answer(self._p, friend_number, audio_bit_rate, video_bit_rate,None); #bool
 
 
@@ -71,7 +78,7 @@ class ToxAV():
         self.on_call(friend_number,audio_enabled,video_enabled)
 
     @staticmethod
-    def video_receive_frame_callback(toxav,friend_number,width,height,y,u,v,ystride,ustride,vstride,userdata):
+    def video_recieve_frame_callback(toxav,friend_number,width,height,y,u,v,ystride,ustride,vstride,userdata):
         logger.info('Recieved Video Frame Callback from: %s'%(friend_number))
         self = cast(userdata, py_object).value
         self.on_video_recieve_frame()
@@ -89,17 +96,17 @@ class ToxAV():
 
 
 
-    def on_call(friend_number,audio_enabled,video_enabled):
+    def on_call(self,friend_number,audio_enabled,video_enabled):
         pass
 
-    def on_call_state(friend_number,state):
+    def on_call_state(self,friend_number,state):
         pass
 
-    def on_audio_recieve_frame(friend_number,width,height,y,u,v,ystride,ustride,vstride):
+    def on_audio_recieve_frame(self,friend_number,width,height,y,u,v,ystride,ustride,vstride):
         pass
         
 
-    def on_video_recieve_frame(friend_number,pcm,sample_count,channels,sampling_rate):
+    def on_video_recieve_frame(self,friend_number,pcm,sample_count,channels,sampling_rate):
         pass
 
 
@@ -114,24 +121,29 @@ class ToxAV():
         pass
 
     def audio_send_frame(self,friend_number,pcm,sample_count,channels,sample_rate):
+        pass
         #toxav_audio_send_frame(self._p, friend_number, const int16_t *pcm,sample_count,channels,sampling_rate, None) #bool
 
 
     def video_send_frame(self,friend_number,width,height,y,u,v):
+        pass
         #toxav_video_send_frame(self._ps,friend_number, width, height, const uint8_t *y, const uint8_t *u, const uint8_t *v,None) #bool
 
 
     def add_av_groupchat(self):
+        pass
         #int toxav_add_av_groupchat(Tox *tox, void (*audio_callback)(void *, int, int, const int16_t *, unsigned int, uint8_t,
         #                           unsigned int, void *), void *userdata);
 
 
     def join_av_groupchat(self,friend_number,data):
+        pass
 
         #int toxav_join_av_groupchat(Tox *tox, int32_t friendnumber, const uint8_t *data, uint16_t length,
         #                            void (*audio_callback)(void *, int, int, const int16_t *, unsigned int, uint8_t, unsigned int, void *), void *userdata);
 
     def group_send_audio(self,groupnumber,pcm,samples,channels,sample_rate):
+        pass
         #int toxav_group_send_audio(Tox *tox, int groupnumber, const int16_t *pcm, unsigned int samples, uint8_t channels,
         #                           unsigned int sample_rate);
 
