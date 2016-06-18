@@ -34,13 +34,13 @@ class ToxAVC():
             self._fRefs.append(cb)
             toxav_callback_audio_receive_frame(self._p,cb,py_object(self))
 
-            #cb = toxav_bit_rate_status_cb(self.bit_rate_status_callback)
-            #self._fRefs.append(cb)
-            #toxav_bit_rate_status_cb(self._p,cb,py_object(self))
+            cb = toxav_bit_rate_status_cb(self.bit_rate_status_callback)
+            self._fRefs.append(cb)
+            toxav_callback_bit_rate_status(self._p,cb,py_object(self))
 
-            #cb = toxav_call_state_cb(self.call_state_callback)
-            #self._fRefs.append(cb)
-            #toxav_call_state_cb(self._p,cb,py_object(self))
+            cb = toxav_call_state_cb(self.call_state_callback)
+            self._fRefs.append(cb)
+            toxav_callback_call_state(self._p,cb,py_object(self))
 
 
     def iterate(self):
@@ -60,7 +60,7 @@ class ToxAVC():
 
 
     @staticmethod 
-    def call_state_callback(toxav,friend_number,state,user_data):
+    def call_state_callback(toxav,friend_number,state,userdata):
         self = cast(userdata, py_object).value
         self.on_call_state(friend_number,state)
 
@@ -81,7 +81,7 @@ class ToxAVC():
     def video_recieve_frame_callback(toxav,friend_number,width,height,y,u,v,ystride,ustride,vstride,userdata):
         logger.info('Recieved Video Frame Callback from: %s'%(friend_number))
         self = cast(userdata, py_object).value
-        self.on_video_recieve_frame()
+        self.on_video_recieve_frame(friend_number,width,height,y,u,v,ystride,ustride,vstride)
         #typedef void toxav_video_receive_frame_cb(ToxAV *toxAV, uint32_t friend_number, uint16_t width,
         #    uint16_t height, const uint8_t *y, const uint8_t *u, const uint8_t *v,
         #    int32_t ystride, int32_t ustride, int32_t vstride, void *user_data);
@@ -89,11 +89,12 @@ class ToxAVC():
     @staticmethod
     def audio_recieve_frame_callback(toxav,friend_number,pcm, sample_count,channels,sample_rate,userdata):
          self = cast(userdata, py_object).value
-         self.on_audio_recieve_frame()
-         # typedef void toxav_audio_receive_frame_cb(ToxAV *toxAV, uint32_t friend_number, const int16_t *pcm,
-         #    size_t sample_count, uint8_t channels, uint32_t sampling_rate,
-         #    void *user_data);
-
+         framesize = sample_count * channels *2 
+         #data = (c_uint16 * framesize).from_address(addressof(pcm))           
+         data = ptr_to_string(pcm,framesize)
+         #data = ptr_to_int16(pcm,framesize)
+         #data = buffer_to_hex(pcm,framesize)
+         self.on_audio_recieve_frame(friend_number,data,sample_count,channels,sample_rate)
 
 
     def on_call(self,friend_number,audio_enabled,video_enabled):
@@ -102,11 +103,11 @@ class ToxAVC():
     def on_call_state(self,friend_number,state):
         pass
 
-    def on_audio_recieve_frame(self,friend_number,width,height,y,u,v,ystride,ustride,vstride):
+    def on_audio_recieve_frame(self, friend_number,pcm,sample_count,channels,sample_rate):
         pass
         
 
-    def on_video_recieve_frame(self,friend_number,pcm,sample_count,channels,sampling_rate):
+    def on_video_recieve_frame(self,friend_number,width,height,y,u,v,ystride,ustride,vstride):
         pass
 
 
@@ -121,8 +122,8 @@ class ToxAVC():
         pass
 
     def audio_send_frame(self,friend_number,pcm,sample_count,channels,sample_rate):
-        pass
-        #toxav_audio_send_frame(self._p, friend_number, const int16_t *pcm,sample_count,channels,sampling_rate, None) #bool
+        buff = create_string_buffer(pcm,len(pcm*2))
+        toxav_audio_send_frame(self._p, friend_number, buff ,sample_count,channels,sample_rate, None) #bool
 
 
     def video_send_frame(self,friend_number,width,height,y,u,v):

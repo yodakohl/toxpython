@@ -590,6 +590,13 @@ class Tox():
 
     #void   tox_options_free (struct Tox_Options *options)
 
+    #tox_self_get_nospam
+    #tox_self_get_status_message
+    #tox_self_get_status
+    #tox_friend_get_last_online
+    #tox_callback_friend_read_receipt
+    #tox_friend_read_receipt_cb
+    #tox_add_tcp_relay
 
 
 
