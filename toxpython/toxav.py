@@ -10,53 +10,54 @@ logger = logging.getLogger('TOXAV')
 
 class ToxAVC():
 
-    _p = None
-    _fRefs = []
+    _av_p = None
+    _av_fRefs = []
     
     def __init__(self,ToxInstance):
-        self._p = toxav_new (ToxInstance, None)
-        self.registerCallbacks()  
+
+        self._av_p = toxav_new (ToxInstance, None)
+        self.av_registerCallbacks()  
 
 
-    def registerCallbacks(self):
-        logger.debug('Register Callbacks')
-        if(self._p != None):
+    def av_registerCallbacks(self):
+        logger.info('Register AV Callbacks')
+        if(self._av_p != None):
 
             cb = toxav_call_cb(self.call_callback)
-            self._fRefs.append(cb)
-            toxav_callback_call(self._p, cb , py_object(self))
+            self._av_fRefs.append(cb)
+            toxav_callback_call(self._av_p, cb , py_object(self))
 
             cb = toxav_video_receive_frame_cb(self.video_recieve_frame_callback)
-            self._fRefs.append(cb)
-            toxav_callback_video_receive_frame(self._p, cb , py_object(self))
+            self._av_fRefs.append(cb)
+            toxav_callback_video_receive_frame(self._av_p, cb , py_object(self))
 
             cb = toxav_audio_receive_frame_cb(self.audio_recieve_frame_callback)
-            self._fRefs.append(cb)
-            toxav_callback_audio_receive_frame(self._p,cb,py_object(self))
+            self._av_fRefs.append(cb)
+            toxav_callback_audio_receive_frame(self._av_p,cb,py_object(self))
 
             cb = toxav_bit_rate_status_cb(self.bit_rate_status_callback)
-            self._fRefs.append(cb)
-            toxav_callback_bit_rate_status(self._p,cb,py_object(self))
+            self._av_fRefs.append(cb)
+            toxav_callback_bit_rate_status(self._av_p,cb,py_object(self))
 
             cb = toxav_call_state_cb(self.call_state_callback)
-            self._fRefs.append(cb)
-            toxav_callback_call_state(self._p,cb,py_object(self))
+            self._av_fRefs.append(cb)
+            toxav_callback_call_state(self._av_p,cb,py_object(self))
 
 
-    def iterate(self):
-        if(self._p != None):
-            toxav_iterate(self._p)
+    def av_iterate(self):
+        if(self._av_p != None):
+            toxav_iterate(self._av_p)
 
-    def sleepInterval(self):
-        if(self._p != None):
-            return toxav_iteration_interval(self._p)
+    def av_sleepInterval(self):
+        if(self._av_p != None):
+            return toxav_iteration_interval(self._av_p)
 
-    def call(toxav,friend_number,audio_bit_rate,video_bit_rate):
-        toxav_call(self._p, friend_number, audio_bit_rate,video_bit_rate, None); #bool
+    def call(self,friend_number,audio_bit_rate,video_bit_rate):
+        toxav_call(self._av_p, friend_number, audio_bit_rate,video_bit_rate, None); #bool
 
 
     def answer(self,friend_number,audio_bit_rate,video_bit_rate):
-        toxav_answer(self._p, friend_number, audio_bit_rate, video_bit_rate,None); #bool
+        toxav_answer(self._av_p, friend_number, audio_bit_rate, video_bit_rate,None); #bool
 
 
     @staticmethod 
@@ -81,21 +82,17 @@ class ToxAVC():
     def video_recieve_frame_callback(toxav,friend_number,width,height,y,u,v,ystride,ustride,vstride,userdata):
         logger.info('Recieved Video Frame Callback from: %s'%(friend_number))
         self = cast(userdata, py_object).value
-        self.on_video_recieve_frame(friend_number,width,height,y,u,v,ystride,ustride,vstride)
-        #typedef void toxav_video_receive_frame_cb(ToxAV *toxAV, uint32_t friend_number, uint16_t width,
-        #    uint16_t height, const uint8_t *y, const uint8_t *u, const uint8_t *v,
-        #    int32_t ystride, int32_t ustride, int32_t vstride, void *user_data);
+        y_data = ptr_to_string(y,framesize)
+        u_data = ptr_to_string(u,framesize)
+        v_data = ptr_to_string(v,framesize)
+        self.on_video_recieve_frame(friend_number,width,height,y_data,u_data,v_data,ystride,ustride,vstride)
 
     @staticmethod
     def audio_recieve_frame_callback(toxav,friend_number,pcm, sample_count,channels,sample_rate,userdata):
          self = cast(userdata, py_object).value
          framesize = sample_count * channels *2 
-         #data = (c_uint16 * framesize).from_address(addressof(pcm))           
          data = ptr_to_string(pcm,framesize)
-         #data = ptr_to_int16(pcm,framesize)
-         #data = buffer_to_hex(pcm,framesize)
          self.on_audio_recieve_frame(friend_number,data,sample_count,channels,sample_rate)
-
 
     def on_call(self,friend_number,audio_enabled,video_enabled):
         pass
@@ -112,24 +109,94 @@ class ToxAVC():
 
 
     def call_control(self,friend_number,control):
-        toxav_call_control(self._p,friend_number, control,None) #bool 
+        toxav_call_control(self._av_p,friend_number, control,None) #bool 
 
     def bit_rate_set(self,friend_number,audio_bit_rate,video_bit_rate):
-        toxav_bit_rate_set(self._p,friend_number,audio_bit_rate,video_bit_rate, None) #bool 
+        toxav_bit_rate_set(self._av_p,friend_number,audio_bit_rate,video_bit_rate, None) #bool 
 
 
     def on_bit_rate_status(friend_number,audio_bit_rate,video_bit_rate):
         pass
 
     def audio_send_frame(self,friend_number,pcm,sample_count,channels,sample_rate):
-        buff = create_string_buffer(pcm,len(pcm*2))
-        toxav_audio_send_frame(self._p, friend_number, buff ,sample_count,channels,sample_rate, None) #bool
+        response = pointer(c_int())
+        buff = create_string_buffer(pcm,len(pcm))
+        toxav_audio_send_frame(self._av_p, friend_number, buff ,sample_count,channels,sample_rate, response) #bool
+        if ( response.contents.value == TOXAV_ERR_SEND_FRAME_OK):
+            return True
+        elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_FRIEND_NOT_FOUND):
+            logger.info("Cannot send audio frame:TOXAV_ERR_SEND_FRAME_FRIEND_NOT_FOUND")
+            return False
+
+        elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_NULL):
+            logger.info("Cannot send audio frame:TOXAV_ERR_SEND_FRAME_NULL")
+            return False
+
+        elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_FRIEND_NOT_IN_CALL):
+            logger.info("Cannot send audio frame:TOXAV_ERR_SEND_FRAME_FRIEND_NOT_IN_CALL")
+            return False
+
+        elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_SYNC):
+            logger.info("Cannot send audio frame:TOXAV_ERR_SEND_FRAME_SYNC")
+            return False
+
+        elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_INVALID):
+            logger.info("Cannot send audio frame:TOXAV_ERR_SEND_FRAME_INVALID")
+            return False
+
+        elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_av_pAYLOAD_TYPE_DISABLED):
+            logger.info("Cannot send audio frame:TOXAV_ERR_SEND_FRAME_av_pAYLOAD_TYPE_DISABLED")
+            return False
+
+        elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_RTP_FAILED):
+            logger.info("Cannot send audio frame:TOXAV_ERR_SEND_FRAME_RTP_FAILED")
+            return False
+
+        else:
+            logger.info("Cannot send audio frame")
+            return False
 
 
     def video_send_frame(self,friend_number,width,height,y,u,v):
-        pass
-        #toxav_video_send_frame(self._ps,friend_number, width, height, const uint8_t *y, const uint8_t *u, const uint8_t *v,None) #bool
 
+        y_av_pointer = create_string_buffer(y,len(y))
+        u_av_pointer = create_string_buffer(u,len(u))
+        v_av_pointer = create_string_buffer(v,len(v))
+        response = pointer(c_int())
+
+        toxav_video_send_frame(self._av_p,friend_number, width, height, y_av_pointer, u_av_pointer, v_av_pointer,response) #bool
+        if ( response.contents.value == TOXAV_ERR_SEND_FRAME_OK):
+            return True
+        elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_FRIEND_NOT_FOUND):
+            logger.info("Cannot send video frame:TOXAV_ERR_SEND_FRAME_FRIEND_NOT_FOUND")
+            return False
+
+        elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_NULL):
+            logger.info("Cannot send video frame:TOXAV_ERR_SEND_FRAME_NULL")
+            return False
+
+        elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_FRIEND_NOT_IN_CALL):
+            logger.info("Cannot send video frame:TOXAV_ERR_SEND_FRAME_FRIEND_NOT_IN_CALL")
+            return False
+
+        elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_SYNC):
+            logger.info("Cannot send video frame:TOXAV_ERR_SEND_FRAME_SYNC")
+            return False
+
+        elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_INVALID):
+            logger.info("Cannot send video frame:TOXAV_ERR_SEND_FRAME_INVALID")
+            return False
+
+        elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_av_pAYLOAD_TYPE_DISABLED):
+            logger.info("Cannot send video frame:TOXAV_ERR_SEND_FRAME_av_pAYLOAD_TYPE_DISABLED")
+            return False
+
+        elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_RTP_FAILED):
+            logger.info("Cannot send video frame:TOXAV_ERR_SEND_FRAME_RTP_FAILED")
+            return False
+
+        else:
+            logger.info("Cannot send video frame")
 
     def add_av_groupchat(self):
         pass
