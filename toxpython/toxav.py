@@ -82,9 +82,9 @@ class ToxAVC():
     def video_recieve_frame_callback(toxav,friend_number,width,height,y,u,v,ystride,ustride,vstride,userdata):
         logger.info('Recieved Video Frame Callback from: %s'%(friend_number))
         self = cast(userdata, py_object).value
-        y_data = ptr_to_string(y,framesize)
-        u_data = ptr_to_string(u,framesize)
-        v_data = ptr_to_string(v,framesize)
+        y_data = ptr_to_string(y,width*height)
+        u_data = ptr_to_string(u,width*height/2)
+        v_data = ptr_to_string(v,width*height/2)
         self.on_video_recieve_frame(friend_number,width,height,y_data,u_data,v_data,ystride,ustride,vstride)
 
     @staticmethod
