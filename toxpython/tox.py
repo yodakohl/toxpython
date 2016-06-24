@@ -17,7 +17,7 @@ class Tox():
 
     _fRefs = []
 
-    def init(self,fileName=None, options=None):
+    def __init__(self,fileName=None, options=None):
 
         mbuffer = None
         userdata = None
