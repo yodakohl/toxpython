@@ -17,7 +17,7 @@
 
 import binascii
 import threading
-from ctypes import create_string_buffer, c_char,c_uint8, addressof
+from ctypes import create_string_buffer, c_char,c_uint8, c_int16,addressof
 
 
 class ToxError(Exception):
@@ -60,10 +60,8 @@ def ptr_to_buffer(p, length):
 
 
 
-
-
 def ptr_to_uint8(p,length):
-	return (c_uint8 * length).from_address(addressof(p)).raw
+	return (c_uint8 * length).from_address(addressof(p.contents))
 
 
 

@@ -5,6 +5,7 @@ import logging
 from .ctox import *
 from .util import *
 
+import numpy as np
 
 logger = logging.getLogger('TOXAV')
 
@@ -80,12 +81,57 @@ class ToxAVC():
 
     @staticmethod
     def video_recieve_frame_callback(toxav,friend_number,width,height,y,u,v,ystride,ustride,vstride,userdata):
-        logger.info('Recieved Video Frame Callback from: %s'%(friend_number))
+        #print('Recieved Video Frame Callback from: %s'%(friend_number))
         self = cast(userdata, py_object).value
-        y_data = ptr_to_string(y,width*height)
-        u_data = ptr_to_string(u,width*height/2)
-        v_data = ptr_to_string(v,width*height/2)
-        self.on_video_recieve_frame(friend_number,width,height,y_data,u_data,v_data,ystride,ustride,vstride)
+
+        Ylen = max(width,   abs(ystride)) *  height
+        Ulen = max(width/2, abs(ustride)) * (height/2) 
+        Vlen = max(width/2, abs(vstride)) * (height/2)
+
+        y_data = ptr_to_uint8(y,Ylen)
+        u_data = ptr_to_uint8(u,Ulen)
+        v_data = ptr_to_uint8(v,Vlen)
+
+        bufy = np.empty(width*height, dtype=c_uint8)
+        bufu = np.empty((width/2)*(height/2), dtype=c_uint8)
+        bufv = np.empty((width/2)*(height/2), dtype=c_uint8)
+
+        #bb = np.ctypeslib.as_array(y,shape=(width,height))
+
+        idx = 0
+        idx_orig = 0
+
+        for y in xrange(height):
+            bufy[idx_orig:idx_orig+width] = ((y_data[idx:idx+width]))
+            idx = idx + width
+            idx_orig = idx_orig +width
+            idx = idx + ((ystride-width))
+
+        idx = 0
+        idx_orig = 0
+
+        for y in xrange(height/2):
+            bufu[idx_orig:idx_orig+(width/2)] = ((u_data[idx:idx+width/2]))
+            idx = idx + width/2
+            idx_orig = idx_orig + width/2
+            idx = idx + ((ustride-width/2))
+
+        idx = 0
+        idx_orig = 0
+
+        for y in xrange(height/2):
+            bufv[idx_orig:idx_orig+(width/2)] = ((v_data[idx:idx+width/2]))
+            idx = idx + width/2
+            idx_orig = idx_orig + width/2
+            idx = idx + ((vstride-width/2))
+
+        #y_data = data.ctypes.data_as(y)
+
+        #y_memview = memoryview(y_data)
+        #u_memview = memoryview(u_data)
+        #v_memview = memoryview(v_data)
+
+        self.on_video_recieve_frame(friend_number,width,height,bufy,bufu,bufv)
 
     @staticmethod
     def audio_recieve_frame_callback(toxav,friend_number,pcm, sample_count,channels,sample_rate,userdata):
@@ -159,9 +205,10 @@ class ToxAVC():
 
     def video_send_frame(self,friend_number,width,height,y,u,v):
 
-        y_av_pointer = create_string_buffer(y,len(y))
-        u_av_pointer = create_string_buffer(u,len(u))
-        v_av_pointer = create_string_buffer(v,len(v))
+        y_av_pointer = y.ctypes.data_as(ctypes.POINTER(ctypes.c_uint8))
+        u_av_pointer = u.ctypes.data_as(ctypes.POINTER(ctypes.c_uint8))
+        v_av_pointer = v.ctypes.data_as(ctypes.POINTER(ctypes.c_uint8))
+
         response = pointer(c_int())
 
         toxav_video_send_frame(self._av_p,friend_number, width, height, y_av_pointer, u_av_pointer, v_av_pointer,response) #bool
@@ -196,7 +243,7 @@ class ToxAVC():
             return False
 
         else:
-            logger.info("Cannot send video frame")
+            print("Cannot send video frame")
 
     def add_av_groupchat(self):
         pass
