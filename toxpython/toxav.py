@@ -6,6 +6,7 @@ from .ctox import *
 from .util import *
 
 import numpy as np
+from numpy.lib import stride_tricks
 
 logger = logging.getLogger('TOXAV')
 
@@ -88,48 +89,31 @@ class ToxAVC():
         Ulen = max(width/2, abs(ustride)) * (height/2) 
         Vlen = max(width/2, abs(vstride)) * (height/2)
 
-        y_data = ptr_to_uint8(y,Ylen)
-        u_data = ptr_to_uint8(u,Ulen)
-        v_data = ptr_to_uint8(v,Vlen)
+        y_data = np.ctypeslib.as_array(y,shape=(Ylen,))
+        u_data = np.ctypeslib.as_array(u,shape=(Ulen,))
+        v_data = np.ctypeslib.as_array(v,shape=(Vlen,))
+ 
+        num_frames = height
+        frame_length = width
+        row_stride = ystride
+        col_stride = 1
+        strided_y = stride_tricks.as_strided(y_data,shape=(num_frames,frame_length), strides=(row_stride,col_stride))
+        bufy = strided_y.ravel()
 
-        bufy = np.empty(width*height, dtype=c_uint8)
-        bufu = np.empty((width/2)*(height/2), dtype=c_uint8)
-        bufv = np.empty((width/2)*(height/2), dtype=c_uint8)
+        num_frames = height/2
+        frame_length = width/2
+        row_stride = ustride
+        col_stride = 1
+        strided_u = stride_tricks.as_strided(u_data,shape=(num_frames,frame_length), strides=(row_stride,col_stride))
+        bufu = strided_u.ravel()
 
-        #bb = np.ctypeslib.as_array(y,shape=(width,height))
+        num_frames = height/2
+        frame_length = width/2
+        row_stride = vstride
+        col_stride = 1
+        strided_v = stride_tricks.as_strided(v_data,shape=(num_frames,frame_length), strides=(row_stride,col_stride))
+        bufv = strided_v.ravel()
 
-        idx = 0
-        idx_orig = 0
-
-        for y in xrange(height):
-            bufy[idx_orig:idx_orig+width] = ((y_data[idx:idx+width]))
-            idx = idx + width
-            idx_orig = idx_orig +width
-            idx = idx + ((ystride-width))
-
-        idx = 0
-        idx_orig = 0
-
-        for y in xrange(height/2):
-            bufu[idx_orig:idx_orig+(width/2)] = ((u_data[idx:idx+width/2]))
-            idx = idx + width/2
-            idx_orig = idx_orig + width/2
-            idx = idx + ((ustride-width/2))
-
-        idx = 0
-        idx_orig = 0
-
-        for y in xrange(height/2):
-            bufv[idx_orig:idx_orig+(width/2)] = ((v_data[idx:idx+width/2]))
-            idx = idx + width/2
-            idx_orig = idx_orig + width/2
-            idx = idx + ((vstride-width/2))
-
-        #y_data = data.ctypes.data_as(y)
-
-        #y_memview = memoryview(y_data)
-        #u_memview = memoryview(u_data)
-        #v_memview = memoryview(v_data)
 
         self.on_video_recieve_frame(friend_number,width,height,bufy,bufu,bufv)
 
