@@ -36,7 +36,7 @@ class Tox():
 
         defaults = {
             'ipv6_enabled': True,
-            'udp_disabled': False,
+            'udp_disabled': True,
             'proxy_type': TOX_PROXY_TYPE_NONE,
             'proxy_host': '',
             'proxy_port': 0,
@@ -53,12 +53,12 @@ class Tox():
         #   if k not in options:
         #       options[k] = v
         opt.ipv6_enabled = c_bool(True)
-        opt.udp_enabled = c_bool(True)
+        opt.udp_enabled = c_bool(False)
         opt.proxy_type = TOX_PROXY_TYPE_NONE
         opt.proxy_host = String(None)
         opt.proxy_port = 0
         opt.start_port = 0
-        opt.end_port = 34545
+        opt.end_port = 33545
 
         if(mbuffer != None):
             opt.savedata_type = TOX_SAVEDATA_TYPE_TOX_SAVE
