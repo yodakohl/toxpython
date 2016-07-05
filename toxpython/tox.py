@@ -58,7 +58,7 @@ class Tox():
         opt.proxy_host = String(None)
         opt.proxy_port = 0
         opt.start_port = 0
-        opt.end_port = 0
+        opt.end_port = 34545
 
         if(mbuffer != None):
             opt.savedata_type = TOX_SAVEDATA_TYPE_TOX_SAVE
