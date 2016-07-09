@@ -23,17 +23,11 @@ from .tox import TOX_MESSAGE_TYPE_NORMAL
 from .tox import TOX_CONNECTION_TCP
 from .tox import TOX_CONNECTION_UDP 
 from .tox import TOX_CONNECTION_NONE
-from .tox import *
 from .tox import TOX_FILE_CONTROL_RESUME
 from .tox import TOX_FILE_CONTROL_PAUSE
 from .tox import TOX_FILE_CONTROL_CANCEL
-
-
 from .tox import TOX_SAVEDATA_TYPE_TOX_SAVE
-
-
 from .tox import TOX_SAVEDATA_TYPE_NONE
-
 from .tox import TOX_ERR_NEW_OK
 from .tox import TOX_ERR_BOOTSTRAP_OK
 
