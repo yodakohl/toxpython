@@ -55,12 +55,17 @@ class ToxAVC():
             return toxav_iteration_interval(self._av_p)
 
     def call(self,friend_number,audio_bit_rate,video_bit_rate):
-        toxav_call(self._av_p, friend_number, audio_bit_rate,video_bit_rate, None); #bool
+        response = pointer(c_int())
+        toxav_call(self._av_p, friend_number, audio_bit_rate,video_bit_rate, response); #bool
+        print("Answer call" + str(response.contents.value))
+        return  response.contents.value
 
 
     def answer(self,friend_number,audio_bit_rate,video_bit_rate):
-        toxav_answer(self._av_p, friend_number, audio_bit_rate, video_bit_rate,None); #bool
-
+        response = pointer(c_int())
+        toxav_answer(self._av_p, friend_number, audio_bit_rate, video_bit_rate,response); #bool
+        print("Answer response" + str(response.contents.value))
+        return  response.contents.value
 
     @staticmethod 
     def call_state_callback(toxav,friend_number,state,userdata):
@@ -155,7 +160,7 @@ class ToxAVC():
         if ( response.contents.value == TOXAV_ERR_SEND_FRAME_OK):
             return True
         elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_FRIEND_NOT_FOUND):
-            logger.info("Cannot send audio frame:TOXAV_ERR_SEND_FRAME_FRIEND_NOT_FOUND")
+            logger.info("Cannot send audio frame:TOXAV_ERR_SEND_FRAME_FRIEND_NOT_FOUND:" + str(friend_number))
             return False
 
         elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_NULL):
@@ -163,7 +168,7 @@ class ToxAVC():
             return False
 
         elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_FRIEND_NOT_IN_CALL):
-            logger.info("Cannot send audio frame:TOXAV_ERR_SEND_FRAME_FRIEND_NOT_IN_CALL")
+            logger.info("Cannot send audio frame:TOXAV_ERR_SEND_FRAME_FRIEND_NOT_IN_CALL" + str(friend_number))
             return False
 
         elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_SYNC):
