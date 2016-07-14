@@ -31,3 +31,10 @@ from .tox import TOX_SAVEDATA_TYPE_NONE
 from .tox import TOX_ERR_NEW_OK
 from .tox import TOX_ERR_BOOTSTRAP_OK
 
+from .ctox import TOXAV_FRIEND_CALL_STATE_ERROR
+from .ctox import TOXAV_FRIEND_CALL_STATE_FINISHED
+from .ctox import TOXAV_FRIEND_CALL_STATE_SENDING_A 
+from .ctox import TOXAV_FRIEND_CALL_STATE_SENDING_V
+from .ctox import TOXAV_FRIEND_CALL_STATE_ACCEPTING_A 
+from .ctox import TOXAV_FRIEND_CALL_STATE_ACCEPTING_V
+
