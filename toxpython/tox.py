@@ -37,8 +37,8 @@ class Tox():
 
         opt = Tox_Options()
 
-        opt.ipv6_enabled = c_bool(True)
-        opt.udp_enabled = c_bool(False)
+        opt.ipv6_enabled = c_bool(False)
+        opt.udp_enabled = c_bool(True)
         opt.proxy_type = TOX_PROXY_TYPE_NONE
         opt.proxy_host = String(None)
         opt.proxy_port = 0
@@ -129,6 +129,11 @@ class Tox():
             cb = tox_friend_lossless_packet_cb(self.friend_lossless_packet_callback)
             self._fRefs.append(cb)
             tox_callback_friend_lossless_packet(self._p, cb, py_object(self))
+
+            cb = tox_friend_lossy_packet_cb(self.friend_lossy_packet_callback)
+            self._fRefs.append(cb)
+            tox_callback_friend_lossy_packet(self._p, cb, py_object(self))
+
 
         else:
             logger.error("Self is None")
@@ -314,8 +319,10 @@ class Tox():
         self = cast(userdata, py_object).value
         self.on_friend_connection_status(friendId,status)
 
+    def on_friend_lossy_packet_callback(self,friendId,message_type,message):
+        pass
 
-    def on_friend_lossless_packet_callback(tox,friendId,message_type,message):
+    def on_friend_lossless_packet_callback(self,friendId,message_type,message):
         pass
 
     @staticmethod
@@ -327,6 +334,16 @@ class Tox():
         message_type = ctypes.c_uint8()
         ctypes.memmove(addressof(message_type),buffer,1)
         self.on_friend_lossless_packet_callback(friendId,message_type.value,buffer[1:])
+
+    @staticmethod
+    def friend_lossy_packet_callback(tox,friendId,message,length,userdata):
+        logger.debug('Recieved Lossy Packet from: %s length: %s'%(friendId,length))
+        self = cast(userdata, py_object).value
+        buffer = ptr_to_buffer(message, length)
+        #first byte is message type
+        message_type = ctypes.c_uint8()
+        ctypes.memmove(addressof(message_type),buffer,1)
+        self.on_friend_lossy_packet_callback(friendId,message_type.value,buffer[1:])
 
     def on_friend_status(self,friendId,status):
         pass
@@ -543,9 +560,22 @@ class Tox():
         return False
 
 
-    def friend_send_lossy_packet(self,friend_number,data):
-        data_buffer = create_string_buffer(data,len(data))
-        return tox_friend_send_lossy_packet(self._p,friend_number,data_buffer,len(data_buffer),None)
+    def friend_send_lossy_packet(self,friend_number,message_type,data):
+        response = pointer(c_int(TOX_ERR_FRIEND_CUSTOM_PACKET_OK))
+        datalen = len(data)
+        message_type = c_ubyte(message_type)
+        buff = (c_ubyte * (datalen+1) )()
+
+        ctypes.memmove(addressof(buff),addressof(message_type),ctypes.sizeof(message_type))
+        ctypes.memmove(addressof(buff)+1,addressof(data),ctypes.sizeof(data))
+
+        tox_friend_send_lossy_packet(self._p,friend_number,buff,len(buff),response)
+        if ( response.contents.value == TOX_ERR_FRIEND_CUSTOM_PACKET_OK):
+            logger.debug("Lossless package sent: " + str(response.contents.value))
+            return True
+
+        logger.debug("Lossless package failed: " + str(response.contents.value))
+        return False
 
 
     def self_get_connection_status(self):
