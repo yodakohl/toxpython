@@ -155,8 +155,10 @@ class ToxAVC():
 
     def audio_send_frame(self,friend_number,pcm,sample_count,channels,sample_rate):
         response = pointer(c_int())
-        buff = create_string_buffer(pcm,len(pcm))
-        toxav_audio_send_frame(self._av_p, friend_number, buff ,sample_count,channels,sample_rate, response) #bool
+
+        data_pointer = pcm.ctypes.data_as(ctypes.POINTER(ctypes.c_int16))
+        toxav_audio_send_frame(self._av_p, friend_number, data_pointer ,sample_count,channels,sample_rate, response) #bool
+
         if ( response.contents.value == TOXAV_ERR_SEND_FRAME_OK):
             return True
         elif ( response.contents.value == TOXAV_ERR_SEND_FRAME_FRIEND_NOT_FOUND):
