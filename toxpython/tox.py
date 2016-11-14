@@ -561,15 +561,16 @@ class Tox():
 
 
     def friend_send_lossy_packet(self,friend_number,message_type,data):
+        #Hold array so we don't have to allocate all the time
         response = pointer(c_int(TOX_ERR_FRIEND_CUSTOM_PACKET_OK))
         datalen = len(data)
         message_type = c_ubyte(message_type)
         buff = (c_ubyte * (datalen+1) )()
 
         ctypes.memmove(addressof(buff),addressof(message_type),ctypes.sizeof(message_type))
-        ctypes.memmove(addressof(buff)+1,addressof(data),ctypes.sizeof(data))
+        ctypes.memmove(addressof(buff)+1,addressof(data),datalen)
 
-        tox_friend_send_lossy_packet(self._p,friend_number,buff,len(buff),response)
+        tox_friend_send_lossy_packet(self._p,friend_number,buff,datalen+1,response)
         if ( response.contents.value == TOX_ERR_FRIEND_CUSTOM_PACKET_OK):
             logger.debug("Lossless package sent: " + str(response.contents.value))
             return True
