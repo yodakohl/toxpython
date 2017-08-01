@@ -10,10 +10,12 @@ Supports the new API of toxcore
 
 -Toxcore https://github.com/irungentoo/toxcore
 -Setuptools
+-Python Numpy
 
 #Installation
 
-sudo  python setup.py install
+sudo apt-get install python-numpy
+sudo python setup.py install
 
 
 #Usage 
