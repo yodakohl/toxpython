@@ -1,7 +1,7 @@
 '''Wrapper for tox.h
 
 Generated with:
-/usr/local/bin/ctypesgen.py -ltoxcore /usr/local/include/tox/tox.h -ltoxdns /usr/local/include/tox/toxdns.h -ltoxav /usr/local/include/tox/toxav.h -ltoxencryptsave /usr/local/include/tox/toxencryptsave.h --compile-libdir /usr/lib
+/usr/local/bin/ctypesgen.py -ltoxcore /usr/include/tox/tox.h -ltoxdns /usr/include/tox/toxdns.h -ltoxav /usr/include/tox/toxav.h -ltoxencryptsave /usr/include/tox/toxencryptsa ve.h --compile-libdir /usr/lib
 
 Do not modify this file.
 '''
@@ -465,6 +465,7 @@ class LibraryLoader(object):
 
     def load_library(self,libname):
         """Given the name of a library, load it."""
+        return self.load(libname)
         paths = self.getpaths(libname)
 
         for path in paths:
@@ -711,1344 +712,1779 @@ add_library_search_dirs([])
 
 # Begin libraries
 
-try:
-    _libs["toxcore"] = load_library("toxcore")
-    _libs["toxdns"] = load_library("toxdns")
-    _libs["toxav"] = load_library("toxav")
-    _libs["toxencryptsave"] = load_library("toxencryptsave")
-except:
-    #libtox Loading
-    #On Windows download https://build.tox.chat/view/libtoxcore/
-    _libs["toxcore"] = load_library("libtox")
-    _libs["toxdns"] = load_library("libtox")
-    _libs["toxav"] = load_library("libtox")
-    _libs["toxencryptsave"] = load_library("libtox")
+_libs["toxcore"] = load_library("libtoxcore.so")
+_libs["toxdns"] = load_library("libtoxdns.so")
+_libs["toxav"] = load_library("libtoxav.so")
+_libs["toxencryptsave"] = load_library("libtoxencryptsave.so")
 
 # 4 libraries
 # End libraries
 
 # No modules
 
-# /usr/local/include/tox/tox.h: 130
+# /usr/include/tox/tox.h: 146
 class struct_Tox(Structure):
     pass
 
-Tox = struct_Tox # /usr/local/include/tox/tox.h: 130
+Tox = struct_Tox # /usr/include/tox/tox.h: 146
 
-# /usr/local/include/tox/tox.h: 183
+# /usr/include/tox/tox.h: 168
 if hasattr(_libs['toxcore'], 'tox_version_major'):
     tox_version_major = _libs['toxcore'].tox_version_major
     tox_version_major.argtypes = []
     tox_version_major.restype = c_uint32
 
-# /usr/local/include/tox/tox.h: 188
+# /usr/include/tox/tox.h: 177
 if hasattr(_libs['toxcore'], 'tox_version_minor'):
     tox_version_minor = _libs['toxcore'].tox_version_minor
     tox_version_minor.argtypes = []
     tox_version_minor.restype = c_uint32
 
-# /usr/local/include/tox/tox.h: 193
+# /usr/include/tox/tox.h: 185
 if hasattr(_libs['toxcore'], 'tox_version_patch'):
     tox_version_patch = _libs['toxcore'].tox_version_patch
     tox_version_patch.argtypes = []
     tox_version_patch.restype = c_uint32
 
-# /usr/local/include/tox/tox.h: 199
+# /usr/include/tox/tox.h: 212
 if hasattr(_libs['toxcore'], 'tox_version_is_compatible'):
     tox_version_is_compatible = _libs['toxcore'].tox_version_is_compatible
     tox_version_is_compatible.argtypes = [c_uint32, c_uint32, c_uint32]
     tox_version_is_compatible.restype = c_bool
 
-enum_TOX_USER_STATUS = c_int # /usr/local/include/tox/tox.h: 308
+# /usr/include/tox/tox.h: 239
+if hasattr(_libs['toxcore'], 'tox_public_key_size'):
+    tox_public_key_size = _libs['toxcore'].tox_public_key_size
+    tox_public_key_size.argtypes = []
+    tox_public_key_size.restype = c_uint32
 
-TOX_USER_STATUS_NONE = 0 # /usr/local/include/tox/tox.h: 308
+# /usr/include/tox/tox.h: 246
+if hasattr(_libs['toxcore'], 'tox_secret_key_size'):
+    tox_secret_key_size = _libs['toxcore'].tox_secret_key_size
+    tox_secret_key_size.argtypes = []
+    tox_secret_key_size.restype = c_uint32
 
-TOX_USER_STATUS_AWAY = (TOX_USER_STATUS_NONE + 1) # /usr/local/include/tox/tox.h: 308
+# /usr/include/tox/tox.h: 253
+for _lib in _libs.values():
+    if not hasattr(_lib, 'tox_nospam_size'):
+        continue
+    tox_nospam_size = _lib.tox_nospam_size
+    tox_nospam_size.argtypes = []
+    tox_nospam_size.restype = c_uint32
+    break
 
-TOX_USER_STATUS_BUSY = (TOX_USER_STATUS_AWAY + 1) # /usr/local/include/tox/tox.h: 308
+# /usr/include/tox/tox.h: 265
+if hasattr(_libs['toxcore'], 'tox_address_size'):
+    tox_address_size = _libs['toxcore'].tox_address_size
+    tox_address_size.argtypes = []
+    tox_address_size.restype = c_uint32
 
-TOX_USER_STATUS = enum_TOX_USER_STATUS # /usr/local/include/tox/tox.h: 308
+# /usr/include/tox/tox.h: 272
+if hasattr(_libs['toxcore'], 'tox_max_name_length'):
+    tox_max_name_length = _libs['toxcore'].tox_max_name_length
+    tox_max_name_length.argtypes = []
+    tox_max_name_length.restype = c_uint32
 
-enum_TOX_MESSAGE_TYPE = c_int # /usr/local/include/tox/tox.h: 328
+# /usr/include/tox/tox.h: 279
+if hasattr(_libs['toxcore'], 'tox_max_status_message_length'):
+    tox_max_status_message_length = _libs['toxcore'].tox_max_status_message_length
+    tox_max_status_message_length.argtypes = []
+    tox_max_status_message_length.restype = c_uint32
 
-TOX_MESSAGE_TYPE_NORMAL = 0 # /usr/local/include/tox/tox.h: 328
+# /usr/include/tox/tox.h: 286
+if hasattr(_libs['toxcore'], 'tox_max_friend_request_length'):
+    tox_max_friend_request_length = _libs['toxcore'].tox_max_friend_request_length
+    tox_max_friend_request_length.argtypes = []
+    tox_max_friend_request_length.restype = c_uint32
 
-TOX_MESSAGE_TYPE_ACTION = (TOX_MESSAGE_TYPE_NORMAL + 1) # /usr/local/include/tox/tox.h: 328
+# /usr/include/tox/tox.h: 293
+if hasattr(_libs['toxcore'], 'tox_max_message_length'):
+    tox_max_message_length = _libs['toxcore'].tox_max_message_length
+    tox_max_message_length.argtypes = []
+    tox_max_message_length.restype = c_uint32
 
-TOX_MESSAGE_TYPE = enum_TOX_MESSAGE_TYPE # /usr/local/include/tox/tox.h: 328
+# /usr/include/tox/tox.h: 300
+if hasattr(_libs['toxcore'], 'tox_max_custom_packet_size'):
+    tox_max_custom_packet_size = _libs['toxcore'].tox_max_custom_packet_size
+    tox_max_custom_packet_size.argtypes = []
+    tox_max_custom_packet_size.restype = c_uint32
 
-enum_TOX_PROXY_TYPE = c_int # /usr/local/include/tox/tox.h: 360
+# /usr/include/tox/tox.h: 307
+if hasattr(_libs['toxcore'], 'tox_hash_length'):
+    tox_hash_length = _libs['toxcore'].tox_hash_length
+    tox_hash_length.argtypes = []
+    tox_hash_length.restype = c_uint32
 
-TOX_PROXY_TYPE_NONE = 0 # /usr/local/include/tox/tox.h: 360
+# /usr/include/tox/tox.h: 314
+if hasattr(_libs['toxcore'], 'tox_file_id_length'):
+    tox_file_id_length = _libs['toxcore'].tox_file_id_length
+    tox_file_id_length.argtypes = []
+    tox_file_id_length.restype = c_uint32
 
-TOX_PROXY_TYPE_HTTP = (TOX_PROXY_TYPE_NONE + 1) # /usr/local/include/tox/tox.h: 360
+# /usr/include/tox/tox.h: 321
+if hasattr(_libs['toxcore'], 'tox_max_filename_length'):
+    tox_max_filename_length = _libs['toxcore'].tox_max_filename_length
+    tox_max_filename_length.argtypes = []
+    tox_max_filename_length.restype = c_uint32
 
-TOX_PROXY_TYPE_SOCKS5 = (TOX_PROXY_TYPE_HTTP + 1) # /usr/local/include/tox/tox.h: 360
+enum_TOX_USER_STATUS = c_int # /usr/include/tox/tox.h: 354
 
-TOX_PROXY_TYPE = enum_TOX_PROXY_TYPE # /usr/local/include/tox/tox.h: 360
+TOX_USER_STATUS_NONE = 0 # /usr/include/tox/tox.h: 354
 
-enum_TOX_SAVEDATA_TYPE = c_int # /usr/local/include/tox/tox.h: 383
+TOX_USER_STATUS_AWAY = (TOX_USER_STATUS_NONE + 1) # /usr/include/tox/tox.h: 354
 
-TOX_SAVEDATA_TYPE_NONE = 0 # /usr/local/include/tox/tox.h: 383
+TOX_USER_STATUS_BUSY = (TOX_USER_STATUS_AWAY + 1) # /usr/include/tox/tox.h: 354
 
-TOX_SAVEDATA_TYPE_TOX_SAVE = (TOX_SAVEDATA_TYPE_NONE + 1) # /usr/local/include/tox/tox.h: 383
+TOX_USER_STATUS = enum_TOX_USER_STATUS # /usr/include/tox/tox.h: 354
 
-TOX_SAVEDATA_TYPE_SECRET_KEY = (TOX_SAVEDATA_TYPE_TOX_SAVE + 1) # /usr/local/include/tox/tox.h: 383
+enum_TOX_MESSAGE_TYPE = c_int # /usr/include/tox/tox.h: 374
 
-TOX_SAVEDATA_TYPE = enum_TOX_SAVEDATA_TYPE # /usr/local/include/tox/tox.h: 383
+TOX_MESSAGE_TYPE_NORMAL = 0 # /usr/include/tox/tox.h: 374
 
-# /usr/local/include/tox/tox.h: 391
+TOX_MESSAGE_TYPE_ACTION = (TOX_MESSAGE_TYPE_NORMAL + 1) # /usr/include/tox/tox.h: 374
+
+TOX_MESSAGE_TYPE = enum_TOX_MESSAGE_TYPE # /usr/include/tox/tox.h: 374
+
+enum_TOX_PROXY_TYPE = c_int # /usr/include/tox/tox.h: 406
+
+TOX_PROXY_TYPE_NONE = 0 # /usr/include/tox/tox.h: 406
+
+TOX_PROXY_TYPE_HTTP = (TOX_PROXY_TYPE_NONE + 1) # /usr/include/tox/tox.h: 406
+
+TOX_PROXY_TYPE_SOCKS5 = (TOX_PROXY_TYPE_HTTP + 1) # /usr/include/tox/tox.h: 406
+
+TOX_PROXY_TYPE = enum_TOX_PROXY_TYPE # /usr/include/tox/tox.h: 406
+
+enum_TOX_SAVEDATA_TYPE = c_int # /usr/include/tox/tox.h: 429
+
+TOX_SAVEDATA_TYPE_NONE = 0 # /usr/include/tox/tox.h: 429
+
+TOX_SAVEDATA_TYPE_TOX_SAVE = (TOX_SAVEDATA_TYPE_NONE + 1) # /usr/include/tox/tox.h: 429
+
+TOX_SAVEDATA_TYPE_SECRET_KEY = (TOX_SAVEDATA_TYPE_TOX_SAVE + 1) # /usr/include/tox/tox.h: 429
+
+TOX_SAVEDATA_TYPE = enum_TOX_SAVEDATA_TYPE # /usr/include/tox/tox.h: 429
+
+enum_TOX_LOG_LEVEL = c_int # /usr/include/tox/tox.h: 462
+
+TOX_LOG_LEVEL_TRACE = 0 # /usr/include/tox/tox.h: 462
+
+TOX_LOG_LEVEL_DEBUG = (TOX_LOG_LEVEL_TRACE + 1) # /usr/include/tox/tox.h: 462
+
+TOX_LOG_LEVEL_INFO = (TOX_LOG_LEVEL_DEBUG + 1) # /usr/include/tox/tox.h: 462
+
+TOX_LOG_LEVEL_WARNING = (TOX_LOG_LEVEL_INFO + 1) # /usr/include/tox/tox.h: 462
+
+TOX_LOG_LEVEL_ERROR = (TOX_LOG_LEVEL_WARNING + 1) # /usr/include/tox/tox.h: 462
+
+TOX_LOG_LEVEL = enum_TOX_LOG_LEVEL # /usr/include/tox/tox.h: 462
+
+tox_log_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), TOX_LOG_LEVEL, String, c_uint32, String, String, POINTER(None)) # /usr/include/tox/tox.h: 482
+
+# /usr/include/tox/tox.h: 499
 class struct_Tox_Options(Structure):
     pass
 
 struct_Tox_Options.__slots__ = [
     'ipv6_enabled',
     'udp_enabled',
+    'local_discovery_enabled',
     'proxy_type',
     'proxy_host',
     'proxy_port',
     'start_port',
     'end_port',
     'tcp_port',
+    'hole_punching_enabled',
     'savedata_type',
     'savedata_data',
     'savedata_length',
+    'log_callback',
+    'log_user_data',
 ]
 struct_Tox_Options._fields_ = [
     ('ipv6_enabled', c_bool),
     ('udp_enabled', c_bool),
+    ('local_discovery_enabled', c_bool),
     ('proxy_type', TOX_PROXY_TYPE),
     ('proxy_host', String),
     ('proxy_port', c_uint16),
     ('start_port', c_uint16),
     ('end_port', c_uint16),
     ('tcp_port', c_uint16),
+    ('hole_punching_enabled', c_bool),
     ('savedata_type', TOX_SAVEDATA_TYPE),
     ('savedata_data', POINTER(c_uint8)),
     ('savedata_length', c_size_t),
+    ('log_callback', POINTER(tox_log_cb)),
+    ('log_user_data', POINTER(None)),
 ]
 
-# /usr/local/include/tox/tox.h: 507
+# /usr/include/tox/tox.h: 636
+if hasattr(_libs['toxcore'], 'tox_options_get_ipv6_enabled'):
+    tox_options_get_ipv6_enabled = _libs['toxcore'].tox_options_get_ipv6_enabled
+    tox_options_get_ipv6_enabled.argtypes = [POINTER(struct_Tox_Options)]
+    tox_options_get_ipv6_enabled.restype = c_bool
+
+# /usr/include/tox/tox.h: 638
+if hasattr(_libs['toxcore'], 'tox_options_set_ipv6_enabled'):
+    tox_options_set_ipv6_enabled = _libs['toxcore'].tox_options_set_ipv6_enabled
+    tox_options_set_ipv6_enabled.argtypes = [POINTER(struct_Tox_Options), c_bool]
+    tox_options_set_ipv6_enabled.restype = None
+
+# /usr/include/tox/tox.h: 640
+if hasattr(_libs['toxcore'], 'tox_options_get_udp_enabled'):
+    tox_options_get_udp_enabled = _libs['toxcore'].tox_options_get_udp_enabled
+    tox_options_get_udp_enabled.argtypes = [POINTER(struct_Tox_Options)]
+    tox_options_get_udp_enabled.restype = c_bool
+
+# /usr/include/tox/tox.h: 642
+if hasattr(_libs['toxcore'], 'tox_options_set_udp_enabled'):
+    tox_options_set_udp_enabled = _libs['toxcore'].tox_options_set_udp_enabled
+    tox_options_set_udp_enabled.argtypes = [POINTER(struct_Tox_Options), c_bool]
+    tox_options_set_udp_enabled.restype = None
+
+# /usr/include/tox/tox.h: 644
+if hasattr(_libs['toxcore'], 'tox_options_get_local_discovery_enabled'):
+    tox_options_get_local_discovery_enabled = _libs['toxcore'].tox_options_get_local_discovery_enabled
+    tox_options_get_local_discovery_enabled.argtypes = [POINTER(struct_Tox_Options)]
+    tox_options_get_local_discovery_enabled.restype = c_bool
+
+# /usr/include/tox/tox.h: 646
+if hasattr(_libs['toxcore'], 'tox_options_set_local_discovery_enabled'):
+    tox_options_set_local_discovery_enabled = _libs['toxcore'].tox_options_set_local_discovery_enabled
+    tox_options_set_local_discovery_enabled.argtypes = [POINTER(struct_Tox_Options), c_bool]
+    tox_options_set_local_discovery_enabled.restype = None
+
+# /usr/include/tox/tox.h: 648
+if hasattr(_libs['toxcore'], 'tox_options_get_proxy_type'):
+    tox_options_get_proxy_type = _libs['toxcore'].tox_options_get_proxy_type
+    tox_options_get_proxy_type.argtypes = [POINTER(struct_Tox_Options)]
+    tox_options_get_proxy_type.restype = TOX_PROXY_TYPE
+
+# /usr/include/tox/tox.h: 650
+if hasattr(_libs['toxcore'], 'tox_options_set_proxy_type'):
+    tox_options_set_proxy_type = _libs['toxcore'].tox_options_set_proxy_type
+    tox_options_set_proxy_type.argtypes = [POINTER(struct_Tox_Options), TOX_PROXY_TYPE]
+    tox_options_set_proxy_type.restype = None
+
+# /usr/include/tox/tox.h: 652
+if hasattr(_libs['toxcore'], 'tox_options_get_proxy_host'):
+    tox_options_get_proxy_host = _libs['toxcore'].tox_options_get_proxy_host
+    tox_options_get_proxy_host.argtypes = [POINTER(struct_Tox_Options)]
+    if sizeof(c_int) == sizeof(c_void_p):
+        tox_options_get_proxy_host.restype = ReturnString
+    else:
+        tox_options_get_proxy_host.restype = String
+        tox_options_get_proxy_host.errcheck = ReturnString
+
+# /usr/include/tox/tox.h: 654
+if hasattr(_libs['toxcore'], 'tox_options_set_proxy_host'):
+    tox_options_set_proxy_host = _libs['toxcore'].tox_options_set_proxy_host
+    tox_options_set_proxy_host.argtypes = [POINTER(struct_Tox_Options), String]
+    tox_options_set_proxy_host.restype = None
+
+# /usr/include/tox/tox.h: 656
+if hasattr(_libs['toxcore'], 'tox_options_get_proxy_port'):
+    tox_options_get_proxy_port = _libs['toxcore'].tox_options_get_proxy_port
+    tox_options_get_proxy_port.argtypes = [POINTER(struct_Tox_Options)]
+    tox_options_get_proxy_port.restype = c_uint16
+
+# /usr/include/tox/tox.h: 658
+if hasattr(_libs['toxcore'], 'tox_options_set_proxy_port'):
+    tox_options_set_proxy_port = _libs['toxcore'].tox_options_set_proxy_port
+    tox_options_set_proxy_port.argtypes = [POINTER(struct_Tox_Options), c_uint16]
+    tox_options_set_proxy_port.restype = None
+
+# /usr/include/tox/tox.h: 660
+if hasattr(_libs['toxcore'], 'tox_options_get_start_port'):
+    tox_options_get_start_port = _libs['toxcore'].tox_options_get_start_port
+    tox_options_get_start_port.argtypes = [POINTER(struct_Tox_Options)]
+    tox_options_get_start_port.restype = c_uint16
+
+# /usr/include/tox/tox.h: 662
+if hasattr(_libs['toxcore'], 'tox_options_set_start_port'):
+    tox_options_set_start_port = _libs['toxcore'].tox_options_set_start_port
+    tox_options_set_start_port.argtypes = [POINTER(struct_Tox_Options), c_uint16]
+    tox_options_set_start_port.restype = None
+
+# /usr/include/tox/tox.h: 664
+if hasattr(_libs['toxcore'], 'tox_options_get_end_port'):
+    tox_options_get_end_port = _libs['toxcore'].tox_options_get_end_port
+    tox_options_get_end_port.argtypes = [POINTER(struct_Tox_Options)]
+    tox_options_get_end_port.restype = c_uint16
+
+# /usr/include/tox/tox.h: 666
+if hasattr(_libs['toxcore'], 'tox_options_set_end_port'):
+    tox_options_set_end_port = _libs['toxcore'].tox_options_set_end_port
+    tox_options_set_end_port.argtypes = [POINTER(struct_Tox_Options), c_uint16]
+    tox_options_set_end_port.restype = None
+
+# /usr/include/tox/tox.h: 668
+if hasattr(_libs['toxcore'], 'tox_options_get_tcp_port'):
+    tox_options_get_tcp_port = _libs['toxcore'].tox_options_get_tcp_port
+    tox_options_get_tcp_port.argtypes = [POINTER(struct_Tox_Options)]
+    tox_options_get_tcp_port.restype = c_uint16
+
+# /usr/include/tox/tox.h: 670
+if hasattr(_libs['toxcore'], 'tox_options_set_tcp_port'):
+    tox_options_set_tcp_port = _libs['toxcore'].tox_options_set_tcp_port
+    tox_options_set_tcp_port.argtypes = [POINTER(struct_Tox_Options), c_uint16]
+    tox_options_set_tcp_port.restype = None
+
+# /usr/include/tox/tox.h: 672
+if hasattr(_libs['toxcore'], 'tox_options_get_hole_punching_enabled'):
+    tox_options_get_hole_punching_enabled = _libs['toxcore'].tox_options_get_hole_punching_enabled
+    tox_options_get_hole_punching_enabled.argtypes = [POINTER(struct_Tox_Options)]
+    tox_options_get_hole_punching_enabled.restype = c_bool
+
+# /usr/include/tox/tox.h: 674
+if hasattr(_libs['toxcore'], 'tox_options_set_hole_punching_enabled'):
+    tox_options_set_hole_punching_enabled = _libs['toxcore'].tox_options_set_hole_punching_enabled
+    tox_options_set_hole_punching_enabled.argtypes = [POINTER(struct_Tox_Options), c_bool]
+    tox_options_set_hole_punching_enabled.restype = None
+
+# /usr/include/tox/tox.h: 676
+if hasattr(_libs['toxcore'], 'tox_options_get_savedata_type'):
+    tox_options_get_savedata_type = _libs['toxcore'].tox_options_get_savedata_type
+    tox_options_get_savedata_type.argtypes = [POINTER(struct_Tox_Options)]
+    tox_options_get_savedata_type.restype = TOX_SAVEDATA_TYPE
+
+# /usr/include/tox/tox.h: 678
+if hasattr(_libs['toxcore'], 'tox_options_set_savedata_type'):
+    tox_options_set_savedata_type = _libs['toxcore'].tox_options_set_savedata_type
+    tox_options_set_savedata_type.argtypes = [POINTER(struct_Tox_Options), TOX_SAVEDATA_TYPE]
+    tox_options_set_savedata_type.restype = None
+
+# /usr/include/tox/tox.h: 680
+if hasattr(_libs['toxcore'], 'tox_options_get_savedata_data'):
+    tox_options_get_savedata_data = _libs['toxcore'].tox_options_get_savedata_data
+    tox_options_get_savedata_data.argtypes = [POINTER(struct_Tox_Options)]
+    tox_options_get_savedata_data.restype = POINTER(c_uint8)
+
+# /usr/include/tox/tox.h: 682
+if hasattr(_libs['toxcore'], 'tox_options_set_savedata_data'):
+    tox_options_set_savedata_data = _libs['toxcore'].tox_options_set_savedata_data
+    tox_options_set_savedata_data.argtypes = [POINTER(struct_Tox_Options), POINTER(c_uint8), c_size_t]
+    tox_options_set_savedata_data.restype = None
+
+# /usr/include/tox/tox.h: 684
+if hasattr(_libs['toxcore'], 'tox_options_get_savedata_length'):
+    tox_options_get_savedata_length = _libs['toxcore'].tox_options_get_savedata_length
+    tox_options_get_savedata_length.argtypes = [POINTER(struct_Tox_Options)]
+    tox_options_get_savedata_length.restype = c_size_t
+
+# /usr/include/tox/tox.h: 686
+if hasattr(_libs['toxcore'], 'tox_options_set_savedata_length'):
+    tox_options_set_savedata_length = _libs['toxcore'].tox_options_set_savedata_length
+    tox_options_set_savedata_length.argtypes = [POINTER(struct_Tox_Options), c_size_t]
+    tox_options_set_savedata_length.restype = None
+
+# /usr/include/tox/tox.h: 688
+if hasattr(_libs['toxcore'], 'tox_options_get_log_callback'):
+    tox_options_get_log_callback = _libs['toxcore'].tox_options_get_log_callback
+    tox_options_get_log_callback.argtypes = [POINTER(struct_Tox_Options)]
+    tox_options_get_log_callback.restype = POINTER(tox_log_cb)
+
+# /usr/include/tox/tox.h: 690
+if hasattr(_libs['toxcore'], 'tox_options_set_log_callback'):
+    tox_options_set_log_callback = _libs['toxcore'].tox_options_set_log_callback
+    tox_options_set_log_callback.argtypes = [POINTER(struct_Tox_Options), POINTER(tox_log_cb)]
+    tox_options_set_log_callback.restype = None
+
+# /usr/include/tox/tox.h: 692
+if hasattr(_libs['toxcore'], 'tox_options_get_log_user_data'):
+    tox_options_get_log_user_data = _libs['toxcore'].tox_options_get_log_user_data
+    tox_options_get_log_user_data.argtypes = [POINTER(struct_Tox_Options)]
+    tox_options_get_log_user_data.restype = POINTER(None)
+
+# /usr/include/tox/tox.h: 694
+if hasattr(_libs['toxcore'], 'tox_options_set_log_user_data'):
+    tox_options_set_log_user_data = _libs['toxcore'].tox_options_set_log_user_data
+    tox_options_set_log_user_data.argtypes = [POINTER(struct_Tox_Options), POINTER(None)]
+    tox_options_set_log_user_data.restype = None
+
+# /usr/include/tox/tox.h: 707
 if hasattr(_libs['toxcore'], 'tox_options_default'):
     tox_options_default = _libs['toxcore'].tox_options_default
     tox_options_default.argtypes = [POINTER(struct_Tox_Options)]
     tox_options_default.restype = None
 
-enum_TOX_ERR_OPTIONS_NEW = c_int # /usr/local/include/tox/tox.h: 521
+enum_TOX_ERR_OPTIONS_NEW = c_int # /usr/include/tox/tox.h: 721
 
-TOX_ERR_OPTIONS_NEW_OK = 0 # /usr/local/include/tox/tox.h: 521
+TOX_ERR_OPTIONS_NEW_OK = 0 # /usr/include/tox/tox.h: 721
 
-TOX_ERR_OPTIONS_NEW_MALLOC = (TOX_ERR_OPTIONS_NEW_OK + 1) # /usr/local/include/tox/tox.h: 521
+TOX_ERR_OPTIONS_NEW_MALLOC = (TOX_ERR_OPTIONS_NEW_OK + 1) # /usr/include/tox/tox.h: 721
 
-TOX_ERR_OPTIONS_NEW = enum_TOX_ERR_OPTIONS_NEW # /usr/local/include/tox/tox.h: 521
+TOX_ERR_OPTIONS_NEW = enum_TOX_ERR_OPTIONS_NEW # /usr/include/tox/tox.h: 721
 
-# /usr/local/include/tox/tox.h: 534
+# /usr/include/tox/tox.h: 734
 if hasattr(_libs['toxcore'], 'tox_options_new'):
     tox_options_new = _libs['toxcore'].tox_options_new
     tox_options_new.argtypes = [POINTER(TOX_ERR_OPTIONS_NEW)]
     tox_options_new.restype = POINTER(struct_Tox_Options)
 
-# /usr/local/include/tox/tox.h: 542
+# /usr/include/tox/tox.h: 742
 if hasattr(_libs['toxcore'], 'tox_options_free'):
     tox_options_free = _libs['toxcore'].tox_options_free
     tox_options_free.argtypes = [POINTER(struct_Tox_Options)]
     tox_options_free.restype = None
 
-enum_TOX_ERR_NEW = c_int # /usr/local/include/tox/tox.h: 613
+enum_TOX_ERR_NEW = c_int # /usr/include/tox/tox.h: 813
 
-TOX_ERR_NEW_OK = 0 # /usr/local/include/tox/tox.h: 613
+TOX_ERR_NEW_OK = 0 # /usr/include/tox/tox.h: 813
 
-TOX_ERR_NEW_NULL = (TOX_ERR_NEW_OK + 1) # /usr/local/include/tox/tox.h: 613
+TOX_ERR_NEW_NULL = (TOX_ERR_NEW_OK + 1) # /usr/include/tox/tox.h: 813
 
-TOX_ERR_NEW_MALLOC = (TOX_ERR_NEW_NULL + 1) # /usr/local/include/tox/tox.h: 613
+TOX_ERR_NEW_MALLOC = (TOX_ERR_NEW_NULL + 1) # /usr/include/tox/tox.h: 813
 
-TOX_ERR_NEW_PORT_ALLOC = (TOX_ERR_NEW_MALLOC + 1) # /usr/local/include/tox/tox.h: 613
+TOX_ERR_NEW_PORT_ALLOC = (TOX_ERR_NEW_MALLOC + 1) # /usr/include/tox/tox.h: 813
 
-TOX_ERR_NEW_PROXY_BAD_TYPE = (TOX_ERR_NEW_PORT_ALLOC + 1) # /usr/local/include/tox/tox.h: 613
+TOX_ERR_NEW_PROXY_BAD_TYPE = (TOX_ERR_NEW_PORT_ALLOC + 1) # /usr/include/tox/tox.h: 813
 
-TOX_ERR_NEW_PROXY_BAD_HOST = (TOX_ERR_NEW_PROXY_BAD_TYPE + 1) # /usr/local/include/tox/tox.h: 613
+TOX_ERR_NEW_PROXY_BAD_HOST = (TOX_ERR_NEW_PROXY_BAD_TYPE + 1) # /usr/include/tox/tox.h: 813
 
-TOX_ERR_NEW_PROXY_BAD_PORT = (TOX_ERR_NEW_PROXY_BAD_HOST + 1) # /usr/local/include/tox/tox.h: 613
+TOX_ERR_NEW_PROXY_BAD_PORT = (TOX_ERR_NEW_PROXY_BAD_HOST + 1) # /usr/include/tox/tox.h: 813
 
-TOX_ERR_NEW_PROXY_NOT_FOUND = (TOX_ERR_NEW_PROXY_BAD_PORT + 1) # /usr/local/include/tox/tox.h: 613
+TOX_ERR_NEW_PROXY_NOT_FOUND = (TOX_ERR_NEW_PROXY_BAD_PORT + 1) # /usr/include/tox/tox.h: 813
 
-TOX_ERR_NEW_LOAD_ENCRYPTED = (TOX_ERR_NEW_PROXY_NOT_FOUND + 1) # /usr/local/include/tox/tox.h: 613
+TOX_ERR_NEW_LOAD_ENCRYPTED = (TOX_ERR_NEW_PROXY_NOT_FOUND + 1) # /usr/include/tox/tox.h: 813
 
-TOX_ERR_NEW_LOAD_BAD_FORMAT = (TOX_ERR_NEW_LOAD_ENCRYPTED + 1) # /usr/local/include/tox/tox.h: 613
+TOX_ERR_NEW_LOAD_BAD_FORMAT = (TOX_ERR_NEW_LOAD_ENCRYPTED + 1) # /usr/include/tox/tox.h: 813
 
-TOX_ERR_NEW = enum_TOX_ERR_NEW # /usr/local/include/tox/tox.h: 613
+TOX_ERR_NEW = enum_TOX_ERR_NEW # /usr/include/tox/tox.h: 813
 
-# /usr/local/include/tox/tox.h: 632
+# /usr/include/tox/tox.h: 832
 if hasattr(_libs['toxcore'], 'tox_new'):
     tox_new = _libs['toxcore'].tox_new
     tox_new.argtypes = [POINTER(struct_Tox_Options), POINTER(TOX_ERR_NEW)]
     tox_new.restype = POINTER(Tox)
 
-# /usr/local/include/tox/tox.h: 641
+# /usr/include/tox/tox.h: 841
 if hasattr(_libs['toxcore'], 'tox_kill'):
     tox_kill = _libs['toxcore'].tox_kill
     tox_kill.argtypes = [POINTER(Tox)]
     tox_kill.restype = None
 
-# /usr/local/include/tox/tox.h: 649
+# /usr/include/tox/tox.h: 849
 if hasattr(_libs['toxcore'], 'tox_get_savedata_size'):
     tox_get_savedata_size = _libs['toxcore'].tox_get_savedata_size
     tox_get_savedata_size.argtypes = [POINTER(Tox)]
     tox_get_savedata_size.restype = c_size_t
 
-# /usr/local/include/tox/tox.h: 658
+# /usr/include/tox/tox.h: 858
 if hasattr(_libs['toxcore'], 'tox_get_savedata'):
     tox_get_savedata = _libs['toxcore'].tox_get_savedata
     tox_get_savedata.argtypes = [POINTER(Tox), POINTER(c_uint8)]
     tox_get_savedata.restype = None
 
-enum_TOX_ERR_BOOTSTRAP = c_int # /usr/local/include/tox/tox.h: 692
+enum_TOX_ERR_BOOTSTRAP = c_int # /usr/include/tox/tox.h: 892
 
-TOX_ERR_BOOTSTRAP_OK = 0 # /usr/local/include/tox/tox.h: 692
+TOX_ERR_BOOTSTRAP_OK = 0 # /usr/include/tox/tox.h: 892
 
-TOX_ERR_BOOTSTRAP_NULL = (TOX_ERR_BOOTSTRAP_OK + 1) # /usr/local/include/tox/tox.h: 692
+TOX_ERR_BOOTSTRAP_NULL = (TOX_ERR_BOOTSTRAP_OK + 1) # /usr/include/tox/tox.h: 892
 
-TOX_ERR_BOOTSTRAP_BAD_HOST = (TOX_ERR_BOOTSTRAP_NULL + 1) # /usr/local/include/tox/tox.h: 692
+TOX_ERR_BOOTSTRAP_BAD_HOST = (TOX_ERR_BOOTSTRAP_NULL + 1) # /usr/include/tox/tox.h: 892
 
-TOX_ERR_BOOTSTRAP_BAD_PORT = (TOX_ERR_BOOTSTRAP_BAD_HOST + 1) # /usr/local/include/tox/tox.h: 692
+TOX_ERR_BOOTSTRAP_BAD_PORT = (TOX_ERR_BOOTSTRAP_BAD_HOST + 1) # /usr/include/tox/tox.h: 892
 
-TOX_ERR_BOOTSTRAP = enum_TOX_ERR_BOOTSTRAP # /usr/local/include/tox/tox.h: 692
+TOX_ERR_BOOTSTRAP = enum_TOX_ERR_BOOTSTRAP # /usr/include/tox/tox.h: 892
 
-# /usr/local/include/tox/tox.h: 709
+# /usr/include/tox/tox.h: 909
 if hasattr(_libs['toxcore'], 'tox_bootstrap'):
     tox_bootstrap = _libs['toxcore'].tox_bootstrap
     tox_bootstrap.argtypes = [POINTER(Tox), String, c_uint16, POINTER(c_uint8), POINTER(TOX_ERR_BOOTSTRAP)]
     tox_bootstrap.restype = c_bool
 
-# /usr/local/include/tox/tox.h: 724
+# /usr/include/tox/tox.h: 924
 if hasattr(_libs['toxcore'], 'tox_add_tcp_relay'):
     tox_add_tcp_relay = _libs['toxcore'].tox_add_tcp_relay
     tox_add_tcp_relay.argtypes = [POINTER(Tox), String, c_uint16, POINTER(c_uint8), POINTER(TOX_ERR_BOOTSTRAP)]
     tox_add_tcp_relay.restype = c_bool
 
-enum_TOX_CONNECTION = c_int # /usr/local/include/tox/tox.h: 753
+enum_TOX_CONNECTION = c_int # /usr/include/tox/tox.h: 953
 
-TOX_CONNECTION_NONE = 0 # /usr/local/include/tox/tox.h: 753
+TOX_CONNECTION_NONE = 0 # /usr/include/tox/tox.h: 953
 
-TOX_CONNECTION_TCP = (TOX_CONNECTION_NONE + 1) # /usr/local/include/tox/tox.h: 753
+TOX_CONNECTION_TCP = (TOX_CONNECTION_NONE + 1) # /usr/include/tox/tox.h: 953
 
-TOX_CONNECTION_UDP = (TOX_CONNECTION_TCP + 1) # /usr/local/include/tox/tox.h: 753
+TOX_CONNECTION_UDP = (TOX_CONNECTION_TCP + 1) # /usr/include/tox/tox.h: 953
 
-TOX_CONNECTION = enum_TOX_CONNECTION # /usr/local/include/tox/tox.h: 753
+TOX_CONNECTION = enum_TOX_CONNECTION # /usr/include/tox/tox.h: 953
 
-# /usr/local/include/tox/tox.h: 760
+# /usr/include/tox/tox.h: 960
 if hasattr(_libs['toxcore'], 'tox_self_get_connection_status'):
     tox_self_get_connection_status = _libs['toxcore'].tox_self_get_connection_status
     tox_self_get_connection_status.argtypes = [POINTER(Tox)]
     tox_self_get_connection_status.restype = TOX_CONNECTION
 
-tox_self_connection_status_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), TOX_CONNECTION, POINTER(None)) # /usr/local/include/tox/tox.h: 765
+tox_self_connection_status_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), TOX_CONNECTION, POINTER(None)) # /usr/include/tox/tox.h: 965
 
-# /usr/local/include/tox/tox.h: 779
+# /usr/include/tox/tox.h: 979
 if hasattr(_libs['toxcore'], 'tox_callback_self_connection_status'):
     tox_callback_self_connection_status = _libs['toxcore'].tox_callback_self_connection_status
-    tox_callback_self_connection_status.argtypes = [POINTER(Tox), POINTER(tox_self_connection_status_cb), POINTER(None)]
+    tox_callback_self_connection_status.argtypes = [POINTER(Tox), POINTER(tox_self_connection_status_cb)]
     tox_callback_self_connection_status.restype = None
 
-# /usr/local/include/tox/tox.h: 785
+# /usr/include/tox/tox.h: 985
 if hasattr(_libs['toxcore'], 'tox_iteration_interval'):
     tox_iteration_interval = _libs['toxcore'].tox_iteration_interval
     tox_iteration_interval.argtypes = [POINTER(Tox)]
     tox_iteration_interval.restype = c_uint32
 
-# /usr/local/include/tox/tox.h: 791
+# /usr/include/tox/tox.h: 991
 if hasattr(_libs['toxcore'], 'tox_iterate'):
     tox_iterate = _libs['toxcore'].tox_iterate
-    tox_iterate.argtypes = [POINTER(Tox)]
+    tox_iterate.argtypes = [POINTER(Tox), POINTER(None)]
     tox_iterate.restype = None
 
-# /usr/local/include/tox/tox.h: 811
+# /usr/include/tox/tox.h: 1011
 if hasattr(_libs['toxcore'], 'tox_self_get_address'):
     tox_self_get_address = _libs['toxcore'].tox_self_get_address
     tox_self_get_address.argtypes = [POINTER(Tox), POINTER(c_uint8)]
     tox_self_get_address.restype = None
 
-# /usr/local/include/tox/tox.h: 818
+# /usr/include/tox/tox.h: 1020
 if hasattr(_libs['toxcore'], 'tox_self_set_nospam'):
     tox_self_set_nospam = _libs['toxcore'].tox_self_set_nospam
     tox_self_set_nospam.argtypes = [POINTER(Tox), c_uint32]
     tox_self_set_nospam.restype = None
 
-# /usr/local/include/tox/tox.h: 823
+# /usr/include/tox/tox.h: 1026
 if hasattr(_libs['toxcore'], 'tox_self_get_nospam'):
     tox_self_get_nospam = _libs['toxcore'].tox_self_get_nospam
     tox_self_get_nospam.argtypes = [POINTER(Tox)]
     tox_self_get_nospam.restype = c_uint32
 
-# /usr/local/include/tox/tox.h: 831
+# /usr/include/tox/tox.h: 1034
 if hasattr(_libs['toxcore'], 'tox_self_get_public_key'):
     tox_self_get_public_key = _libs['toxcore'].tox_self_get_public_key
     tox_self_get_public_key.argtypes = [POINTER(Tox), POINTER(c_uint8)]
     tox_self_get_public_key.restype = None
 
-# /usr/local/include/tox/tox.h: 839
+# /usr/include/tox/tox.h: 1042
 if hasattr(_libs['toxcore'], 'tox_self_get_secret_key'):
     tox_self_get_secret_key = _libs['toxcore'].tox_self_get_secret_key
     tox_self_get_secret_key.argtypes = [POINTER(Tox), POINTER(c_uint8)]
     tox_self_get_secret_key.restype = None
 
-enum_TOX_ERR_SET_INFO = c_int # /usr/local/include/tox/tox.h: 871
+enum_TOX_ERR_SET_INFO = c_int # /usr/include/tox/tox.h: 1074
 
-TOX_ERR_SET_INFO_OK = 0 # /usr/local/include/tox/tox.h: 871
+TOX_ERR_SET_INFO_OK = 0 # /usr/include/tox/tox.h: 1074
 
-TOX_ERR_SET_INFO_NULL = (TOX_ERR_SET_INFO_OK + 1) # /usr/local/include/tox/tox.h: 871
+TOX_ERR_SET_INFO_NULL = (TOX_ERR_SET_INFO_OK + 1) # /usr/include/tox/tox.h: 1074
 
-TOX_ERR_SET_INFO_TOO_LONG = (TOX_ERR_SET_INFO_NULL + 1) # /usr/local/include/tox/tox.h: 871
+TOX_ERR_SET_INFO_TOO_LONG = (TOX_ERR_SET_INFO_NULL + 1) # /usr/include/tox/tox.h: 1074
 
-TOX_ERR_SET_INFO = enum_TOX_ERR_SET_INFO # /usr/local/include/tox/tox.h: 871
+TOX_ERR_SET_INFO = enum_TOX_ERR_SET_INFO # /usr/include/tox/tox.h: 1074
 
-# /usr/local/include/tox/tox.h: 885
+# /usr/include/tox/tox.h: 1088
 if hasattr(_libs['toxcore'], 'tox_self_set_name'):
     tox_self_set_name = _libs['toxcore'].tox_self_set_name
     tox_self_set_name.argtypes = [POINTER(Tox), POINTER(c_uint8), c_size_t, POINTER(TOX_ERR_SET_INFO)]
     tox_self_set_name.restype = c_bool
 
-# /usr/local/include/tox/tox.h: 895
+# /usr/include/tox/tox.h: 1098
 if hasattr(_libs['toxcore'], 'tox_self_get_name_size'):
     tox_self_get_name_size = _libs['toxcore'].tox_self_get_name_size
     tox_self_get_name_size.argtypes = [POINTER(Tox)]
     tox_self_get_name_size.restype = c_size_t
 
-# /usr/local/include/tox/tox.h: 909
+# /usr/include/tox/tox.h: 1112
 if hasattr(_libs['toxcore'], 'tox_self_get_name'):
     tox_self_get_name = _libs['toxcore'].tox_self_get_name
     tox_self_get_name.argtypes = [POINTER(Tox), POINTER(c_uint8)]
     tox_self_get_name.restype = None
 
-# /usr/local/include/tox/tox.h: 918
+# /usr/include/tox/tox.h: 1121
 if hasattr(_libs['toxcore'], 'tox_self_set_status_message'):
     tox_self_set_status_message = _libs['toxcore'].tox_self_set_status_message
     tox_self_set_status_message.argtypes = [POINTER(Tox), POINTER(c_uint8), c_size_t, POINTER(TOX_ERR_SET_INFO)]
     tox_self_set_status_message.restype = c_bool
 
-# /usr/local/include/tox/tox.h: 928
+# /usr/include/tox/tox.h: 1131
 if hasattr(_libs['toxcore'], 'tox_self_get_status_message_size'):
     tox_self_get_status_message_size = _libs['toxcore'].tox_self_get_status_message_size
     tox_self_get_status_message_size.argtypes = [POINTER(Tox)]
     tox_self_get_status_message_size.restype = c_size_t
 
-# /usr/local/include/tox/tox.h: 942
+# /usr/include/tox/tox.h: 1145
 if hasattr(_libs['toxcore'], 'tox_self_get_status_message'):
     tox_self_get_status_message = _libs['toxcore'].tox_self_get_status_message
     tox_self_get_status_message.argtypes = [POINTER(Tox), POINTER(c_uint8)]
     tox_self_get_status_message.restype = None
 
-# /usr/local/include/tox/tox.h: 949
+# /usr/include/tox/tox.h: 1152
 if hasattr(_libs['toxcore'], 'tox_self_set_status'):
     tox_self_set_status = _libs['toxcore'].tox_self_set_status
     tox_self_set_status.argtypes = [POINTER(Tox), TOX_USER_STATUS]
     tox_self_set_status.restype = None
 
-# /usr/local/include/tox/tox.h: 954
+# /usr/include/tox/tox.h: 1157
 if hasattr(_libs['toxcore'], 'tox_self_get_status'):
     tox_self_get_status = _libs['toxcore'].tox_self_get_status
     tox_self_get_status.argtypes = [POINTER(Tox)]
     tox_self_get_status.restype = TOX_USER_STATUS
 
-enum_TOX_ERR_FRIEND_ADD = c_int # /usr/local/include/tox/tox.h: 1015
+enum_TOX_ERR_FRIEND_ADD = c_int # /usr/include/tox/tox.h: 1218
 
-TOX_ERR_FRIEND_ADD_OK = 0 # /usr/local/include/tox/tox.h: 1015
+TOX_ERR_FRIEND_ADD_OK = 0 # /usr/include/tox/tox.h: 1218
 
-TOX_ERR_FRIEND_ADD_NULL = (TOX_ERR_FRIEND_ADD_OK + 1) # /usr/local/include/tox/tox.h: 1015
+TOX_ERR_FRIEND_ADD_NULL = (TOX_ERR_FRIEND_ADD_OK + 1) # /usr/include/tox/tox.h: 1218
 
-TOX_ERR_FRIEND_ADD_TOO_LONG = (TOX_ERR_FRIEND_ADD_NULL + 1) # /usr/local/include/tox/tox.h: 1015
+TOX_ERR_FRIEND_ADD_TOO_LONG = (TOX_ERR_FRIEND_ADD_NULL + 1) # /usr/include/tox/tox.h: 1218
 
-TOX_ERR_FRIEND_ADD_NO_MESSAGE = (TOX_ERR_FRIEND_ADD_TOO_LONG + 1) # /usr/local/include/tox/tox.h: 1015
+TOX_ERR_FRIEND_ADD_NO_MESSAGE = (TOX_ERR_FRIEND_ADD_TOO_LONG + 1) # /usr/include/tox/tox.h: 1218
 
-TOX_ERR_FRIEND_ADD_OWN_KEY = (TOX_ERR_FRIEND_ADD_NO_MESSAGE + 1) # /usr/local/include/tox/tox.h: 1015
+TOX_ERR_FRIEND_ADD_OWN_KEY = (TOX_ERR_FRIEND_ADD_NO_MESSAGE + 1) # /usr/include/tox/tox.h: 1218
 
-TOX_ERR_FRIEND_ADD_ALREADY_SENT = (TOX_ERR_FRIEND_ADD_OWN_KEY + 1) # /usr/local/include/tox/tox.h: 1015
+TOX_ERR_FRIEND_ADD_ALREADY_SENT = (TOX_ERR_FRIEND_ADD_OWN_KEY + 1) # /usr/include/tox/tox.h: 1218
 
-TOX_ERR_FRIEND_ADD_BAD_CHECKSUM = (TOX_ERR_FRIEND_ADD_ALREADY_SENT + 1) # /usr/local/include/tox/tox.h: 1015
+TOX_ERR_FRIEND_ADD_BAD_CHECKSUM = (TOX_ERR_FRIEND_ADD_ALREADY_SENT + 1) # /usr/include/tox/tox.h: 1218
 
-TOX_ERR_FRIEND_ADD_SET_NEW_NOSPAM = (TOX_ERR_FRIEND_ADD_BAD_CHECKSUM + 1) # /usr/local/include/tox/tox.h: 1015
+TOX_ERR_FRIEND_ADD_SET_NEW_NOSPAM = (TOX_ERR_FRIEND_ADD_BAD_CHECKSUM + 1) # /usr/include/tox/tox.h: 1218
 
-TOX_ERR_FRIEND_ADD_MALLOC = (TOX_ERR_FRIEND_ADD_SET_NEW_NOSPAM + 1) # /usr/local/include/tox/tox.h: 1015
+TOX_ERR_FRIEND_ADD_MALLOC = (TOX_ERR_FRIEND_ADD_SET_NEW_NOSPAM + 1) # /usr/include/tox/tox.h: 1218
 
-TOX_ERR_FRIEND_ADD = enum_TOX_ERR_FRIEND_ADD # /usr/local/include/tox/tox.h: 1015
+TOX_ERR_FRIEND_ADD = enum_TOX_ERR_FRIEND_ADD # /usr/include/tox/tox.h: 1218
 
-# /usr/local/include/tox/tox.h: 1041
+# /usr/include/tox/tox.h: 1244
 if hasattr(_libs['toxcore'], 'tox_friend_add'):
     tox_friend_add = _libs['toxcore'].tox_friend_add
     tox_friend_add.argtypes = [POINTER(Tox), POINTER(c_uint8), POINTER(c_uint8), c_size_t, POINTER(TOX_ERR_FRIEND_ADD)]
     tox_friend_add.restype = c_uint32
 
-# /usr/local/include/tox/tox.h: 1062
+# /usr/include/tox/tox.h: 1265
 if hasattr(_libs['toxcore'], 'tox_friend_add_norequest'):
     tox_friend_add_norequest = _libs['toxcore'].tox_friend_add_norequest
     tox_friend_add_norequest.argtypes = [POINTER(Tox), POINTER(c_uint8), POINTER(TOX_ERR_FRIEND_ADD)]
     tox_friend_add_norequest.restype = c_uint32
 
-enum_TOX_ERR_FRIEND_DELETE = c_int # /usr/local/include/tox/tox.h: 1076
+enum_TOX_ERR_FRIEND_DELETE = c_int # /usr/include/tox/tox.h: 1279
 
-TOX_ERR_FRIEND_DELETE_OK = 0 # /usr/local/include/tox/tox.h: 1076
+TOX_ERR_FRIEND_DELETE_OK = 0 # /usr/include/tox/tox.h: 1279
 
-TOX_ERR_FRIEND_DELETE_FRIEND_NOT_FOUND = (TOX_ERR_FRIEND_DELETE_OK + 1) # /usr/local/include/tox/tox.h: 1076
+TOX_ERR_FRIEND_DELETE_FRIEND_NOT_FOUND = (TOX_ERR_FRIEND_DELETE_OK + 1) # /usr/include/tox/tox.h: 1279
 
-TOX_ERR_FRIEND_DELETE = enum_TOX_ERR_FRIEND_DELETE # /usr/local/include/tox/tox.h: 1076
+TOX_ERR_FRIEND_DELETE = enum_TOX_ERR_FRIEND_DELETE # /usr/include/tox/tox.h: 1279
 
-# /usr/local/include/tox/tox.h: 1090
+# /usr/include/tox/tox.h: 1293
 if hasattr(_libs['toxcore'], 'tox_friend_delete'):
     tox_friend_delete = _libs['toxcore'].tox_friend_delete
     tox_friend_delete.argtypes = [POINTER(Tox), c_uint32, POINTER(TOX_ERR_FRIEND_DELETE)]
     tox_friend_delete.restype = c_bool
 
-enum_TOX_ERR_FRIEND_BY_PUBLIC_KEY = c_int # /usr/local/include/tox/tox.h: 1118
+enum_TOX_ERR_FRIEND_BY_PUBLIC_KEY = c_int # /usr/include/tox/tox.h: 1321
 
-TOX_ERR_FRIEND_BY_PUBLIC_KEY_OK = 0 # /usr/local/include/tox/tox.h: 1118
+TOX_ERR_FRIEND_BY_PUBLIC_KEY_OK = 0 # /usr/include/tox/tox.h: 1321
 
-TOX_ERR_FRIEND_BY_PUBLIC_KEY_NULL = (TOX_ERR_FRIEND_BY_PUBLIC_KEY_OK + 1) # /usr/local/include/tox/tox.h: 1118
+TOX_ERR_FRIEND_BY_PUBLIC_KEY_NULL = (TOX_ERR_FRIEND_BY_PUBLIC_KEY_OK + 1) # /usr/include/tox/tox.h: 1321
 
-TOX_ERR_FRIEND_BY_PUBLIC_KEY_NOT_FOUND = (TOX_ERR_FRIEND_BY_PUBLIC_KEY_NULL + 1) # /usr/local/include/tox/tox.h: 1118
+TOX_ERR_FRIEND_BY_PUBLIC_KEY_NOT_FOUND = (TOX_ERR_FRIEND_BY_PUBLIC_KEY_NULL + 1) # /usr/include/tox/tox.h: 1321
 
-TOX_ERR_FRIEND_BY_PUBLIC_KEY = enum_TOX_ERR_FRIEND_BY_PUBLIC_KEY # /usr/local/include/tox/tox.h: 1118
+TOX_ERR_FRIEND_BY_PUBLIC_KEY = enum_TOX_ERR_FRIEND_BY_PUBLIC_KEY # /usr/include/tox/tox.h: 1321
 
-# /usr/local/include/tox/tox.h: 1127
+# /usr/include/tox/tox.h: 1330
 if hasattr(_libs['toxcore'], 'tox_friend_by_public_key'):
     tox_friend_by_public_key = _libs['toxcore'].tox_friend_by_public_key
     tox_friend_by_public_key.argtypes = [POINTER(Tox), POINTER(c_uint8), POINTER(TOX_ERR_FRIEND_BY_PUBLIC_KEY)]
     tox_friend_by_public_key.restype = c_uint32
 
-# /usr/local/include/tox/tox.h: 1133
+# /usr/include/tox/tox.h: 1336
 if hasattr(_libs['toxcore'], 'tox_friend_exists'):
     tox_friend_exists = _libs['toxcore'].tox_friend_exists
     tox_friend_exists.argtypes = [POINTER(Tox), c_uint32]
     tox_friend_exists.restype = c_bool
 
-# /usr/local/include/tox/tox.h: 1141
+# /usr/include/tox/tox.h: 1344
 if hasattr(_libs['toxcore'], 'tox_self_get_friend_list_size'):
     tox_self_get_friend_list_size = _libs['toxcore'].tox_self_get_friend_list_size
     tox_self_get_friend_list_size.argtypes = [POINTER(Tox)]
     tox_self_get_friend_list_size.restype = c_size_t
 
-# /usr/local/include/tox/tox.h: 1151
+# /usr/include/tox/tox.h: 1354
 if hasattr(_libs['toxcore'], 'tox_self_get_friend_list'):
     tox_self_get_friend_list = _libs['toxcore'].tox_self_get_friend_list
     tox_self_get_friend_list.argtypes = [POINTER(Tox), POINTER(c_uint32)]
     tox_self_get_friend_list.restype = None
 
-enum_TOX_ERR_FRIEND_GET_PUBLIC_KEY = c_int # /usr/local/include/tox/tox.h: 1165
+enum_TOX_ERR_FRIEND_GET_PUBLIC_KEY = c_int # /usr/include/tox/tox.h: 1368
 
-TOX_ERR_FRIEND_GET_PUBLIC_KEY_OK = 0 # /usr/local/include/tox/tox.h: 1165
+TOX_ERR_FRIEND_GET_PUBLIC_KEY_OK = 0 # /usr/include/tox/tox.h: 1368
 
-TOX_ERR_FRIEND_GET_PUBLIC_KEY_FRIEND_NOT_FOUND = (TOX_ERR_FRIEND_GET_PUBLIC_KEY_OK + 1) # /usr/local/include/tox/tox.h: 1165
+TOX_ERR_FRIEND_GET_PUBLIC_KEY_FRIEND_NOT_FOUND = (TOX_ERR_FRIEND_GET_PUBLIC_KEY_OK + 1) # /usr/include/tox/tox.h: 1368
 
-TOX_ERR_FRIEND_GET_PUBLIC_KEY = enum_TOX_ERR_FRIEND_GET_PUBLIC_KEY # /usr/local/include/tox/tox.h: 1165
+TOX_ERR_FRIEND_GET_PUBLIC_KEY = enum_TOX_ERR_FRIEND_GET_PUBLIC_KEY # /usr/include/tox/tox.h: 1368
 
-# /usr/local/include/tox/tox.h: 1177
+# /usr/include/tox/tox.h: 1380
 if hasattr(_libs['toxcore'], 'tox_friend_get_public_key'):
     tox_friend_get_public_key = _libs['toxcore'].tox_friend_get_public_key
     tox_friend_get_public_key.argtypes = [POINTER(Tox), c_uint32, POINTER(c_uint8), POINTER(TOX_ERR_FRIEND_GET_PUBLIC_KEY)]
     tox_friend_get_public_key.restype = c_bool
 
-enum_TOX_ERR_FRIEND_GET_LAST_ONLINE = c_int # /usr/local/include/tox/tox.h: 1192
+enum_TOX_ERR_FRIEND_GET_LAST_ONLINE = c_int # /usr/include/tox/tox.h: 1395
 
-TOX_ERR_FRIEND_GET_LAST_ONLINE_OK = 0 # /usr/local/include/tox/tox.h: 1192
+TOX_ERR_FRIEND_GET_LAST_ONLINE_OK = 0 # /usr/include/tox/tox.h: 1395
 
-TOX_ERR_FRIEND_GET_LAST_ONLINE_FRIEND_NOT_FOUND = (TOX_ERR_FRIEND_GET_LAST_ONLINE_OK + 1) # /usr/local/include/tox/tox.h: 1192
+TOX_ERR_FRIEND_GET_LAST_ONLINE_FRIEND_NOT_FOUND = (TOX_ERR_FRIEND_GET_LAST_ONLINE_OK + 1) # /usr/include/tox/tox.h: 1395
 
-TOX_ERR_FRIEND_GET_LAST_ONLINE = enum_TOX_ERR_FRIEND_GET_LAST_ONLINE # /usr/local/include/tox/tox.h: 1192
+TOX_ERR_FRIEND_GET_LAST_ONLINE = enum_TOX_ERR_FRIEND_GET_LAST_ONLINE # /usr/include/tox/tox.h: 1395
 
-# /usr/local/include/tox/tox.h: 1201
+# /usr/include/tox/tox.h: 1404
 if hasattr(_libs['toxcore'], 'tox_friend_get_last_online'):
     tox_friend_get_last_online = _libs['toxcore'].tox_friend_get_last_online
     tox_friend_get_last_online.argtypes = [POINTER(Tox), c_uint32, POINTER(TOX_ERR_FRIEND_GET_LAST_ONLINE)]
     tox_friend_get_last_online.restype = c_uint64
 
-enum_TOX_ERR_FRIEND_QUERY = c_int # /usr/local/include/tox/tox.h: 1234
+enum_TOX_ERR_FRIEND_QUERY = c_int # /usr/include/tox/tox.h: 1437
 
-TOX_ERR_FRIEND_QUERY_OK = 0 # /usr/local/include/tox/tox.h: 1234
+TOX_ERR_FRIEND_QUERY_OK = 0 # /usr/include/tox/tox.h: 1437
 
-TOX_ERR_FRIEND_QUERY_NULL = (TOX_ERR_FRIEND_QUERY_OK + 1) # /usr/local/include/tox/tox.h: 1234
+TOX_ERR_FRIEND_QUERY_NULL = (TOX_ERR_FRIEND_QUERY_OK + 1) # /usr/include/tox/tox.h: 1437
 
-TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND = (TOX_ERR_FRIEND_QUERY_NULL + 1) # /usr/local/include/tox/tox.h: 1234
+TOX_ERR_FRIEND_QUERY_FRIEND_NOT_FOUND = (TOX_ERR_FRIEND_QUERY_NULL + 1) # /usr/include/tox/tox.h: 1437
 
-TOX_ERR_FRIEND_QUERY = enum_TOX_ERR_FRIEND_QUERY # /usr/local/include/tox/tox.h: 1234
+TOX_ERR_FRIEND_QUERY = enum_TOX_ERR_FRIEND_QUERY # /usr/include/tox/tox.h: 1437
 
-# /usr/local/include/tox/tox.h: 1244
+# /usr/include/tox/tox.h: 1447
 if hasattr(_libs['toxcore'], 'tox_friend_get_name_size'):
     tox_friend_get_name_size = _libs['toxcore'].tox_friend_get_name_size
     tox_friend_get_name_size.argtypes = [POINTER(Tox), c_uint32, POINTER(TOX_ERR_FRIEND_QUERY)]
     tox_friend_get_name_size.restype = c_size_t
 
-# /usr/local/include/tox/tox.h: 1260
+# /usr/include/tox/tox.h: 1463
 if hasattr(_libs['toxcore'], 'tox_friend_get_name'):
     tox_friend_get_name = _libs['toxcore'].tox_friend_get_name
     tox_friend_get_name.argtypes = [POINTER(Tox), c_uint32, POINTER(c_uint8), POINTER(TOX_ERR_FRIEND_QUERY)]
     tox_friend_get_name.restype = c_bool
 
-tox_friend_name_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/local/include/tox/tox.h: 1269
+tox_friend_name_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/include/tox/tox.h: 1472
 
-# /usr/local/include/tox/tox.h: 1277
+# /usr/include/tox/tox.h: 1480
 if hasattr(_libs['toxcore'], 'tox_callback_friend_name'):
     tox_callback_friend_name = _libs['toxcore'].tox_callback_friend_name
-    tox_callback_friend_name.argtypes = [POINTER(Tox), POINTER(tox_friend_name_cb), POINTER(None)]
+    tox_callback_friend_name.argtypes = [POINTER(Tox), POINTER(tox_friend_name_cb)]
     tox_callback_friend_name.restype = None
 
-# /usr/local/include/tox/tox.h: 1283
+# /usr/include/tox/tox.h: 1486
 if hasattr(_libs['toxcore'], 'tox_friend_get_status_message_size'):
     tox_friend_get_status_message_size = _libs['toxcore'].tox_friend_get_status_message_size
     tox_friend_get_status_message_size.argtypes = [POINTER(Tox), c_uint32, POINTER(TOX_ERR_FRIEND_QUERY)]
     tox_friend_get_status_message_size.restype = c_size_t
 
-# /usr/local/include/tox/tox.h: 1297
+# /usr/include/tox/tox.h: 1500
 if hasattr(_libs['toxcore'], 'tox_friend_get_status_message'):
     tox_friend_get_status_message = _libs['toxcore'].tox_friend_get_status_message
     tox_friend_get_status_message.argtypes = [POINTER(Tox), c_uint32, POINTER(c_uint8), POINTER(TOX_ERR_FRIEND_QUERY)]
     tox_friend_get_status_message.restype = c_bool
 
-tox_friend_status_message_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/local/include/tox/tox.h: 1308
+tox_friend_status_message_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/include/tox/tox.h: 1511
 
-# /usr/local/include/tox/tox.h: 1317
+# /usr/include/tox/tox.h: 1520
 if hasattr(_libs['toxcore'], 'tox_callback_friend_status_message'):
     tox_callback_friend_status_message = _libs['toxcore'].tox_callback_friend_status_message
-    tox_callback_friend_status_message.argtypes = [POINTER(Tox), POINTER(tox_friend_status_message_cb), POINTER(None)]
+    tox_callback_friend_status_message.argtypes = [POINTER(Tox), POINTER(tox_friend_status_message_cb)]
     tox_callback_friend_status_message.restype = None
 
-# /usr/local/include/tox/tox.h: 1326
+# /usr/include/tox/tox.h: 1529
 if hasattr(_libs['toxcore'], 'tox_friend_get_status'):
     tox_friend_get_status = _libs['toxcore'].tox_friend_get_status
     tox_friend_get_status.argtypes = [POINTER(Tox), c_uint32, POINTER(TOX_ERR_FRIEND_QUERY)]
     tox_friend_get_status.restype = TOX_USER_STATUS
 
-tox_friend_status_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, TOX_USER_STATUS, POINTER(None)) # /usr/local/include/tox/tox.h: 1333
+tox_friend_status_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, TOX_USER_STATUS, POINTER(None)) # /usr/include/tox/tox.h: 1536
 
-# /usr/local/include/tox/tox.h: 1341
+# /usr/include/tox/tox.h: 1544
 if hasattr(_libs['toxcore'], 'tox_callback_friend_status'):
     tox_callback_friend_status = _libs['toxcore'].tox_callback_friend_status
-    tox_callback_friend_status.argtypes = [POINTER(Tox), POINTER(tox_friend_status_cb), POINTER(None)]
+    tox_callback_friend_status.argtypes = [POINTER(Tox), POINTER(tox_friend_status_cb)]
     tox_callback_friend_status.restype = None
 
-# /usr/local/include/tox/tox.h: 1355
+# /usr/include/tox/tox.h: 1558
 if hasattr(_libs['toxcore'], 'tox_friend_get_connection_status'):
     tox_friend_get_connection_status = _libs['toxcore'].tox_friend_get_connection_status
     tox_friend_get_connection_status.argtypes = [POINTER(Tox), c_uint32, POINTER(TOX_ERR_FRIEND_QUERY)]
     tox_friend_get_connection_status.restype = TOX_CONNECTION
 
-tox_friend_connection_status_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, TOX_CONNECTION, POINTER(None)) # /usr/local/include/tox/tox.h: 1363
+tox_friend_connection_status_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, TOX_CONNECTION, POINTER(None)) # /usr/include/tox/tox.h: 1566
 
-# /usr/local/include/tox/tox.h: 1376
+# /usr/include/tox/tox.h: 1579
 if hasattr(_libs['toxcore'], 'tox_callback_friend_connection_status'):
     tox_callback_friend_connection_status = _libs['toxcore'].tox_callback_friend_connection_status
-    tox_callback_friend_connection_status.argtypes = [POINTER(Tox), POINTER(tox_friend_connection_status_cb), POINTER(None)]
+    tox_callback_friend_connection_status.argtypes = [POINTER(Tox), POINTER(tox_friend_connection_status_cb)]
     tox_callback_friend_connection_status.restype = None
 
-# /usr/local/include/tox/tox.h: 1387
+# /usr/include/tox/tox.h: 1590
 if hasattr(_libs['toxcore'], 'tox_friend_get_typing'):
     tox_friend_get_typing = _libs['toxcore'].tox_friend_get_typing
     tox_friend_get_typing.argtypes = [POINTER(Tox), c_uint32, POINTER(TOX_ERR_FRIEND_QUERY)]
     tox_friend_get_typing.restype = c_bool
 
-tox_friend_typing_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_bool, POINTER(None)) # /usr/local/include/tox/tox.h: 1395
+tox_friend_typing_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_bool, POINTER(None)) # /usr/include/tox/tox.h: 1598
 
-# /usr/local/include/tox/tox.h: 1403
+# /usr/include/tox/tox.h: 1606
 if hasattr(_libs['toxcore'], 'tox_callback_friend_typing'):
     tox_callback_friend_typing = _libs['toxcore'].tox_callback_friend_typing
-    tox_callback_friend_typing.argtypes = [POINTER(Tox), POINTER(tox_friend_typing_cb), POINTER(None)]
+    tox_callback_friend_typing.argtypes = [POINTER(Tox), POINTER(tox_friend_typing_cb)]
     tox_callback_friend_typing.restype = None
 
-enum_TOX_ERR_SET_TYPING = c_int # /usr/local/include/tox/tox.h: 1426
+enum_TOX_ERR_SET_TYPING = c_int # /usr/include/tox/tox.h: 1629
 
-TOX_ERR_SET_TYPING_OK = 0 # /usr/local/include/tox/tox.h: 1426
+TOX_ERR_SET_TYPING_OK = 0 # /usr/include/tox/tox.h: 1629
 
-TOX_ERR_SET_TYPING_FRIEND_NOT_FOUND = (TOX_ERR_SET_TYPING_OK + 1) # /usr/local/include/tox/tox.h: 1426
+TOX_ERR_SET_TYPING_FRIEND_NOT_FOUND = (TOX_ERR_SET_TYPING_OK + 1) # /usr/include/tox/tox.h: 1629
 
-TOX_ERR_SET_TYPING = enum_TOX_ERR_SET_TYPING # /usr/local/include/tox/tox.h: 1426
+TOX_ERR_SET_TYPING = enum_TOX_ERR_SET_TYPING # /usr/include/tox/tox.h: 1629
 
-# /usr/local/include/tox/tox.h: 1439
+# /usr/include/tox/tox.h: 1642
 if hasattr(_libs['toxcore'], 'tox_self_set_typing'):
     tox_self_set_typing = _libs['toxcore'].tox_self_set_typing
     tox_self_set_typing.argtypes = [POINTER(Tox), c_uint32, c_bool, POINTER(TOX_ERR_SET_TYPING)]
     tox_self_set_typing.restype = c_bool
 
-enum_TOX_ERR_FRIEND_SEND_MESSAGE = c_int # /usr/local/include/tox/tox.h: 1478
+enum_TOX_ERR_FRIEND_SEND_MESSAGE = c_int # /usr/include/tox/tox.h: 1681
 
-TOX_ERR_FRIEND_SEND_MESSAGE_OK = 0 # /usr/local/include/tox/tox.h: 1478
+TOX_ERR_FRIEND_SEND_MESSAGE_OK = 0 # /usr/include/tox/tox.h: 1681
 
-TOX_ERR_FRIEND_SEND_MESSAGE_NULL = (TOX_ERR_FRIEND_SEND_MESSAGE_OK + 1) # /usr/local/include/tox/tox.h: 1478
+TOX_ERR_FRIEND_SEND_MESSAGE_NULL = (TOX_ERR_FRIEND_SEND_MESSAGE_OK + 1) # /usr/include/tox/tox.h: 1681
 
-TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_FOUND = (TOX_ERR_FRIEND_SEND_MESSAGE_NULL + 1) # /usr/local/include/tox/tox.h: 1478
+TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_FOUND = (TOX_ERR_FRIEND_SEND_MESSAGE_NULL + 1) # /usr/include/tox/tox.h: 1681
 
-TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_CONNECTED = (TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_FOUND + 1) # /usr/local/include/tox/tox.h: 1478
+TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_CONNECTED = (TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_FOUND + 1) # /usr/include/tox/tox.h: 1681
 
-TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ = (TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_CONNECTED + 1) # /usr/local/include/tox/tox.h: 1478
+TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ = (TOX_ERR_FRIEND_SEND_MESSAGE_FRIEND_NOT_CONNECTED + 1) # /usr/include/tox/tox.h: 1681
 
-TOX_ERR_FRIEND_SEND_MESSAGE_TOO_LONG = (TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ + 1) # /usr/local/include/tox/tox.h: 1478
+TOX_ERR_FRIEND_SEND_MESSAGE_TOO_LONG = (TOX_ERR_FRIEND_SEND_MESSAGE_SENDQ + 1) # /usr/include/tox/tox.h: 1681
 
-TOX_ERR_FRIEND_SEND_MESSAGE_EMPTY = (TOX_ERR_FRIEND_SEND_MESSAGE_TOO_LONG + 1) # /usr/local/include/tox/tox.h: 1478
+TOX_ERR_FRIEND_SEND_MESSAGE_EMPTY = (TOX_ERR_FRIEND_SEND_MESSAGE_TOO_LONG + 1) # /usr/include/tox/tox.h: 1681
 
-TOX_ERR_FRIEND_SEND_MESSAGE = enum_TOX_ERR_FRIEND_SEND_MESSAGE # /usr/local/include/tox/tox.h: 1478
+TOX_ERR_FRIEND_SEND_MESSAGE = enum_TOX_ERR_FRIEND_SEND_MESSAGE # /usr/include/tox/tox.h: 1681
 
-# /usr/local/include/tox/tox.h: 1504
+# /usr/include/tox/tox.h: 1707
 if hasattr(_libs['toxcore'], 'tox_friend_send_message'):
     tox_friend_send_message = _libs['toxcore'].tox_friend_send_message
     tox_friend_send_message.argtypes = [POINTER(Tox), c_uint32, TOX_MESSAGE_TYPE, POINTER(c_uint8), c_size_t, POINTER(TOX_ERR_FRIEND_SEND_MESSAGE)]
     tox_friend_send_message.restype = c_uint32
 
-tox_friend_read_receipt_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_uint32, POINTER(None)) # /usr/local/include/tox/tox.h: 1512
+tox_friend_read_receipt_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_uint32, POINTER(None)) # /usr/include/tox/tox.h: 1715
 
-# /usr/local/include/tox/tox.h: 1521
+# /usr/include/tox/tox.h: 1724
 if hasattr(_libs['toxcore'], 'tox_callback_friend_read_receipt'):
     tox_callback_friend_read_receipt = _libs['toxcore'].tox_callback_friend_read_receipt
-    tox_callback_friend_read_receipt.argtypes = [POINTER(Tox), POINTER(tox_friend_read_receipt_cb), POINTER(None)]
+    tox_callback_friend_read_receipt.argtypes = [POINTER(Tox), POINTER(tox_friend_read_receipt_cb)]
     tox_callback_friend_read_receipt.restype = None
 
-tox_friend_request_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), POINTER(c_uint8), POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/local/include/tox/tox.h: 1542
+tox_friend_request_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), POINTER(c_uint8), POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/include/tox/tox.h: 1740
 
-# /usr/local/include/tox/tox.h: 1551
+# /usr/include/tox/tox.h: 1749
 if hasattr(_libs['toxcore'], 'tox_callback_friend_request'):
     tox_callback_friend_request = _libs['toxcore'].tox_callback_friend_request
-    tox_callback_friend_request.argtypes = [POINTER(Tox), POINTER(tox_friend_request_cb), POINTER(None)]
+    tox_callback_friend_request.argtypes = [POINTER(Tox), POINTER(tox_friend_request_cb)]
     tox_callback_friend_request.restype = None
 
-tox_friend_message_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, TOX_MESSAGE_TYPE, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/local/include/tox/tox.h: 1561
+tox_friend_message_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, TOX_MESSAGE_TYPE, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/include/tox/tox.h: 1756
 
-# /usr/local/include/tox/tox.h: 1570
+# /usr/include/tox/tox.h: 1765
 if hasattr(_libs['toxcore'], 'tox_callback_friend_message'):
     tox_callback_friend_message = _libs['toxcore'].tox_callback_friend_message
-    tox_callback_friend_message.argtypes = [POINTER(Tox), POINTER(tox_friend_message_cb), POINTER(None)]
+    tox_callback_friend_message.argtypes = [POINTER(Tox), POINTER(tox_friend_message_cb)]
     tox_callback_friend_message.restype = None
 
-# /usr/local/include/tox/tox.h: 1600
+# /usr/include/tox/tox.h: 1795
 if hasattr(_libs['toxcore'], 'tox_hash'):
     tox_hash = _libs['toxcore'].tox_hash
     tox_hash.argtypes = [POINTER(c_uint8), POINTER(c_uint8), c_size_t]
     tox_hash.restype = c_bool
 
-enum_TOX_FILE_KIND = c_int # /usr/local/include/tox/tox.h: 1602
+enum_TOX_FILE_KIND = c_int # /usr/include/tox/tox.h: 1797
 
-TOX_FILE_KIND_DATA = 0 # /usr/local/include/tox/tox.h: 1602
+TOX_FILE_KIND_DATA = 0 # /usr/include/tox/tox.h: 1797
 
-TOX_FILE_KIND_AVATAR = (TOX_FILE_KIND_DATA + 1) # /usr/local/include/tox/tox.h: 1602
+TOX_FILE_KIND_AVATAR = (TOX_FILE_KIND_DATA + 1) # /usr/include/tox/tox.h: 1797
 
-enum_TOX_FILE_CONTROL = c_int # /usr/local/include/tox/tox.h: 1657
+enum_TOX_FILE_CONTROL = c_int # /usr/include/tox/tox.h: 1852
 
-TOX_FILE_CONTROL_RESUME = 0 # /usr/local/include/tox/tox.h: 1657
+TOX_FILE_CONTROL_RESUME = 0 # /usr/include/tox/tox.h: 1852
 
-TOX_FILE_CONTROL_PAUSE = (TOX_FILE_CONTROL_RESUME + 1) # /usr/local/include/tox/tox.h: 1657
+TOX_FILE_CONTROL_PAUSE = (TOX_FILE_CONTROL_RESUME + 1) # /usr/include/tox/tox.h: 1852
 
-TOX_FILE_CONTROL_CANCEL = (TOX_FILE_CONTROL_PAUSE + 1) # /usr/local/include/tox/tox.h: 1657
+TOX_FILE_CONTROL_CANCEL = (TOX_FILE_CONTROL_PAUSE + 1) # /usr/include/tox/tox.h: 1852
 
-TOX_FILE_CONTROL = enum_TOX_FILE_CONTROL # /usr/local/include/tox/tox.h: 1657
+TOX_FILE_CONTROL = enum_TOX_FILE_CONTROL # /usr/include/tox/tox.h: 1852
 
-enum_TOX_ERR_FILE_CONTROL = c_int # /usr/local/include/tox/tox.h: 1703
+enum_TOX_ERR_FILE_CONTROL = c_int # /usr/include/tox/tox.h: 1898
 
-TOX_ERR_FILE_CONTROL_OK = 0 # /usr/local/include/tox/tox.h: 1703
+TOX_ERR_FILE_CONTROL_OK = 0 # /usr/include/tox/tox.h: 1898
 
-TOX_ERR_FILE_CONTROL_FRIEND_NOT_FOUND = (TOX_ERR_FILE_CONTROL_OK + 1) # /usr/local/include/tox/tox.h: 1703
+TOX_ERR_FILE_CONTROL_FRIEND_NOT_FOUND = (TOX_ERR_FILE_CONTROL_OK + 1) # /usr/include/tox/tox.h: 1898
 
-TOX_ERR_FILE_CONTROL_FRIEND_NOT_CONNECTED = (TOX_ERR_FILE_CONTROL_FRIEND_NOT_FOUND + 1) # /usr/local/include/tox/tox.h: 1703
+TOX_ERR_FILE_CONTROL_FRIEND_NOT_CONNECTED = (TOX_ERR_FILE_CONTROL_FRIEND_NOT_FOUND + 1) # /usr/include/tox/tox.h: 1898
 
-TOX_ERR_FILE_CONTROL_NOT_FOUND = (TOX_ERR_FILE_CONTROL_FRIEND_NOT_CONNECTED + 1) # /usr/local/include/tox/tox.h: 1703
+TOX_ERR_FILE_CONTROL_NOT_FOUND = (TOX_ERR_FILE_CONTROL_FRIEND_NOT_CONNECTED + 1) # /usr/include/tox/tox.h: 1898
 
-TOX_ERR_FILE_CONTROL_NOT_PAUSED = (TOX_ERR_FILE_CONTROL_NOT_FOUND + 1) # /usr/local/include/tox/tox.h: 1703
+TOX_ERR_FILE_CONTROL_NOT_PAUSED = (TOX_ERR_FILE_CONTROL_NOT_FOUND + 1) # /usr/include/tox/tox.h: 1898
 
-TOX_ERR_FILE_CONTROL_DENIED = (TOX_ERR_FILE_CONTROL_NOT_PAUSED + 1) # /usr/local/include/tox/tox.h: 1703
+TOX_ERR_FILE_CONTROL_DENIED = (TOX_ERR_FILE_CONTROL_NOT_PAUSED + 1) # /usr/include/tox/tox.h: 1898
 
-TOX_ERR_FILE_CONTROL_ALREADY_PAUSED = (TOX_ERR_FILE_CONTROL_DENIED + 1) # /usr/local/include/tox/tox.h: 1703
+TOX_ERR_FILE_CONTROL_ALREADY_PAUSED = (TOX_ERR_FILE_CONTROL_DENIED + 1) # /usr/include/tox/tox.h: 1898
 
-TOX_ERR_FILE_CONTROL_SENDQ = (TOX_ERR_FILE_CONTROL_ALREADY_PAUSED + 1) # /usr/local/include/tox/tox.h: 1703
+TOX_ERR_FILE_CONTROL_SENDQ = (TOX_ERR_FILE_CONTROL_ALREADY_PAUSED + 1) # /usr/include/tox/tox.h: 1898
 
-TOX_ERR_FILE_CONTROL = enum_TOX_ERR_FILE_CONTROL # /usr/local/include/tox/tox.h: 1703
+TOX_ERR_FILE_CONTROL = enum_TOX_ERR_FILE_CONTROL # /usr/include/tox/tox.h: 1898
 
-# /usr/local/include/tox/tox.h: 1716
+# /usr/include/tox/tox.h: 1911
 if hasattr(_libs['toxcore'], 'tox_file_control'):
     tox_file_control = _libs['toxcore'].tox_file_control
     tox_file_control.argtypes = [POINTER(Tox), c_uint32, c_uint32, TOX_FILE_CONTROL, POINTER(TOX_ERR_FILE_CONTROL)]
     tox_file_control.restype = c_bool
 
-tox_file_recv_control_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_uint32, TOX_FILE_CONTROL, POINTER(None)) # /usr/local/include/tox/tox.h: 1728
+tox_file_recv_control_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_uint32, TOX_FILE_CONTROL, POINTER(None)) # /usr/include/tox/tox.h: 1923
 
-# /usr/local/include/tox/tox.h: 1738
+# /usr/include/tox/tox.h: 1933
 if hasattr(_libs['toxcore'], 'tox_callback_file_recv_control'):
     tox_callback_file_recv_control = _libs['toxcore'].tox_callback_file_recv_control
-    tox_callback_file_recv_control.argtypes = [POINTER(Tox), POINTER(tox_file_recv_control_cb), POINTER(None)]
+    tox_callback_file_recv_control.argtypes = [POINTER(Tox), POINTER(tox_file_recv_control_cb)]
     tox_callback_file_recv_control.restype = None
 
-enum_TOX_ERR_FILE_SEEK = c_int # /usr/local/include/tox/tox.h: 1777
+enum_TOX_ERR_FILE_SEEK = c_int # /usr/include/tox/tox.h: 1972
 
-TOX_ERR_FILE_SEEK_OK = 0 # /usr/local/include/tox/tox.h: 1777
+TOX_ERR_FILE_SEEK_OK = 0 # /usr/include/tox/tox.h: 1972
 
-TOX_ERR_FILE_SEEK_FRIEND_NOT_FOUND = (TOX_ERR_FILE_SEEK_OK + 1) # /usr/local/include/tox/tox.h: 1777
+TOX_ERR_FILE_SEEK_FRIEND_NOT_FOUND = (TOX_ERR_FILE_SEEK_OK + 1) # /usr/include/tox/tox.h: 1972
 
-TOX_ERR_FILE_SEEK_FRIEND_NOT_CONNECTED = (TOX_ERR_FILE_SEEK_FRIEND_NOT_FOUND + 1) # /usr/local/include/tox/tox.h: 1777
+TOX_ERR_FILE_SEEK_FRIEND_NOT_CONNECTED = (TOX_ERR_FILE_SEEK_FRIEND_NOT_FOUND + 1) # /usr/include/tox/tox.h: 1972
 
-TOX_ERR_FILE_SEEK_NOT_FOUND = (TOX_ERR_FILE_SEEK_FRIEND_NOT_CONNECTED + 1) # /usr/local/include/tox/tox.h: 1777
+TOX_ERR_FILE_SEEK_NOT_FOUND = (TOX_ERR_FILE_SEEK_FRIEND_NOT_CONNECTED + 1) # /usr/include/tox/tox.h: 1972
 
-TOX_ERR_FILE_SEEK_DENIED = (TOX_ERR_FILE_SEEK_NOT_FOUND + 1) # /usr/local/include/tox/tox.h: 1777
+TOX_ERR_FILE_SEEK_DENIED = (TOX_ERR_FILE_SEEK_NOT_FOUND + 1) # /usr/include/tox/tox.h: 1972
 
-TOX_ERR_FILE_SEEK_INVALID_POSITION = (TOX_ERR_FILE_SEEK_DENIED + 1) # /usr/local/include/tox/tox.h: 1777
+TOX_ERR_FILE_SEEK_INVALID_POSITION = (TOX_ERR_FILE_SEEK_DENIED + 1) # /usr/include/tox/tox.h: 1972
 
-TOX_ERR_FILE_SEEK_SENDQ = (TOX_ERR_FILE_SEEK_INVALID_POSITION + 1) # /usr/local/include/tox/tox.h: 1777
+TOX_ERR_FILE_SEEK_SENDQ = (TOX_ERR_FILE_SEEK_INVALID_POSITION + 1) # /usr/include/tox/tox.h: 1972
 
-TOX_ERR_FILE_SEEK = enum_TOX_ERR_FILE_SEEK # /usr/local/include/tox/tox.h: 1777
+TOX_ERR_FILE_SEEK = enum_TOX_ERR_FILE_SEEK # /usr/include/tox/tox.h: 1972
 
-# /usr/local/include/tox/tox.h: 1791
+# /usr/include/tox/tox.h: 1986
 if hasattr(_libs['toxcore'], 'tox_file_seek'):
     tox_file_seek = _libs['toxcore'].tox_file_seek
     tox_file_seek.argtypes = [POINTER(Tox), c_uint32, c_uint32, c_uint64, POINTER(TOX_ERR_FILE_SEEK)]
     tox_file_seek.restype = c_bool
 
-enum_TOX_ERR_FILE_GET = c_int # /usr/local/include/tox/tox.h: 1815
+enum_TOX_ERR_FILE_GET = c_int # /usr/include/tox/tox.h: 2010
 
-TOX_ERR_FILE_GET_OK = 0 # /usr/local/include/tox/tox.h: 1815
+TOX_ERR_FILE_GET_OK = 0 # /usr/include/tox/tox.h: 2010
 
-TOX_ERR_FILE_GET_NULL = (TOX_ERR_FILE_GET_OK + 1) # /usr/local/include/tox/tox.h: 1815
+TOX_ERR_FILE_GET_NULL = (TOX_ERR_FILE_GET_OK + 1) # /usr/include/tox/tox.h: 2010
 
-TOX_ERR_FILE_GET_FRIEND_NOT_FOUND = (TOX_ERR_FILE_GET_NULL + 1) # /usr/local/include/tox/tox.h: 1815
+TOX_ERR_FILE_GET_FRIEND_NOT_FOUND = (TOX_ERR_FILE_GET_NULL + 1) # /usr/include/tox/tox.h: 2010
 
-TOX_ERR_FILE_GET_NOT_FOUND = (TOX_ERR_FILE_GET_FRIEND_NOT_FOUND + 1) # /usr/local/include/tox/tox.h: 1815
+TOX_ERR_FILE_GET_NOT_FOUND = (TOX_ERR_FILE_GET_FRIEND_NOT_FOUND + 1) # /usr/include/tox/tox.h: 2010
 
-TOX_ERR_FILE_GET = enum_TOX_ERR_FILE_GET # /usr/local/include/tox/tox.h: 1815
+TOX_ERR_FILE_GET = enum_TOX_ERR_FILE_GET # /usr/include/tox/tox.h: 2010
 
-# /usr/local/include/tox/tox.h: 1829
+# /usr/include/tox/tox.h: 2024
 if hasattr(_libs['toxcore'], 'tox_file_get_file_id'):
     tox_file_get_file_id = _libs['toxcore'].tox_file_get_file_id
     tox_file_get_file_id.argtypes = [POINTER(Tox), c_uint32, c_uint32, POINTER(c_uint8), POINTER(TOX_ERR_FILE_GET)]
     tox_file_get_file_id.restype = c_bool
 
-enum_TOX_ERR_FILE_SEND = c_int # /usr/local/include/tox/tox.h: 1874
+enum_TOX_ERR_FILE_SEND = c_int # /usr/include/tox/tox.h: 2069
 
-TOX_ERR_FILE_SEND_OK = 0 # /usr/local/include/tox/tox.h: 1874
+TOX_ERR_FILE_SEND_OK = 0 # /usr/include/tox/tox.h: 2069
 
-TOX_ERR_FILE_SEND_NULL = (TOX_ERR_FILE_SEND_OK + 1) # /usr/local/include/tox/tox.h: 1874
+TOX_ERR_FILE_SEND_NULL = (TOX_ERR_FILE_SEND_OK + 1) # /usr/include/tox/tox.h: 2069
 
-TOX_ERR_FILE_SEND_FRIEND_NOT_FOUND = (TOX_ERR_FILE_SEND_NULL + 1) # /usr/local/include/tox/tox.h: 1874
+TOX_ERR_FILE_SEND_FRIEND_NOT_FOUND = (TOX_ERR_FILE_SEND_NULL + 1) # /usr/include/tox/tox.h: 2069
 
-TOX_ERR_FILE_SEND_FRIEND_NOT_CONNECTED = (TOX_ERR_FILE_SEND_FRIEND_NOT_FOUND + 1) # /usr/local/include/tox/tox.h: 1874
+TOX_ERR_FILE_SEND_FRIEND_NOT_CONNECTED = (TOX_ERR_FILE_SEND_FRIEND_NOT_FOUND + 1) # /usr/include/tox/tox.h: 2069
 
-TOX_ERR_FILE_SEND_NAME_TOO_LONG = (TOX_ERR_FILE_SEND_FRIEND_NOT_CONNECTED + 1) # /usr/local/include/tox/tox.h: 1874
+TOX_ERR_FILE_SEND_NAME_TOO_LONG = (TOX_ERR_FILE_SEND_FRIEND_NOT_CONNECTED + 1) # /usr/include/tox/tox.h: 2069
 
-TOX_ERR_FILE_SEND_TOO_MANY = (TOX_ERR_FILE_SEND_NAME_TOO_LONG + 1) # /usr/local/include/tox/tox.h: 1874
+TOX_ERR_FILE_SEND_TOO_MANY = (TOX_ERR_FILE_SEND_NAME_TOO_LONG + 1) # /usr/include/tox/tox.h: 2069
 
-TOX_ERR_FILE_SEND = enum_TOX_ERR_FILE_SEND # /usr/local/include/tox/tox.h: 1874
+TOX_ERR_FILE_SEND = enum_TOX_ERR_FILE_SEND # /usr/include/tox/tox.h: 2069
 
-# /usr/local/include/tox/tox.h: 1936
+# /usr/include/tox/tox.h: 2131
 if hasattr(_libs['toxcore'], 'tox_file_send'):
     tox_file_send = _libs['toxcore'].tox_file_send
     tox_file_send.argtypes = [POINTER(Tox), c_uint32, c_uint32, c_uint64, POINTER(c_uint8), POINTER(c_uint8), c_size_t, POINTER(TOX_ERR_FILE_SEND)]
     tox_file_send.restype = c_uint32
 
-enum_TOX_ERR_FILE_SEND_CHUNK = c_int # /usr/local/include/tox/tox.h: 1989
+enum_TOX_ERR_FILE_SEND_CHUNK = c_int # /usr/include/tox/tox.h: 2184
 
-TOX_ERR_FILE_SEND_CHUNK_OK = 0 # /usr/local/include/tox/tox.h: 1989
+TOX_ERR_FILE_SEND_CHUNK_OK = 0 # /usr/include/tox/tox.h: 2184
 
-TOX_ERR_FILE_SEND_CHUNK_NULL = (TOX_ERR_FILE_SEND_CHUNK_OK + 1) # /usr/local/include/tox/tox.h: 1989
+TOX_ERR_FILE_SEND_CHUNK_NULL = (TOX_ERR_FILE_SEND_CHUNK_OK + 1) # /usr/include/tox/tox.h: 2184
 
-TOX_ERR_FILE_SEND_CHUNK_FRIEND_NOT_FOUND = (TOX_ERR_FILE_SEND_CHUNK_NULL + 1) # /usr/local/include/tox/tox.h: 1989
+TOX_ERR_FILE_SEND_CHUNK_FRIEND_NOT_FOUND = (TOX_ERR_FILE_SEND_CHUNK_NULL + 1) # /usr/include/tox/tox.h: 2184
 
-TOX_ERR_FILE_SEND_CHUNK_FRIEND_NOT_CONNECTED = (TOX_ERR_FILE_SEND_CHUNK_FRIEND_NOT_FOUND + 1) # /usr/local/include/tox/tox.h: 1989
+TOX_ERR_FILE_SEND_CHUNK_FRIEND_NOT_CONNECTED = (TOX_ERR_FILE_SEND_CHUNK_FRIEND_NOT_FOUND + 1) # /usr/include/tox/tox.h: 2184
 
-TOX_ERR_FILE_SEND_CHUNK_NOT_FOUND = (TOX_ERR_FILE_SEND_CHUNK_FRIEND_NOT_CONNECTED + 1) # /usr/local/include/tox/tox.h: 1989
+TOX_ERR_FILE_SEND_CHUNK_NOT_FOUND = (TOX_ERR_FILE_SEND_CHUNK_FRIEND_NOT_CONNECTED + 1) # /usr/include/tox/tox.h: 2184
 
-TOX_ERR_FILE_SEND_CHUNK_NOT_TRANSFERRING = (TOX_ERR_FILE_SEND_CHUNK_NOT_FOUND + 1) # /usr/local/include/tox/tox.h: 1989
+TOX_ERR_FILE_SEND_CHUNK_NOT_TRANSFERRING = (TOX_ERR_FILE_SEND_CHUNK_NOT_FOUND + 1) # /usr/include/tox/tox.h: 2184
 
-TOX_ERR_FILE_SEND_CHUNK_INVALID_LENGTH = (TOX_ERR_FILE_SEND_CHUNK_NOT_TRANSFERRING + 1) # /usr/local/include/tox/tox.h: 1989
+TOX_ERR_FILE_SEND_CHUNK_INVALID_LENGTH = (TOX_ERR_FILE_SEND_CHUNK_NOT_TRANSFERRING + 1) # /usr/include/tox/tox.h: 2184
 
-TOX_ERR_FILE_SEND_CHUNK_SENDQ = (TOX_ERR_FILE_SEND_CHUNK_INVALID_LENGTH + 1) # /usr/local/include/tox/tox.h: 1989
+TOX_ERR_FILE_SEND_CHUNK_SENDQ = (TOX_ERR_FILE_SEND_CHUNK_INVALID_LENGTH + 1) # /usr/include/tox/tox.h: 2184
 
-TOX_ERR_FILE_SEND_CHUNK_WRONG_POSITION = (TOX_ERR_FILE_SEND_CHUNK_SENDQ + 1) # /usr/local/include/tox/tox.h: 1989
+TOX_ERR_FILE_SEND_CHUNK_WRONG_POSITION = (TOX_ERR_FILE_SEND_CHUNK_SENDQ + 1) # /usr/include/tox/tox.h: 2184
 
-TOX_ERR_FILE_SEND_CHUNK = enum_TOX_ERR_FILE_SEND_CHUNK # /usr/local/include/tox/tox.h: 1989
+TOX_ERR_FILE_SEND_CHUNK = enum_TOX_ERR_FILE_SEND_CHUNK # /usr/include/tox/tox.h: 2184
 
-# /usr/local/include/tox/tox.h: 2008
+# /usr/include/tox/tox.h: 2203
 if hasattr(_libs['toxcore'], 'tox_file_send_chunk'):
     tox_file_send_chunk = _libs['toxcore'].tox_file_send_chunk
     tox_file_send_chunk.argtypes = [POINTER(Tox), c_uint32, c_uint32, c_uint64, POINTER(c_uint8), c_size_t, POINTER(TOX_ERR_FILE_SEND_CHUNK)]
     tox_file_send_chunk.restype = c_bool
 
-tox_file_chunk_request_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_uint32, c_uint64, c_size_t, POINTER(None)) # /usr/local/include/tox/tox.h: 2033
+tox_file_chunk_request_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_uint32, c_uint64, c_size_t, POINTER(None)) # /usr/include/tox/tox.h: 2228
 
-# /usr/local/include/tox/tox.h: 2042
+# /usr/include/tox/tox.h: 2237
 if hasattr(_libs['toxcore'], 'tox_callback_file_chunk_request'):
     tox_callback_file_chunk_request = _libs['toxcore'].tox_callback_file_chunk_request
-    tox_callback_file_chunk_request.argtypes = [POINTER(Tox), POINTER(tox_file_chunk_request_cb), POINTER(None)]
+    tox_callback_file_chunk_request.argtypes = [POINTER(Tox), POINTER(tox_file_chunk_request_cb)]
     tox_callback_file_chunk_request.restype = None
 
-tox_file_recv_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_uint32, c_uint32, c_uint64, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/local/include/tox/tox.h: 2071
+tox_file_recv_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_uint32, c_uint32, c_uint64, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/include/tox/tox.h: 2266
 
-# /usr/local/include/tox/tox.h: 2080
+# /usr/include/tox/tox.h: 2275
 if hasattr(_libs['toxcore'], 'tox_callback_file_recv'):
     tox_callback_file_recv = _libs['toxcore'].tox_callback_file_recv
-    tox_callback_file_recv.argtypes = [POINTER(Tox), POINTER(tox_file_recv_cb), POINTER(None)]
+    tox_callback_file_recv.argtypes = [POINTER(Tox), POINTER(tox_file_recv_cb)]
     tox_callback_file_recv.restype = None
 
-tox_file_recv_chunk_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_uint32, c_uint64, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/local/include/tox/tox.h: 2098
+tox_file_recv_chunk_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_uint32, c_uint64, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/include/tox/tox.h: 2293
 
-# /usr/local/include/tox/tox.h: 2108
+# /usr/include/tox/tox.h: 2303
 if hasattr(_libs['toxcore'], 'tox_callback_file_recv_chunk'):
     tox_callback_file_recv_chunk = _libs['toxcore'].tox_callback_file_recv_chunk
-    tox_callback_file_recv_chunk.argtypes = [POINTER(Tox), POINTER(tox_file_recv_chunk_cb), POINTER(None)]
+    tox_callback_file_recv_chunk.argtypes = [POINTER(Tox), POINTER(tox_file_recv_chunk_cb)]
     tox_callback_file_recv_chunk.restype = None
 
-enum_TOX_ERR_FRIEND_CUSTOM_PACKET = c_int # /usr/local/include/tox/tox.h: 2180
+enum_TOX_CONFERENCE_TYPE = c_int # /usr/include/tox/tox.h: 2329
 
-TOX_ERR_FRIEND_CUSTOM_PACKET_OK = 0 # /usr/local/include/tox/tox.h: 2180
+TOX_CONFERENCE_TYPE_TEXT = 0 # /usr/include/tox/tox.h: 2329
 
-TOX_ERR_FRIEND_CUSTOM_PACKET_NULL = (TOX_ERR_FRIEND_CUSTOM_PACKET_OK + 1) # /usr/local/include/tox/tox.h: 2180
+TOX_CONFERENCE_TYPE_AV = (TOX_CONFERENCE_TYPE_TEXT + 1) # /usr/include/tox/tox.h: 2329
 
-TOX_ERR_FRIEND_CUSTOM_PACKET_FRIEND_NOT_FOUND = (TOX_ERR_FRIEND_CUSTOM_PACKET_NULL + 1) # /usr/local/include/tox/tox.h: 2180
+TOX_CONFERENCE_TYPE = enum_TOX_CONFERENCE_TYPE # /usr/include/tox/tox.h: 2329
 
-TOX_ERR_FRIEND_CUSTOM_PACKET_FRIEND_NOT_CONNECTED = (TOX_ERR_FRIEND_CUSTOM_PACKET_FRIEND_NOT_FOUND + 1) # /usr/local/include/tox/tox.h: 2180
+tox_conference_invite_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, TOX_CONFERENCE_TYPE, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/include/tox/tox.h: 2342
 
-TOX_ERR_FRIEND_CUSTOM_PACKET_INVALID = (TOX_ERR_FRIEND_CUSTOM_PACKET_FRIEND_NOT_CONNECTED + 1) # /usr/local/include/tox/tox.h: 2180
+# /usr/include/tox/tox.h: 2351
+if hasattr(_libs['toxcore'], 'tox_callback_conference_invite'):
+    tox_callback_conference_invite = _libs['toxcore'].tox_callback_conference_invite
+    tox_callback_conference_invite.argtypes = [POINTER(Tox), POINTER(tox_conference_invite_cb)]
+    tox_callback_conference_invite.restype = None
 
-TOX_ERR_FRIEND_CUSTOM_PACKET_EMPTY = (TOX_ERR_FRIEND_CUSTOM_PACKET_INVALID + 1) # /usr/local/include/tox/tox.h: 2180
+tox_conference_message_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_uint32, TOX_MESSAGE_TYPE, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/include/tox/tox.h: 2360
 
-TOX_ERR_FRIEND_CUSTOM_PACKET_TOO_LONG = (TOX_ERR_FRIEND_CUSTOM_PACKET_EMPTY + 1) # /usr/local/include/tox/tox.h: 2180
+# /usr/include/tox/tox.h: 2369
+if hasattr(_libs['toxcore'], 'tox_callback_conference_message'):
+    tox_callback_conference_message = _libs['toxcore'].tox_callback_conference_message
+    tox_callback_conference_message.argtypes = [POINTER(Tox), POINTER(tox_conference_message_cb)]
+    tox_callback_conference_message.restype = None
 
-TOX_ERR_FRIEND_CUSTOM_PACKET_SENDQ = (TOX_ERR_FRIEND_CUSTOM_PACKET_TOO_LONG + 1) # /usr/local/include/tox/tox.h: 2180
+tox_conference_title_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_uint32, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/include/tox/tox.h: 2377
 
-TOX_ERR_FRIEND_CUSTOM_PACKET = enum_TOX_ERR_FRIEND_CUSTOM_PACKET # /usr/local/include/tox/tox.h: 2180
+# /usr/include/tox/tox.h: 2388
+if hasattr(_libs['toxcore'], 'tox_callback_conference_title'):
+    tox_callback_conference_title = _libs['toxcore'].tox_callback_conference_title
+    tox_callback_conference_title.argtypes = [POINTER(Tox), POINTER(tox_conference_title_cb)]
+    tox_callback_conference_title.restype = None
 
-# /usr/local/include/tox/tox.h: 2203
+enum_TOX_CONFERENCE_STATE_CHANGE = c_int # /usr/include/tox/tox.h: 2410
+
+TOX_CONFERENCE_STATE_CHANGE_PEER_JOIN = 0 # /usr/include/tox/tox.h: 2410
+
+TOX_CONFERENCE_STATE_CHANGE_PEER_EXIT = (TOX_CONFERENCE_STATE_CHANGE_PEER_JOIN + 1) # /usr/include/tox/tox.h: 2410
+
+TOX_CONFERENCE_STATE_CHANGE_PEER_NAME_CHANGE = (TOX_CONFERENCE_STATE_CHANGE_PEER_EXIT + 1) # /usr/include/tox/tox.h: 2410
+
+TOX_CONFERENCE_STATE_CHANGE = enum_TOX_CONFERENCE_STATE_CHANGE # /usr/include/tox/tox.h: 2410
+
+tox_conference_namelist_change_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, c_uint32, TOX_CONFERENCE_STATE_CHANGE, POINTER(None)) # /usr/include/tox/tox.h: 2418
+
+# /usr/include/tox/tox.h: 2427
+if hasattr(_libs['toxcore'], 'tox_callback_conference_namelist_change'):
+    tox_callback_conference_namelist_change = _libs['toxcore'].tox_callback_conference_namelist_change
+    tox_callback_conference_namelist_change.argtypes = [POINTER(Tox), POINTER(tox_conference_namelist_change_cb)]
+    tox_callback_conference_namelist_change.restype = None
+
+enum_TOX_ERR_CONFERENCE_NEW = c_int # /usr/include/tox/tox.h: 2441
+
+TOX_ERR_CONFERENCE_NEW_OK = 0 # /usr/include/tox/tox.h: 2441
+
+TOX_ERR_CONFERENCE_NEW_INIT = (TOX_ERR_CONFERENCE_NEW_OK + 1) # /usr/include/tox/tox.h: 2441
+
+TOX_ERR_CONFERENCE_NEW = enum_TOX_ERR_CONFERENCE_NEW # /usr/include/tox/tox.h: 2441
+
+# /usr/include/tox/tox.h: 2451
+if hasattr(_libs['toxcore'], 'tox_conference_new'):
+    tox_conference_new = _libs['toxcore'].tox_conference_new
+    tox_conference_new.argtypes = [POINTER(Tox), POINTER(TOX_ERR_CONFERENCE_NEW)]
+    tox_conference_new.restype = c_uint32
+
+enum_TOX_ERR_CONFERENCE_DELETE = c_int # /usr/include/tox/tox.h: 2465
+
+TOX_ERR_CONFERENCE_DELETE_OK = 0 # /usr/include/tox/tox.h: 2465
+
+TOX_ERR_CONFERENCE_DELETE_CONFERENCE_NOT_FOUND = (TOX_ERR_CONFERENCE_DELETE_OK + 1) # /usr/include/tox/tox.h: 2465
+
+TOX_ERR_CONFERENCE_DELETE = enum_TOX_ERR_CONFERENCE_DELETE # /usr/include/tox/tox.h: 2465
+
+# /usr/include/tox/tox.h: 2475
+if hasattr(_libs['toxcore'], 'tox_conference_delete'):
+    tox_conference_delete = _libs['toxcore'].tox_conference_delete
+    tox_conference_delete.argtypes = [POINTER(Tox), c_uint32, POINTER(TOX_ERR_CONFERENCE_DELETE)]
+    tox_conference_delete.restype = c_bool
+
+enum_TOX_ERR_CONFERENCE_PEER_QUERY = c_int # /usr/include/tox/tox.h: 2502
+
+TOX_ERR_CONFERENCE_PEER_QUERY_OK = 0 # /usr/include/tox/tox.h: 2502
+
+TOX_ERR_CONFERENCE_PEER_QUERY_CONFERENCE_NOT_FOUND = (TOX_ERR_CONFERENCE_PEER_QUERY_OK + 1) # /usr/include/tox/tox.h: 2502
+
+TOX_ERR_CONFERENCE_PEER_QUERY_PEER_NOT_FOUND = (TOX_ERR_CONFERENCE_PEER_QUERY_CONFERENCE_NOT_FOUND + 1) # /usr/include/tox/tox.h: 2502
+
+TOX_ERR_CONFERENCE_PEER_QUERY_NO_CONNECTION = (TOX_ERR_CONFERENCE_PEER_QUERY_PEER_NOT_FOUND + 1) # /usr/include/tox/tox.h: 2502
+
+TOX_ERR_CONFERENCE_PEER_QUERY = enum_TOX_ERR_CONFERENCE_PEER_QUERY # /usr/include/tox/tox.h: 2502
+
+# /usr/include/tox/tox.h: 2508
+if hasattr(_libs['toxcore'], 'tox_conference_peer_count'):
+    tox_conference_peer_count = _libs['toxcore'].tox_conference_peer_count
+    tox_conference_peer_count.argtypes = [POINTER(Tox), c_uint32, POINTER(TOX_ERR_CONFERENCE_PEER_QUERY)]
+    tox_conference_peer_count.restype = c_uint32
+
+# /usr/include/tox/tox.h: 2513
+if hasattr(_libs['toxcore'], 'tox_conference_peer_get_name_size'):
+    tox_conference_peer_get_name_size = _libs['toxcore'].tox_conference_peer_get_name_size
+    tox_conference_peer_get_name_size.argtypes = [POINTER(Tox), c_uint32, c_uint32, POINTER(TOX_ERR_CONFERENCE_PEER_QUERY)]
+    tox_conference_peer_get_name_size.restype = c_size_t
+
+# /usr/include/tox/tox.h: 2522
+if hasattr(_libs['toxcore'], 'tox_conference_peer_get_name'):
+    tox_conference_peer_get_name = _libs['toxcore'].tox_conference_peer_get_name
+    tox_conference_peer_get_name.argtypes = [POINTER(Tox), c_uint32, c_uint32, POINTER(c_uint8), POINTER(TOX_ERR_CONFERENCE_PEER_QUERY)]
+    tox_conference_peer_get_name.restype = c_bool
+
+# /usr/include/tox/tox.h: 2531
+if hasattr(_libs['toxcore'], 'tox_conference_peer_get_public_key'):
+    tox_conference_peer_get_public_key = _libs['toxcore'].tox_conference_peer_get_public_key
+    tox_conference_peer_get_public_key.argtypes = [POINTER(Tox), c_uint32, c_uint32, POINTER(c_uint8), POINTER(TOX_ERR_CONFERENCE_PEER_QUERY)]
+    tox_conference_peer_get_public_key.restype = c_bool
+
+# /usr/include/tox/tox.h: 2537
+if hasattr(_libs['toxcore'], 'tox_conference_peer_number_is_ours'):
+    tox_conference_peer_number_is_ours = _libs['toxcore'].tox_conference_peer_number_is_ours
+    tox_conference_peer_number_is_ours.argtypes = [POINTER(Tox), c_uint32, c_uint32, POINTER(TOX_ERR_CONFERENCE_PEER_QUERY)]
+    tox_conference_peer_number_is_ours.restype = c_bool
+
+enum_TOX_ERR_CONFERENCE_INVITE = c_int # /usr/include/tox/tox.h: 2557
+
+TOX_ERR_CONFERENCE_INVITE_OK = 0 # /usr/include/tox/tox.h: 2557
+
+TOX_ERR_CONFERENCE_INVITE_CONFERENCE_NOT_FOUND = (TOX_ERR_CONFERENCE_INVITE_OK + 1) # /usr/include/tox/tox.h: 2557
+
+TOX_ERR_CONFERENCE_INVITE_FAIL_SEND = (TOX_ERR_CONFERENCE_INVITE_CONFERENCE_NOT_FOUND + 1) # /usr/include/tox/tox.h: 2557
+
+TOX_ERR_CONFERENCE_INVITE = enum_TOX_ERR_CONFERENCE_INVITE # /usr/include/tox/tox.h: 2557
+
+# /usr/include/tox/tox.h: 2568
+if hasattr(_libs['toxcore'], 'tox_conference_invite'):
+    tox_conference_invite = _libs['toxcore'].tox_conference_invite
+    tox_conference_invite.argtypes = [POINTER(Tox), c_uint32, c_uint32, POINTER(TOX_ERR_CONFERENCE_INVITE)]
+    tox_conference_invite.restype = c_bool
+
+enum_TOX_ERR_CONFERENCE_JOIN = c_int # /usr/include/tox/tox.h: 2608
+
+TOX_ERR_CONFERENCE_JOIN_OK = 0 # /usr/include/tox/tox.h: 2608
+
+TOX_ERR_CONFERENCE_JOIN_INVALID_LENGTH = (TOX_ERR_CONFERENCE_JOIN_OK + 1) # /usr/include/tox/tox.h: 2608
+
+TOX_ERR_CONFERENCE_JOIN_WRONG_TYPE = (TOX_ERR_CONFERENCE_JOIN_INVALID_LENGTH + 1) # /usr/include/tox/tox.h: 2608
+
+TOX_ERR_CONFERENCE_JOIN_FRIEND_NOT_FOUND = (TOX_ERR_CONFERENCE_JOIN_WRONG_TYPE + 1) # /usr/include/tox/tox.h: 2608
+
+TOX_ERR_CONFERENCE_JOIN_DUPLICATE = (TOX_ERR_CONFERENCE_JOIN_FRIEND_NOT_FOUND + 1) # /usr/include/tox/tox.h: 2608
+
+TOX_ERR_CONFERENCE_JOIN_INIT_FAIL = (TOX_ERR_CONFERENCE_JOIN_DUPLICATE + 1) # /usr/include/tox/tox.h: 2608
+
+TOX_ERR_CONFERENCE_JOIN_FAIL_SEND = (TOX_ERR_CONFERENCE_JOIN_INIT_FAIL + 1) # /usr/include/tox/tox.h: 2608
+
+TOX_ERR_CONFERENCE_JOIN = enum_TOX_ERR_CONFERENCE_JOIN # /usr/include/tox/tox.h: 2608
+
+# /usr/include/tox/tox.h: 2620
+if hasattr(_libs['toxcore'], 'tox_conference_join'):
+    tox_conference_join = _libs['toxcore'].tox_conference_join
+    tox_conference_join.argtypes = [POINTER(Tox), c_uint32, POINTER(c_uint8), c_size_t, POINTER(TOX_ERR_CONFERENCE_JOIN)]
+    tox_conference_join.restype = c_uint32
+
+enum_TOX_ERR_CONFERENCE_SEND_MESSAGE = c_int # /usr/include/tox/tox.h: 2650
+
+TOX_ERR_CONFERENCE_SEND_MESSAGE_OK = 0 # /usr/include/tox/tox.h: 2650
+
+TOX_ERR_CONFERENCE_SEND_MESSAGE_CONFERENCE_NOT_FOUND = (TOX_ERR_CONFERENCE_SEND_MESSAGE_OK + 1) # /usr/include/tox/tox.h: 2650
+
+TOX_ERR_CONFERENCE_SEND_MESSAGE_TOO_LONG = (TOX_ERR_CONFERENCE_SEND_MESSAGE_CONFERENCE_NOT_FOUND + 1) # /usr/include/tox/tox.h: 2650
+
+TOX_ERR_CONFERENCE_SEND_MESSAGE_NO_CONNECTION = (TOX_ERR_CONFERENCE_SEND_MESSAGE_TOO_LONG + 1) # /usr/include/tox/tox.h: 2650
+
+TOX_ERR_CONFERENCE_SEND_MESSAGE_FAIL_SEND = (TOX_ERR_CONFERENCE_SEND_MESSAGE_NO_CONNECTION + 1) # /usr/include/tox/tox.h: 2650
+
+TOX_ERR_CONFERENCE_SEND_MESSAGE = enum_TOX_ERR_CONFERENCE_SEND_MESSAGE # /usr/include/tox/tox.h: 2650
+
+# /usr/include/tox/tox.h: 2671
+if hasattr(_libs['toxcore'], 'tox_conference_send_message'):
+    tox_conference_send_message = _libs['toxcore'].tox_conference_send_message
+    tox_conference_send_message.argtypes = [POINTER(Tox), c_uint32, TOX_MESSAGE_TYPE, POINTER(c_uint8), c_size_t, POINTER(TOX_ERR_CONFERENCE_SEND_MESSAGE)]
+    tox_conference_send_message.restype = c_bool
+
+enum_TOX_ERR_CONFERENCE_TITLE = c_int # /usr/include/tox/tox.h: 2696
+
+TOX_ERR_CONFERENCE_TITLE_OK = 0 # /usr/include/tox/tox.h: 2696
+
+TOX_ERR_CONFERENCE_TITLE_CONFERENCE_NOT_FOUND = (TOX_ERR_CONFERENCE_TITLE_OK + 1) # /usr/include/tox/tox.h: 2696
+
+TOX_ERR_CONFERENCE_TITLE_INVALID_LENGTH = (TOX_ERR_CONFERENCE_TITLE_CONFERENCE_NOT_FOUND + 1) # /usr/include/tox/tox.h: 2696
+
+TOX_ERR_CONFERENCE_TITLE_FAIL_SEND = (TOX_ERR_CONFERENCE_TITLE_INVALID_LENGTH + 1) # /usr/include/tox/tox.h: 2696
+
+TOX_ERR_CONFERENCE_TITLE = enum_TOX_ERR_CONFERENCE_TITLE # /usr/include/tox/tox.h: 2696
+
+# /usr/include/tox/tox.h: 2705
+if hasattr(_libs['toxcore'], 'tox_conference_get_title_size'):
+    tox_conference_get_title_size = _libs['toxcore'].tox_conference_get_title_size
+    tox_conference_get_title_size.argtypes = [POINTER(Tox), c_uint32, POINTER(TOX_ERR_CONFERENCE_TITLE)]
+    tox_conference_get_title_size.restype = c_size_t
+
+# /usr/include/tox/tox.h: 2720
+if hasattr(_libs['toxcore'], 'tox_conference_get_title'):
+    tox_conference_get_title = _libs['toxcore'].tox_conference_get_title
+    tox_conference_get_title.argtypes = [POINTER(Tox), c_uint32, POINTER(c_uint8), POINTER(TOX_ERR_CONFERENCE_TITLE)]
+    tox_conference_get_title.restype = c_bool
+
+# /usr/include/tox/tox.h: 2730
+if hasattr(_libs['toxcore'], 'tox_conference_set_title'):
+    tox_conference_set_title = _libs['toxcore'].tox_conference_set_title
+    tox_conference_set_title.argtypes = [POINTER(Tox), c_uint32, POINTER(c_uint8), c_size_t, POINTER(TOX_ERR_CONFERENCE_TITLE)]
+    tox_conference_set_title.restype = c_bool
+
+# /usr/include/tox/tox.h: 2737
+if hasattr(_libs['toxcore'], 'tox_conference_get_chatlist_size'):
+    tox_conference_get_chatlist_size = _libs['toxcore'].tox_conference_get_chatlist_size
+    tox_conference_get_chatlist_size.argtypes = [POINTER(Tox)]
+    tox_conference_get_chatlist_size.restype = c_size_t
+
+# /usr/include/tox/tox.h: 2743
+if hasattr(_libs['toxcore'], 'tox_conference_get_chatlist'):
+    tox_conference_get_chatlist = _libs['toxcore'].tox_conference_get_chatlist
+    tox_conference_get_chatlist.argtypes = [POINTER(Tox), POINTER(c_uint32)]
+    tox_conference_get_chatlist.restype = None
+
+enum_TOX_ERR_CONFERENCE_GET_TYPE = c_int # /usr/include/tox/tox.h: 2761
+
+TOX_ERR_CONFERENCE_GET_TYPE_OK = 0 # /usr/include/tox/tox.h: 2761
+
+TOX_ERR_CONFERENCE_GET_TYPE_CONFERENCE_NOT_FOUND = (TOX_ERR_CONFERENCE_GET_TYPE_OK + 1) # /usr/include/tox/tox.h: 2761
+
+TOX_ERR_CONFERENCE_GET_TYPE = enum_TOX_ERR_CONFERENCE_GET_TYPE # /usr/include/tox/tox.h: 2761
+
+# /usr/include/tox/tox.h: 2764
+if hasattr(_libs['toxcore'], 'tox_conference_get_type'):
+    tox_conference_get_type = _libs['toxcore'].tox_conference_get_type
+    tox_conference_get_type.argtypes = [POINTER(Tox), c_uint32, POINTER(TOX_ERR_CONFERENCE_GET_TYPE)]
+    tox_conference_get_type.restype = TOX_CONFERENCE_TYPE
+
+enum_TOX_ERR_FRIEND_CUSTOM_PACKET = c_int # /usr/include/tox/tox.h: 2819
+
+TOX_ERR_FRIEND_CUSTOM_PACKET_OK = 0 # /usr/include/tox/tox.h: 2819
+
+TOX_ERR_FRIEND_CUSTOM_PACKET_NULL = (TOX_ERR_FRIEND_CUSTOM_PACKET_OK + 1) # /usr/include/tox/tox.h: 2819
+
+TOX_ERR_FRIEND_CUSTOM_PACKET_FRIEND_NOT_FOUND = (TOX_ERR_FRIEND_CUSTOM_PACKET_NULL + 1) # /usr/include/tox/tox.h: 2819
+
+TOX_ERR_FRIEND_CUSTOM_PACKET_FRIEND_NOT_CONNECTED = (TOX_ERR_FRIEND_CUSTOM_PACKET_FRIEND_NOT_FOUND + 1) # /usr/include/tox/tox.h: 2819
+
+TOX_ERR_FRIEND_CUSTOM_PACKET_INVALID = (TOX_ERR_FRIEND_CUSTOM_PACKET_FRIEND_NOT_CONNECTED + 1) # /usr/include/tox/tox.h: 2819
+
+TOX_ERR_FRIEND_CUSTOM_PACKET_EMPTY = (TOX_ERR_FRIEND_CUSTOM_PACKET_INVALID + 1) # /usr/include/tox/tox.h: 2819
+
+TOX_ERR_FRIEND_CUSTOM_PACKET_TOO_LONG = (TOX_ERR_FRIEND_CUSTOM_PACKET_EMPTY + 1) # /usr/include/tox/tox.h: 2819
+
+TOX_ERR_FRIEND_CUSTOM_PACKET_SENDQ = (TOX_ERR_FRIEND_CUSTOM_PACKET_TOO_LONG + 1) # /usr/include/tox/tox.h: 2819
+
+TOX_ERR_FRIEND_CUSTOM_PACKET = enum_TOX_ERR_FRIEND_CUSTOM_PACKET # /usr/include/tox/tox.h: 2819
+
+# /usr/include/tox/tox.h: 2842
 if hasattr(_libs['toxcore'], 'tox_friend_send_lossy_packet'):
     tox_friend_send_lossy_packet = _libs['toxcore'].tox_friend_send_lossy_packet
     tox_friend_send_lossy_packet.argtypes = [POINTER(Tox), c_uint32, POINTER(c_uint8), c_size_t, POINTER(TOX_ERR_FRIEND_CUSTOM_PACKET)]
     tox_friend_send_lossy_packet.restype = c_bool
 
-# /usr/local/include/tox/tox.h: 2222
+# /usr/include/tox/tox.h: 2861
 if hasattr(_libs['toxcore'], 'tox_friend_send_lossless_packet'):
     tox_friend_send_lossless_packet = _libs['toxcore'].tox_friend_send_lossless_packet
     tox_friend_send_lossless_packet.argtypes = [POINTER(Tox), c_uint32, POINTER(c_uint8), c_size_t, POINTER(TOX_ERR_FRIEND_CUSTOM_PACKET)]
     tox_friend_send_lossless_packet.restype = c_bool
 
-tox_friend_lossy_packet_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/local/include/tox/tox.h: 2230
+tox_friend_lossy_packet_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/include/tox/tox.h: 2869
 
-# /usr/local/include/tox/tox.h: 2238
+# /usr/include/tox/tox.h: 2877
 if hasattr(_libs['toxcore'], 'tox_callback_friend_lossy_packet'):
     tox_callback_friend_lossy_packet = _libs['toxcore'].tox_callback_friend_lossy_packet
-    tox_callback_friend_lossy_packet.argtypes = [POINTER(Tox), POINTER(tox_friend_lossy_packet_cb), POINTER(None)]
+    tox_callback_friend_lossy_packet.argtypes = [POINTER(Tox), POINTER(tox_friend_lossy_packet_cb)]
     tox_callback_friend_lossy_packet.restype = None
 
-tox_friend_lossless_packet_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/local/include/tox/tox.h: 2245
+tox_friend_lossless_packet_cb = CFUNCTYPE(UNCHECKED(None), POINTER(Tox), c_uint32, POINTER(c_uint8), c_size_t, POINTER(None)) # /usr/include/tox/tox.h: 2884
 
-# /usr/local/include/tox/tox.h: 2253
+# /usr/include/tox/tox.h: 2892
 if hasattr(_libs['toxcore'], 'tox_callback_friend_lossless_packet'):
     tox_callback_friend_lossless_packet = _libs['toxcore'].tox_callback_friend_lossless_packet
-    tox_callback_friend_lossless_packet.argtypes = [POINTER(Tox), POINTER(tox_friend_lossless_packet_cb), POINTER(None)]
+    tox_callback_friend_lossless_packet.argtypes = [POINTER(Tox), POINTER(tox_friend_lossless_packet_cb)]
     tox_callback_friend_lossless_packet.restype = None
 
-# /usr/local/include/tox/tox.h: 2276
+# /usr/include/tox/tox.h: 2915
 if hasattr(_libs['toxcore'], 'tox_self_get_dht_id'):
     tox_self_get_dht_id = _libs['toxcore'].tox_self_get_dht_id
     tox_self_get_dht_id.argtypes = [POINTER(Tox), POINTER(c_uint8)]
     tox_self_get_dht_id.restype = None
 
-enum_TOX_ERR_GET_PORT = c_int # /usr/local/include/tox/tox.h: 2290
+enum_TOX_ERR_GET_PORT = c_int # /usr/include/tox/tox.h: 2929
 
-TOX_ERR_GET_PORT_OK = 0 # /usr/local/include/tox/tox.h: 2290
+TOX_ERR_GET_PORT_OK = 0 # /usr/include/tox/tox.h: 2929
 
-TOX_ERR_GET_PORT_NOT_BOUND = (TOX_ERR_GET_PORT_OK + 1) # /usr/local/include/tox/tox.h: 2290
+TOX_ERR_GET_PORT_NOT_BOUND = (TOX_ERR_GET_PORT_OK + 1) # /usr/include/tox/tox.h: 2929
 
-TOX_ERR_GET_PORT = enum_TOX_ERR_GET_PORT # /usr/local/include/tox/tox.h: 2290
+TOX_ERR_GET_PORT = enum_TOX_ERR_GET_PORT # /usr/include/tox/tox.h: 2929
 
-# /usr/local/include/tox/tox.h: 2296
+# /usr/include/tox/tox.h: 2935
 if hasattr(_libs['toxcore'], 'tox_self_get_udp_port'):
     tox_self_get_udp_port = _libs['toxcore'].tox_self_get_udp_port
     tox_self_get_udp_port.argtypes = [POINTER(Tox), POINTER(TOX_ERR_GET_PORT)]
     tox_self_get_udp_port.restype = c_uint16
 
-# /usr/local/include/tox/tox.h: 2302
+# /usr/include/tox/tox.h: 2941
 if hasattr(_libs['toxcore'], 'tox_self_get_tcp_port'):
     tox_self_get_tcp_port = _libs['toxcore'].tox_self_get_tcp_port
     tox_self_get_tcp_port.argtypes = [POINTER(Tox), POINTER(TOX_ERR_GET_PORT)]
     tox_self_get_tcp_port.restype = c_uint16
 
-# /usr/local/include/tox/toxdns.h: 56
-if hasattr(_libs['toxdns'], 'tox_dns3_new'):
-    tox_dns3_new = _libs['toxdns'].tox_dns3_new
+# /usr/include/tox/toxdns.h: 56
+for _lib in _libs.values():
+    if not hasattr(_lib, 'tox_dns3_new'):
+        continue
+    tox_dns3_new = _lib.tox_dns3_new
     tox_dns3_new.argtypes = [POINTER(c_uint8)]
     tox_dns3_new.restype = POINTER(None)
+    break
 
-# /usr/local/include/tox/toxdns.h: 60
-if hasattr(_libs['toxdns'], 'tox_dns3_kill'):
-    tox_dns3_kill = _libs['toxdns'].tox_dns3_kill
+# /usr/include/tox/toxdns.h: 60
+for _lib in _libs.values():
+    if not hasattr(_lib, 'tox_dns3_kill'):
+        continue
+    tox_dns3_kill = _lib.tox_dns3_kill
     tox_dns3_kill.argtypes = [POINTER(None)]
     tox_dns3_kill.restype = None
+    break
 
-# /usr/local/include/tox/toxdns.h: 74
-if hasattr(_libs['toxdns'], 'tox_generate_dns3_string'):
-    tox_generate_dns3_string = _libs['toxdns'].tox_generate_dns3_string
+# /usr/include/tox/toxdns.h: 74
+for _lib in _libs.values():
+    if not hasattr(_lib, 'tox_generate_dns3_string'):
+        continue
+    tox_generate_dns3_string = _lib.tox_generate_dns3_string
     tox_generate_dns3_string.argtypes = [POINTER(None), POINTER(c_uint8), c_uint16, POINTER(c_uint32), POINTER(c_uint8), c_uint8]
     tox_generate_dns3_string.restype = c_int
+    break
 
-# /usr/local/include/tox/toxdns.h: 89
-if hasattr(_libs['toxdns'], 'tox_decrypt_dns3_TXT'):
-    tox_decrypt_dns3_TXT = _libs['toxdns'].tox_decrypt_dns3_TXT
+# /usr/include/tox/toxdns.h: 89
+for _lib in _libs.values():
+    if not hasattr(_lib, 'tox_decrypt_dns3_TXT'):
+        continue
+    tox_decrypt_dns3_TXT = _lib.tox_decrypt_dns3_TXT
     tox_decrypt_dns3_TXT.argtypes = [POINTER(None), POINTER(c_uint8), POINTER(c_uint8), c_uint32, c_uint32]
     tox_decrypt_dns3_TXT.restype = c_int
+    break
 
-# /usr/local/include/tox/toxav.h: 90
+# /usr/include/tox/toxav.h: 88
 class struct_ToxAV(Structure):
     pass
 
-ToxAV = struct_ToxAV # /usr/local/include/tox/toxav.h: 90
+ToxAV = struct_ToxAV # /usr/include/tox/toxav.h: 88
 
-# /usr/local/include/tox/toxav.h: 147
-if hasattr(_libs['toxav'], 'toxav_version_major'):
-    toxav_version_major = _libs['toxav'].toxav_version_major
-    toxav_version_major.argtypes = []
-    toxav_version_major.restype = c_uint32
+enum_TOXAV_ERR_NEW = c_int # /usr/include/tox/toxav.h: 123
 
-# /usr/local/include/tox/toxav.h: 152
-if hasattr(_libs['toxav'], 'toxav_version_minor'):
-    toxav_version_minor = _libs['toxav'].toxav_version_minor
-    toxav_version_minor.argtypes = []
-    toxav_version_minor.restype = c_uint32
+TOXAV_ERR_NEW_OK = 0 # /usr/include/tox/toxav.h: 123
 
-# /usr/local/include/tox/toxav.h: 157
-if hasattr(_libs['toxav'], 'toxav_version_patch'):
-    toxav_version_patch = _libs['toxav'].toxav_version_patch
-    toxav_version_patch.argtypes = []
-    toxav_version_patch.restype = c_uint32
+TOXAV_ERR_NEW_NULL = (TOXAV_ERR_NEW_OK + 1) # /usr/include/tox/toxav.h: 123
 
-# /usr/local/include/tox/toxav.h: 163
-if hasattr(_libs['toxav'], 'toxav_version_is_compatible'):
-    toxav_version_is_compatible = _libs['toxav'].toxav_version_is_compatible
-    toxav_version_is_compatible.argtypes = [c_uint32, c_uint32, c_uint32]
-    toxav_version_is_compatible.restype = c_bool
+TOXAV_ERR_NEW_MALLOC = (TOXAV_ERR_NEW_NULL + 1) # /usr/include/tox/toxav.h: 123
 
-enum_TOXAV_ERR_NEW = c_int # /usr/local/include/tox/toxav.h: 189
+TOXAV_ERR_NEW_MULTIPLE = (TOXAV_ERR_NEW_MALLOC + 1) # /usr/include/tox/toxav.h: 123
 
-TOXAV_ERR_NEW_OK = 0 # /usr/local/include/tox/toxav.h: 189
+TOXAV_ERR_NEW = enum_TOXAV_ERR_NEW # /usr/include/tox/toxav.h: 123
 
-TOXAV_ERR_NEW_NULL = (TOXAV_ERR_NEW_OK + 1) # /usr/local/include/tox/toxav.h: 189
-
-TOXAV_ERR_NEW_MALLOC = (TOXAV_ERR_NEW_NULL + 1) # /usr/local/include/tox/toxav.h: 189
-
-TOXAV_ERR_NEW_MULTIPLE = (TOXAV_ERR_NEW_MALLOC + 1) # /usr/local/include/tox/toxav.h: 189
-
-TOXAV_ERR_NEW = enum_TOXAV_ERR_NEW # /usr/local/include/tox/toxav.h: 189
-
-# /usr/local/include/tox/toxav.h: 194
-if hasattr(_libs['toxav'], 'toxav_new'):
-    toxav_new = _libs['toxav'].toxav_new
+# /usr/include/tox/toxav.h: 129
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_new'):
+        continue
+    toxav_new = _lib.toxav_new
     toxav_new.argtypes = [POINTER(Tox), POINTER(TOXAV_ERR_NEW)]
     toxav_new.restype = POINTER(ToxAV)
+    break
 
-# /usr/local/include/tox/toxav.h: 203
-if hasattr(_libs['toxav'], 'toxav_kill'):
-    toxav_kill = _libs['toxav'].toxav_kill
+# /usr/include/tox/toxav.h: 138
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_kill'):
+        continue
+    toxav_kill = _lib.toxav_kill
     toxav_kill.argtypes = [POINTER(ToxAV)]
     toxav_kill.restype = None
+    break
 
-# /usr/local/include/tox/toxav.h: 208
-if hasattr(_libs['toxav'], 'toxav_get_tox'):
-    toxav_get_tox = _libs['toxav'].toxav_get_tox
+# /usr/include/tox/toxav.h: 143
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_get_tox'):
+        continue
+    toxav_get_tox = _lib.toxav_get_tox
     toxav_get_tox.argtypes = [POINTER(ToxAV)]
     toxav_get_tox.restype = POINTER(Tox)
+    break
 
-# /usr/local/include/tox/toxav.h: 220
-if hasattr(_libs['toxav'], 'toxav_iteration_interval'):
-    toxav_iteration_interval = _libs['toxav'].toxav_iteration_interval
+# /usr/include/tox/toxav.h: 158
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_iteration_interval'):
+        continue
+    toxav_iteration_interval = _lib.toxav_iteration_interval
     toxav_iteration_interval.argtypes = [POINTER(ToxAV)]
     toxav_iteration_interval.restype = c_uint32
+    break
 
-# /usr/local/include/tox/toxav.h: 227
-if hasattr(_libs['toxav'], 'toxav_iterate'):
-    toxav_iterate = _libs['toxav'].toxav_iterate
+# /usr/include/tox/toxav.h: 165
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_iterate'):
+        continue
+    toxav_iterate = _lib.toxav_iterate
     toxav_iterate.argtypes = [POINTER(ToxAV)]
     toxav_iterate.restype = None
+    break
 
-enum_TOXAV_ERR_CALL = c_int # /usr/local/include/tox/toxav.h: 266
+enum_TOXAV_ERR_CALL = c_int # /usr/include/tox/toxav.h: 215
 
-TOXAV_ERR_CALL_OK = 0 # /usr/local/include/tox/toxav.h: 266
+TOXAV_ERR_CALL_OK = 0 # /usr/include/tox/toxav.h: 215
 
-TOXAV_ERR_CALL_MALLOC = (TOXAV_ERR_CALL_OK + 1) # /usr/local/include/tox/toxav.h: 266
+TOXAV_ERR_CALL_MALLOC = (TOXAV_ERR_CALL_OK + 1) # /usr/include/tox/toxav.h: 215
 
-TOXAV_ERR_CALL_SYNC = (TOXAV_ERR_CALL_MALLOC + 1) # /usr/local/include/tox/toxav.h: 266
+TOXAV_ERR_CALL_SYNC = (TOXAV_ERR_CALL_MALLOC + 1) # /usr/include/tox/toxav.h: 215
 
-TOXAV_ERR_CALL_FRIEND_NOT_FOUND = (TOXAV_ERR_CALL_SYNC + 1) # /usr/local/include/tox/toxav.h: 266
+TOXAV_ERR_CALL_FRIEND_NOT_FOUND = (TOXAV_ERR_CALL_SYNC + 1) # /usr/include/tox/toxav.h: 215
 
-TOXAV_ERR_CALL_FRIEND_NOT_CONNECTED = (TOXAV_ERR_CALL_FRIEND_NOT_FOUND + 1) # /usr/local/include/tox/toxav.h: 266
+TOXAV_ERR_CALL_FRIEND_NOT_CONNECTED = (TOXAV_ERR_CALL_FRIEND_NOT_FOUND + 1) # /usr/include/tox/toxav.h: 215
 
-TOXAV_ERR_CALL_FRIEND_ALREADY_IN_CALL = (TOXAV_ERR_CALL_FRIEND_NOT_CONNECTED + 1) # /usr/local/include/tox/toxav.h: 266
+TOXAV_ERR_CALL_FRIEND_ALREADY_IN_CALL = (TOXAV_ERR_CALL_FRIEND_NOT_CONNECTED + 1) # /usr/include/tox/toxav.h: 215
 
-TOXAV_ERR_CALL_INVALID_BIT_RATE = (TOXAV_ERR_CALL_FRIEND_ALREADY_IN_CALL + 1) # /usr/local/include/tox/toxav.h: 266
+TOXAV_ERR_CALL_INVALID_BIT_RATE = (TOXAV_ERR_CALL_FRIEND_ALREADY_IN_CALL + 1) # /usr/include/tox/toxav.h: 215
 
-TOXAV_ERR_CALL = enum_TOXAV_ERR_CALL # /usr/local/include/tox/toxav.h: 266
+TOXAV_ERR_CALL = enum_TOXAV_ERR_CALL # /usr/include/tox/toxav.h: 215
 
-# /usr/local/include/tox/toxav.h: 282
-if hasattr(_libs['toxav'], 'toxav_call'):
-    toxav_call = _libs['toxav'].toxav_call
+# /usr/include/tox/toxav.h: 232
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_call'):
+        continue
+    toxav_call = _lib.toxav_call
     toxav_call.argtypes = [POINTER(ToxAV), c_uint32, c_uint32, c_uint32, POINTER(TOXAV_ERR_CALL)]
     toxav_call.restype = c_bool
+    break
 
-toxav_call_cb = CFUNCTYPE(UNCHECKED(None), POINTER(ToxAV), c_uint32, c_bool, c_bool, POINTER(None)) # /usr/local/include/tox/toxav.h: 292
+toxav_call_cb = CFUNCTYPE(UNCHECKED(None), POINTER(ToxAV), c_uint32, c_bool, c_bool, POINTER(None)) # /usr/include/tox/toxav.h: 242
 
-# /usr/local/include/tox/toxav.h: 299
-if hasattr(_libs['toxav'], 'toxav_callback_call'):
-    toxav_callback_call = _libs['toxav'].toxav_callback_call
+# /usr/include/tox/toxav.h: 249
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_callback_call'):
+        continue
+    toxav_callback_call = _lib.toxav_callback_call
     toxav_callback_call.argtypes = [POINTER(ToxAV), POINTER(toxav_call_cb), POINTER(None)]
     toxav_callback_call.restype = None
+    break
 
-enum_TOXAV_ERR_ANSWER = c_int # /usr/local/include/tox/toxav.h: 329
+enum_TOXAV_ERR_ANSWER = c_int # /usr/include/tox/toxav.h: 286
 
-TOXAV_ERR_ANSWER_OK = 0 # /usr/local/include/tox/toxav.h: 329
+TOXAV_ERR_ANSWER_OK = 0 # /usr/include/tox/toxav.h: 286
 
-TOXAV_ERR_ANSWER_SYNC = (TOXAV_ERR_ANSWER_OK + 1) # /usr/local/include/tox/toxav.h: 329
+TOXAV_ERR_ANSWER_SYNC = (TOXAV_ERR_ANSWER_OK + 1) # /usr/include/tox/toxav.h: 286
 
-TOXAV_ERR_ANSWER_CODEC_INITIALIZATION = (TOXAV_ERR_ANSWER_SYNC + 1) # /usr/local/include/tox/toxav.h: 329
+TOXAV_ERR_ANSWER_CODEC_INITIALIZATION = (TOXAV_ERR_ANSWER_SYNC + 1) # /usr/include/tox/toxav.h: 286
 
-TOXAV_ERR_ANSWER_FRIEND_NOT_FOUND = (TOXAV_ERR_ANSWER_CODEC_INITIALIZATION + 1) # /usr/local/include/tox/toxav.h: 329
+TOXAV_ERR_ANSWER_FRIEND_NOT_FOUND = (TOXAV_ERR_ANSWER_CODEC_INITIALIZATION + 1) # /usr/include/tox/toxav.h: 286
 
-TOXAV_ERR_ANSWER_FRIEND_NOT_CALLING = (TOXAV_ERR_ANSWER_FRIEND_NOT_FOUND + 1) # /usr/local/include/tox/toxav.h: 329
+TOXAV_ERR_ANSWER_FRIEND_NOT_CALLING = (TOXAV_ERR_ANSWER_FRIEND_NOT_FOUND + 1) # /usr/include/tox/toxav.h: 286
 
-TOXAV_ERR_ANSWER_INVALID_BIT_RATE = (TOXAV_ERR_ANSWER_FRIEND_NOT_CALLING + 1) # /usr/local/include/tox/toxav.h: 329
+TOXAV_ERR_ANSWER_INVALID_BIT_RATE = (TOXAV_ERR_ANSWER_FRIEND_NOT_CALLING + 1) # /usr/include/tox/toxav.h: 286
 
-TOXAV_ERR_ANSWER = enum_TOXAV_ERR_ANSWER # /usr/local/include/tox/toxav.h: 329
+TOXAV_ERR_ANSWER = enum_TOXAV_ERR_ANSWER # /usr/include/tox/toxav.h: 286
 
-# /usr/local/include/tox/toxav.h: 344
-if hasattr(_libs['toxav'], 'toxav_answer'):
-    toxav_answer = _libs['toxav'].toxav_answer
+# /usr/include/tox/toxav.h: 302
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_answer'):
+        continue
+    toxav_answer = _lib.toxav_answer
     toxav_answer.argtypes = [POINTER(ToxAV), c_uint32, c_uint32, c_uint32, POINTER(TOXAV_ERR_ANSWER)]
     toxav_answer.restype = c_bool
+    break
 
-enum_TOXAV_FRIEND_CALL_STATE = c_int # /usr/local/include/tox/toxav.h: 353
+enum_TOXAV_FRIEND_CALL_STATE = c_int # /usr/include/tox/toxav.h: 314
 
-TOXAV_FRIEND_CALL_STATE_ERROR = 1 # /usr/local/include/tox/toxav.h: 353
+TOXAV_FRIEND_CALL_STATE_NONE = 0 # /usr/include/tox/toxav.h: 314
 
-TOXAV_FRIEND_CALL_STATE_FINISHED = 2 # /usr/local/include/tox/toxav.h: 353
+TOXAV_FRIEND_CALL_STATE_ERROR = 1 # /usr/include/tox/toxav.h: 314
 
-TOXAV_FRIEND_CALL_STATE_SENDING_A = 4 # /usr/local/include/tox/toxav.h: 353
+TOXAV_FRIEND_CALL_STATE_FINISHED = 2 # /usr/include/tox/toxav.h: 314
 
-TOXAV_FRIEND_CALL_STATE_SENDING_V = 8 # /usr/local/include/tox/toxav.h: 353
+TOXAV_FRIEND_CALL_STATE_SENDING_A = 4 # /usr/include/tox/toxav.h: 314
 
-TOXAV_FRIEND_CALL_STATE_ACCEPTING_A = 16 # /usr/local/include/tox/toxav.h: 353
+TOXAV_FRIEND_CALL_STATE_SENDING_V = 8 # /usr/include/tox/toxav.h: 314
 
-TOXAV_FRIEND_CALL_STATE_ACCEPTING_V = 32 # /usr/local/include/tox/toxav.h: 353
+TOXAV_FRIEND_CALL_STATE_ACCEPTING_A = 16 # /usr/include/tox/toxav.h: 314
 
-toxav_call_state_cb = CFUNCTYPE(UNCHECKED(None), POINTER(ToxAV), c_uint32, c_uint32, POINTER(None)) # /usr/local/include/tox/toxav.h: 394
+TOXAV_FRIEND_CALL_STATE_ACCEPTING_V = 32 # /usr/include/tox/toxav.h: 314
 
-# /usr/local/include/tox/toxav.h: 400
-if hasattr(_libs['toxav'], 'toxav_callback_call_state'):
-    toxav_callback_call_state = _libs['toxav'].toxav_callback_call_state
+toxav_call_state_cb = CFUNCTYPE(UNCHECKED(None), POINTER(ToxAV), c_uint32, c_uint32, POINTER(None)) # /usr/include/tox/toxav.h: 368
+
+# /usr/include/tox/toxav.h: 375
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_callback_call_state'):
+        continue
+    toxav_callback_call_state = _lib.toxav_callback_call_state
     toxav_callback_call_state.argtypes = [POINTER(ToxAV), POINTER(toxav_call_state_cb), POINTER(None)]
     toxav_callback_call_state.restype = None
+    break
 
-enum_TOXAV_CALL_CONTROL = c_int # /usr/local/include/tox/toxav.h: 442
+enum_TOXAV_CALL_CONTROL = c_int # /usr/include/tox/toxav.h: 429
 
-TOXAV_CALL_CONTROL_RESUME = 0 # /usr/local/include/tox/toxav.h: 442
+TOXAV_CALL_CONTROL_RESUME = 0 # /usr/include/tox/toxav.h: 429
 
-TOXAV_CALL_CONTROL_PAUSE = (TOXAV_CALL_CONTROL_RESUME + 1) # /usr/local/include/tox/toxav.h: 442
+TOXAV_CALL_CONTROL_PAUSE = (TOXAV_CALL_CONTROL_RESUME + 1) # /usr/include/tox/toxav.h: 429
 
-TOXAV_CALL_CONTROL_CANCEL = (TOXAV_CALL_CONTROL_PAUSE + 1) # /usr/local/include/tox/toxav.h: 442
+TOXAV_CALL_CONTROL_CANCEL = (TOXAV_CALL_CONTROL_PAUSE + 1) # /usr/include/tox/toxav.h: 429
 
-TOXAV_CALL_CONTROL_MUTE_AUDIO = (TOXAV_CALL_CONTROL_CANCEL + 1) # /usr/local/include/tox/toxav.h: 442
+TOXAV_CALL_CONTROL_MUTE_AUDIO = (TOXAV_CALL_CONTROL_CANCEL + 1) # /usr/include/tox/toxav.h: 429
 
-TOXAV_CALL_CONTROL_UNMUTE_AUDIO = (TOXAV_CALL_CONTROL_MUTE_AUDIO + 1) # /usr/local/include/tox/toxav.h: 442
+TOXAV_CALL_CONTROL_UNMUTE_AUDIO = (TOXAV_CALL_CONTROL_MUTE_AUDIO + 1) # /usr/include/tox/toxav.h: 429
 
-TOXAV_CALL_CONTROL_HIDE_VIDEO = (TOXAV_CALL_CONTROL_UNMUTE_AUDIO + 1) # /usr/local/include/tox/toxav.h: 442
+TOXAV_CALL_CONTROL_HIDE_VIDEO = (TOXAV_CALL_CONTROL_UNMUTE_AUDIO + 1) # /usr/include/tox/toxav.h: 429
 
-TOXAV_CALL_CONTROL_SHOW_VIDEO = (TOXAV_CALL_CONTROL_HIDE_VIDEO + 1) # /usr/local/include/tox/toxav.h: 442
+TOXAV_CALL_CONTROL_SHOW_VIDEO = (TOXAV_CALL_CONTROL_HIDE_VIDEO + 1) # /usr/include/tox/toxav.h: 429
 
-TOXAV_CALL_CONTROL = enum_TOXAV_CALL_CONTROL # /usr/local/include/tox/toxav.h: 442
+TOXAV_CALL_CONTROL = enum_TOXAV_CALL_CONTROL # /usr/include/tox/toxav.h: 429
 
-enum_TOXAV_ERR_CALL_CONTROL = c_int # /usr/local/include/tox/toxav.h: 467
+enum_TOXAV_ERR_CALL_CONTROL = c_int # /usr/include/tox/toxav.h: 461
 
-TOXAV_ERR_CALL_CONTROL_OK = 0 # /usr/local/include/tox/toxav.h: 467
+TOXAV_ERR_CALL_CONTROL_OK = 0 # /usr/include/tox/toxav.h: 461
 
-TOXAV_ERR_CALL_CONTROL_SYNC = (TOXAV_ERR_CALL_CONTROL_OK + 1) # /usr/local/include/tox/toxav.h: 467
+TOXAV_ERR_CALL_CONTROL_SYNC = (TOXAV_ERR_CALL_CONTROL_OK + 1) # /usr/include/tox/toxav.h: 461
 
-TOXAV_ERR_CALL_CONTROL_FRIEND_NOT_FOUND = (TOXAV_ERR_CALL_CONTROL_SYNC + 1) # /usr/local/include/tox/toxav.h: 467
+TOXAV_ERR_CALL_CONTROL_FRIEND_NOT_FOUND = (TOXAV_ERR_CALL_CONTROL_SYNC + 1) # /usr/include/tox/toxav.h: 461
 
-TOXAV_ERR_CALL_CONTROL_FRIEND_NOT_IN_CALL = (TOXAV_ERR_CALL_CONTROL_FRIEND_NOT_FOUND + 1) # /usr/local/include/tox/toxav.h: 467
+TOXAV_ERR_CALL_CONTROL_FRIEND_NOT_IN_CALL = (TOXAV_ERR_CALL_CONTROL_FRIEND_NOT_FOUND + 1) # /usr/include/tox/toxav.h: 461
 
-TOXAV_ERR_CALL_CONTROL_INVALID_TRANSITION = (TOXAV_ERR_CALL_CONTROL_FRIEND_NOT_IN_CALL + 1) # /usr/local/include/tox/toxav.h: 467
+TOXAV_ERR_CALL_CONTROL_INVALID_TRANSITION = (TOXAV_ERR_CALL_CONTROL_FRIEND_NOT_IN_CALL + 1) # /usr/include/tox/toxav.h: 461
 
-TOXAV_ERR_CALL_CONTROL = enum_TOXAV_ERR_CALL_CONTROL # /usr/local/include/tox/toxav.h: 467
+TOXAV_ERR_CALL_CONTROL = enum_TOXAV_ERR_CALL_CONTROL # /usr/include/tox/toxav.h: 461
 
-# /usr/local/include/tox/toxav.h: 478
-if hasattr(_libs['toxav'], 'toxav_call_control'):
-    toxav_call_control = _libs['toxav'].toxav_call_control
+# /usr/include/tox/toxav.h: 473
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_call_control'):
+        continue
+    toxav_call_control = _lib.toxav_call_control
     toxav_call_control.argtypes = [POINTER(ToxAV), c_uint32, TOXAV_CALL_CONTROL, POINTER(TOXAV_ERR_CALL_CONTROL)]
     toxav_call_control.restype = c_bool
+    break
 
-enum_TOXAV_ERR_BIT_RATE_SET = c_int # /usr/local/include/tox/toxav.h: 512
+enum_TOXAV_ERR_BIT_RATE_SET = c_int # /usr/include/tox/toxav.h: 516
 
-TOXAV_ERR_BIT_RATE_SET_OK = 0 # /usr/local/include/tox/toxav.h: 512
+TOXAV_ERR_BIT_RATE_SET_OK = 0 # /usr/include/tox/toxav.h: 516
 
-TOXAV_ERR_BIT_RATE_SET_SYNC = (TOXAV_ERR_BIT_RATE_SET_OK + 1) # /usr/local/include/tox/toxav.h: 512
+TOXAV_ERR_BIT_RATE_SET_SYNC = (TOXAV_ERR_BIT_RATE_SET_OK + 1) # /usr/include/tox/toxav.h: 516
 
-TOXAV_ERR_BIT_RATE_SET_INVALID_AUDIO_BIT_RATE = (TOXAV_ERR_BIT_RATE_SET_SYNC + 1) # /usr/local/include/tox/toxav.h: 512
+TOXAV_ERR_BIT_RATE_SET_INVALID_AUDIO_BIT_RATE = (TOXAV_ERR_BIT_RATE_SET_SYNC + 1) # /usr/include/tox/toxav.h: 516
 
-TOXAV_ERR_BIT_RATE_SET_INVALID_VIDEO_BIT_RATE = (TOXAV_ERR_BIT_RATE_SET_INVALID_AUDIO_BIT_RATE + 1) # /usr/local/include/tox/toxav.h: 512
+TOXAV_ERR_BIT_RATE_SET_INVALID_VIDEO_BIT_RATE = (TOXAV_ERR_BIT_RATE_SET_INVALID_AUDIO_BIT_RATE + 1) # /usr/include/tox/toxav.h: 516
 
-TOXAV_ERR_BIT_RATE_SET_FRIEND_NOT_FOUND = (TOXAV_ERR_BIT_RATE_SET_INVALID_VIDEO_BIT_RATE + 1) # /usr/local/include/tox/toxav.h: 512
+TOXAV_ERR_BIT_RATE_SET_FRIEND_NOT_FOUND = (TOXAV_ERR_BIT_RATE_SET_INVALID_VIDEO_BIT_RATE + 1) # /usr/include/tox/toxav.h: 516
 
-TOXAV_ERR_BIT_RATE_SET_FRIEND_NOT_IN_CALL = (TOXAV_ERR_BIT_RATE_SET_FRIEND_NOT_FOUND + 1) # /usr/local/include/tox/toxav.h: 512
+TOXAV_ERR_BIT_RATE_SET_FRIEND_NOT_IN_CALL = (TOXAV_ERR_BIT_RATE_SET_FRIEND_NOT_FOUND + 1) # /usr/include/tox/toxav.h: 516
 
-TOXAV_ERR_BIT_RATE_SET = enum_TOXAV_ERR_BIT_RATE_SET # /usr/local/include/tox/toxav.h: 512
+TOXAV_ERR_BIT_RATE_SET = enum_TOXAV_ERR_BIT_RATE_SET # /usr/include/tox/toxav.h: 516
 
-# /usr/local/include/tox/toxav.h: 525
-if hasattr(_libs['toxav'], 'toxav_bit_rate_set'):
-    toxav_bit_rate_set = _libs['toxav'].toxav_bit_rate_set
+# /usr/include/tox/toxav.h: 530
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_bit_rate_set'):
+        continue
+    toxav_bit_rate_set = _lib.toxav_bit_rate_set
     toxav_bit_rate_set.argtypes = [POINTER(ToxAV), c_uint32, c_int32, c_int32, POINTER(TOXAV_ERR_BIT_RATE_SET)]
     toxav_bit_rate_set.restype = c_bool
+    break
 
-toxav_bit_rate_status_cb = CFUNCTYPE(UNCHECKED(None), POINTER(ToxAV), c_uint32, c_uint32, c_uint32, POINTER(None)) # /usr/local/include/tox/toxav.h: 538
+toxav_bit_rate_status_cb = CFUNCTYPE(UNCHECKED(None), POINTER(ToxAV), c_uint32, c_uint32, c_uint32, POINTER(None)) # /usr/include/tox/toxav.h: 543
 
-# /usr/local/include/tox/toxav.h: 545
-if hasattr(_libs['toxav'], 'toxav_callback_bit_rate_status'):
-    toxav_callback_bit_rate_status = _libs['toxav'].toxav_callback_bit_rate_status
+# /usr/include/tox/toxav.h: 551
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_callback_bit_rate_status'):
+        continue
+    toxav_callback_bit_rate_status = _lib.toxav_callback_bit_rate_status
     toxav_callback_bit_rate_status.argtypes = [POINTER(ToxAV), POINTER(toxav_bit_rate_status_cb), POINTER(None)]
     toxav_callback_bit_rate_status.restype = None
+    break
 
-enum_TOXAV_ERR_SEND_FRAME = c_int # /usr/local/include/tox/toxav.h: 589
+enum_TOXAV_ERR_SEND_FRAME = c_int # /usr/include/tox/toxav.h: 607
 
-TOXAV_ERR_SEND_FRAME_OK = 0 # /usr/local/include/tox/toxav.h: 589
+TOXAV_ERR_SEND_FRAME_OK = 0 # /usr/include/tox/toxav.h: 607
 
-TOXAV_ERR_SEND_FRAME_NULL = (TOXAV_ERR_SEND_FRAME_OK + 1) # /usr/local/include/tox/toxav.h: 589
+TOXAV_ERR_SEND_FRAME_NULL = (TOXAV_ERR_SEND_FRAME_OK + 1) # /usr/include/tox/toxav.h: 607
 
-TOXAV_ERR_SEND_FRAME_FRIEND_NOT_FOUND = (TOXAV_ERR_SEND_FRAME_NULL + 1) # /usr/local/include/tox/toxav.h: 589
+TOXAV_ERR_SEND_FRAME_FRIEND_NOT_FOUND = (TOXAV_ERR_SEND_FRAME_NULL + 1) # /usr/include/tox/toxav.h: 607
 
-TOXAV_ERR_SEND_FRAME_FRIEND_NOT_IN_CALL = (TOXAV_ERR_SEND_FRAME_FRIEND_NOT_FOUND + 1) # /usr/local/include/tox/toxav.h: 589
+TOXAV_ERR_SEND_FRAME_FRIEND_NOT_IN_CALL = (TOXAV_ERR_SEND_FRAME_FRIEND_NOT_FOUND + 1) # /usr/include/tox/toxav.h: 607
 
-TOXAV_ERR_SEND_FRAME_SYNC = (TOXAV_ERR_SEND_FRAME_FRIEND_NOT_IN_CALL + 1) # /usr/local/include/tox/toxav.h: 589
+TOXAV_ERR_SEND_FRAME_SYNC = (TOXAV_ERR_SEND_FRAME_FRIEND_NOT_IN_CALL + 1) # /usr/include/tox/toxav.h: 607
 
-TOXAV_ERR_SEND_FRAME_INVALID = (TOXAV_ERR_SEND_FRAME_SYNC + 1) # /usr/local/include/tox/toxav.h: 589
+TOXAV_ERR_SEND_FRAME_INVALID = (TOXAV_ERR_SEND_FRAME_SYNC + 1) # /usr/include/tox/toxav.h: 607
 
-TOXAV_ERR_SEND_FRAME_PAYLOAD_TYPE_DISABLED = (TOXAV_ERR_SEND_FRAME_INVALID + 1) # /usr/local/include/tox/toxav.h: 589
+TOXAV_ERR_SEND_FRAME_PAYLOAD_TYPE_DISABLED = (TOXAV_ERR_SEND_FRAME_INVALID + 1) # /usr/include/tox/toxav.h: 607
 
-TOXAV_ERR_SEND_FRAME_RTP_FAILED = (TOXAV_ERR_SEND_FRAME_PAYLOAD_TYPE_DISABLED + 1) # /usr/local/include/tox/toxav.h: 589
+TOXAV_ERR_SEND_FRAME_RTP_FAILED = (TOXAV_ERR_SEND_FRAME_PAYLOAD_TYPE_DISABLED + 1) # /usr/include/tox/toxav.h: 607
 
-TOXAV_ERR_SEND_FRAME = enum_TOXAV_ERR_SEND_FRAME # /usr/local/include/tox/toxav.h: 589
+TOXAV_ERR_SEND_FRAME = enum_TOXAV_ERR_SEND_FRAME # /usr/include/tox/toxav.h: 607
 
-# /usr/local/include/tox/toxav.h: 611
-if hasattr(_libs['toxav'], 'toxav_audio_send_frame'):
-    toxav_audio_send_frame = _libs['toxav'].toxav_audio_send_frame
+# /usr/include/tox/toxav.h: 630
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_audio_send_frame'):
+        continue
+    toxav_audio_send_frame = _lib.toxav_audio_send_frame
     toxav_audio_send_frame.argtypes = [POINTER(ToxAV), c_uint32, POINTER(c_int16), c_size_t, c_uint8, c_uint32, POINTER(TOXAV_ERR_SEND_FRAME)]
     toxav_audio_send_frame.restype = c_bool
+    break
 
-# /usr/local/include/tox/toxav.h: 630
-if hasattr(_libs['toxav'], 'toxav_video_send_frame'):
-    toxav_video_send_frame = _libs['toxav'].toxav_video_send_frame
+# /usr/include/tox/toxav.h: 648
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_video_send_frame'):
+        continue
+    toxav_video_send_frame = _lib.toxav_video_send_frame
     toxav_video_send_frame.argtypes = [POINTER(ToxAV), c_uint32, c_uint16, c_uint16, POINTER(c_uint8), POINTER(c_uint8), POINTER(c_uint8), POINTER(TOXAV_ERR_SEND_FRAME)]
     toxav_video_send_frame.restype = c_bool
+    break
 
-toxav_audio_receive_frame_cb = CFUNCTYPE(UNCHECKED(None), POINTER(ToxAV), c_uint32, POINTER(c_int16), c_size_t, c_uint8, c_uint32, POINTER(None)) # /usr/local/include/tox/toxav.h: 652
+toxav_audio_receive_frame_cb = CFUNCTYPE(UNCHECKED(None), POINTER(ToxAV), c_uint32, POINTER(c_int16), c_size_t, c_uint8, c_uint32, POINTER(None)) # /usr/include/tox/toxav.h: 672
 
-# /usr/local/include/tox/toxav.h: 660
-if hasattr(_libs['toxav'], 'toxav_callback_audio_receive_frame'):
-    toxav_callback_audio_receive_frame = _libs['toxav'].toxav_callback_audio_receive_frame
+# /usr/include/tox/toxav.h: 680
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_callback_audio_receive_frame'):
+        continue
+    toxav_callback_audio_receive_frame = _lib.toxav_callback_audio_receive_frame
     toxav_callback_audio_receive_frame.argtypes = [POINTER(ToxAV), POINTER(toxav_audio_receive_frame_cb), POINTER(None)]
     toxav_callback_audio_receive_frame.restype = None
+    break
 
-toxav_video_receive_frame_cb = CFUNCTYPE(UNCHECKED(None), POINTER(ToxAV), c_uint32, c_uint16, c_uint16, POINTER(c_uint8), POINTER(c_uint8), POINTER(c_uint8), c_int32, c_int32, c_int32, POINTER(None)) # /usr/local/include/tox/toxav.h: 683
+toxav_video_receive_frame_cb = CFUNCTYPE(UNCHECKED(None), POINTER(ToxAV), c_uint32, c_uint16, c_uint16, POINTER(c_uint8), POINTER(c_uint8), POINTER(c_uint8), c_int32, c_int32, c_int32, POINTER(None)) # /usr/include/tox/toxav.h: 704
 
-# /usr/local/include/tox/toxav.h: 691
-if hasattr(_libs['toxav'], 'toxav_callback_video_receive_frame'):
-    toxav_callback_video_receive_frame = _libs['toxav'].toxav_callback_video_receive_frame
+# /usr/include/tox/toxav.h: 713
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_callback_video_receive_frame'):
+        continue
+    toxav_callback_video_receive_frame = _lib.toxav_callback_video_receive_frame
     toxav_callback_video_receive_frame.argtypes = [POINTER(ToxAV), POINTER(toxav_video_receive_frame_cb), POINTER(None)]
     toxav_callback_video_receive_frame.restype = None
+    break
 
-# /usr/local/include/tox/toxav.h: 706
-if hasattr(_libs['toxav'], 'toxav_add_av_groupchat'):
-    toxav_add_av_groupchat = _libs['toxav'].toxav_add_av_groupchat
+# /usr/include/tox/toxav.h: 728
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_add_av_groupchat'):
+        continue
+    toxav_add_av_groupchat = _lib.toxav_add_av_groupchat
     toxav_add_av_groupchat.argtypes = [POINTER(Tox), CFUNCTYPE(UNCHECKED(None), POINTER(None), c_int, c_int, POINTER(c_int16), c_uint, c_uint8, c_uint, POINTER(None)), POINTER(None)]
     toxav_add_av_groupchat.restype = c_int
+    break
 
-# /usr/local/include/tox/toxav.h: 719
-if hasattr(_libs['toxav'], 'toxav_join_av_groupchat'):
-    toxav_join_av_groupchat = _libs['toxav'].toxav_join_av_groupchat
+# /usr/include/tox/toxav.h: 741
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_join_av_groupchat'):
+        continue
+    toxav_join_av_groupchat = _lib.toxav_join_av_groupchat
     toxav_join_av_groupchat.argtypes = [POINTER(Tox), c_int32, POINTER(c_uint8), c_uint16, CFUNCTYPE(UNCHECKED(None), POINTER(None), c_int, c_int, POINTER(c_int16), c_uint, c_uint8, c_uint, POINTER(None)), POINTER(None)]
     toxav_join_av_groupchat.restype = c_int
+    break
 
-# /usr/local/include/tox/toxav.h: 735
-if hasattr(_libs['toxav'], 'toxav_group_send_audio'):
-    toxav_group_send_audio = _libs['toxav'].toxav_group_send_audio
+# /usr/include/tox/toxav.h: 757
+for _lib in _libs.values():
+    if not hasattr(_lib, 'toxav_group_send_audio'):
+        continue
+    toxav_group_send_audio = _lib.toxav_group_send_audio
     toxav_group_send_audio.argtypes = [POINTER(Tox), c_int, POINTER(c_int16), c_uint, c_uint8, c_uint]
     toxav_group_send_audio.restype = c_int
+    break
 
-enum_TOX_ERR_KEY_DERIVATION = c_int # /usr/local/include/tox/toxencryptsave.h: 84
-
-TOX_ERR_KEY_DERIVATION_OK = 0 # /usr/local/include/tox/toxencryptsave.h: 84
-
-TOX_ERR_KEY_DERIVATION_NULL = (TOX_ERR_KEY_DERIVATION_OK + 1) # /usr/local/include/tox/toxencryptsave.h: 84
-
-TOX_ERR_KEY_DERIVATION_FAILED = (TOX_ERR_KEY_DERIVATION_NULL + 1) # /usr/local/include/tox/toxencryptsave.h: 84
-
-TOX_ERR_KEY_DERIVATION = enum_TOX_ERR_KEY_DERIVATION # /usr/local/include/tox/toxencryptsave.h: 84
-
-enum_TOX_ERR_ENCRYPTION = c_int # /usr/local/include/tox/toxencryptsave.h: 102
-
-TOX_ERR_ENCRYPTION_OK = 0 # /usr/local/include/tox/toxencryptsave.h: 102
-
-TOX_ERR_ENCRYPTION_NULL = (TOX_ERR_ENCRYPTION_OK + 1) # /usr/local/include/tox/toxencryptsave.h: 102
-
-TOX_ERR_ENCRYPTION_KEY_DERIVATION_FAILED = (TOX_ERR_ENCRYPTION_NULL + 1) # /usr/local/include/tox/toxencryptsave.h: 102
-
-TOX_ERR_ENCRYPTION_FAILED = (TOX_ERR_ENCRYPTION_KEY_DERIVATION_FAILED + 1) # /usr/local/include/tox/toxencryptsave.h: 102
-
-TOX_ERR_ENCRYPTION = enum_TOX_ERR_ENCRYPTION # /usr/local/include/tox/toxencryptsave.h: 102
-
-enum_TOX_ERR_DECRYPTION = c_int # /usr/local/include/tox/toxencryptsave.h: 130
-
-TOX_ERR_DECRYPTION_OK = 0 # /usr/local/include/tox/toxencryptsave.h: 130
-
-TOX_ERR_DECRYPTION_NULL = (TOX_ERR_DECRYPTION_OK + 1) # /usr/local/include/tox/toxencryptsave.h: 130
-
-TOX_ERR_DECRYPTION_INVALID_LENGTH = (TOX_ERR_DECRYPTION_NULL + 1) # /usr/local/include/tox/toxencryptsave.h: 130
-
-TOX_ERR_DECRYPTION_BAD_FORMAT = (TOX_ERR_DECRYPTION_INVALID_LENGTH + 1) # /usr/local/include/tox/toxencryptsave.h: 130
-
-TOX_ERR_DECRYPTION_KEY_DERIVATION_FAILED = (TOX_ERR_DECRYPTION_BAD_FORMAT + 1) # /usr/local/include/tox/toxencryptsave.h: 130
-
-TOX_ERR_DECRYPTION_FAILED = (TOX_ERR_DECRYPTION_KEY_DERIVATION_FAILED + 1) # /usr/local/include/tox/toxencryptsave.h: 130
-
-TOX_ERR_DECRYPTION = enum_TOX_ERR_DECRYPTION # /usr/local/include/tox/toxencryptsave.h: 130
-
-# /usr/local/include/tox/toxencryptsave.h: 146
-if hasattr(_libs['toxencryptsave'], 'tox_pass_encrypt'):
-    tox_pass_encrypt = _libs['toxencryptsave'].tox_pass_encrypt
-    tox_pass_encrypt.argtypes = [POINTER(c_uint8), c_size_t, POINTER(c_uint8), c_size_t, POINTER(c_uint8), POINTER(TOX_ERR_ENCRYPTION)]
-    tox_pass_encrypt.restype = c_bool
-
-# /usr/local/include/tox/toxencryptsave.h: 158
-if hasattr(_libs['toxencryptsave'], 'tox_pass_decrypt'):
-    tox_pass_decrypt = _libs['toxencryptsave'].tox_pass_decrypt
-    tox_pass_decrypt.argtypes = [POINTER(c_uint8), c_size_t, POINTER(c_uint8), c_size_t, POINTER(c_uint8), POINTER(TOX_ERR_DECRYPTION)]
-    tox_pass_decrypt.restype = c_bool
-
-# /usr/local/include/tox/toxencryptsave.h: 173
-class struct_anon_3(Structure):
-    pass
-
-struct_anon_3.__slots__ = [
-    'salt',
-    'key',
-]
-struct_anon_3._fields_ = [
-    ('salt', c_uint8 * 32),
-    ('key', c_uint8 * 32),
-]
-
-TOX_PASS_KEY = struct_anon_3 # /usr/local/include/tox/toxencryptsave.h: 173
-
-# /usr/local/include/tox/toxencryptsave.h: 186
-if hasattr(_libs['toxencryptsave'], 'tox_derive_key_from_pass'):
-    tox_derive_key_from_pass = _libs['toxencryptsave'].tox_derive_key_from_pass
-    tox_derive_key_from_pass.argtypes = [POINTER(c_uint8), c_size_t, POINTER(TOX_PASS_KEY), POINTER(TOX_ERR_KEY_DERIVATION)]
-    tox_derive_key_from_pass.restype = c_bool
-
-# /usr/local/include/tox/toxencryptsave.h: 192
-if hasattr(_libs['toxencryptsave'], 'tox_derive_key_with_salt'):
-    tox_derive_key_with_salt = _libs['toxencryptsave'].tox_derive_key_with_salt
-    tox_derive_key_with_salt.argtypes = [POINTER(c_uint8), c_size_t, POINTER(c_uint8), POINTER(TOX_PASS_KEY), POINTER(TOX_ERR_KEY_DERIVATION)]
-    tox_derive_key_with_salt.restype = c_bool
-
-# /usr/local/include/tox/toxencryptsave.h: 203
-if hasattr(_libs['toxencryptsave'], 'tox_get_salt'):
-    tox_get_salt = _libs['toxencryptsave'].tox_get_salt
-    tox_get_salt.argtypes = [POINTER(c_uint8), POINTER(c_uint8)]
-    tox_get_salt.restype = c_bool
-
-# /usr/local/include/tox/toxencryptsave.h: 215
-if hasattr(_libs['toxencryptsave'], 'tox_pass_key_encrypt'):
-    tox_pass_key_encrypt = _libs['toxencryptsave'].tox_pass_key_encrypt
-    tox_pass_key_encrypt.argtypes = [POINTER(c_uint8), c_size_t, POINTER(TOX_PASS_KEY), POINTER(c_uint8), POINTER(TOX_ERR_ENCRYPTION)]
-    tox_pass_key_encrypt.restype = c_bool
-
-# /usr/local/include/tox/toxencryptsave.h: 225
-if hasattr(_libs['toxencryptsave'], 'tox_pass_key_decrypt'):
-    tox_pass_key_decrypt = _libs['toxencryptsave'].tox_pass_key_decrypt
-    tox_pass_key_decrypt.argtypes = [POINTER(c_uint8), c_size_t, POINTER(TOX_PASS_KEY), POINTER(c_uint8), POINTER(TOX_ERR_DECRYPTION)]
-    tox_pass_key_decrypt.restype = c_bool
-
-# /usr/local/include/tox/toxencryptsave.h: 230
-if hasattr(_libs['toxencryptsave'], 'tox_is_data_encrypted'):
-    tox_is_data_encrypted = _libs['toxencryptsave'].tox_is_data_encrypted
-    tox_is_data_encrypted.argtypes = [POINTER(c_uint8)]
-    tox_is_data_encrypted.restype = c_bool
-
-# /usr/local/include/tox/tox.h: 146
+# /usr/include/tox/tox.h: 166
 TOX_VERSION_MAJOR = 0
 
-# /usr/local/include/tox/tox.h: 153
-TOX_VERSION_MINOR = 0
+# /usr/include/tox/tox.h: 175
+TOX_VERSION_MINOR = 1
 
-# /usr/local/include/tox/tox.h: 159
-TOX_VERSION_PATCH = 0
+# /usr/include/tox/tox.h: 183
+TOX_VERSION_PATCH = 9
 
-# /usr/local/include/tox/tox.h: 165
+# /usr/include/tox/tox.h: 193
 def TOX_VERSION_IS_API_COMPATIBLE(MAJOR, MINOR, PATCH):
-    return ((TOX_VERSION_MAJOR == MAJOR) and ((TOX_VERSION_MINOR > MINOR) or ((TOX_VERSION_MINOR == MINOR) and (TOX_VERSION_PATCH >= PATCH))))
+    return ((((TOX_VERSION_MAJOR > 0) and (TOX_VERSION_MAJOR == MAJOR)) and ((TOX_VERSION_MINOR > MINOR) or ((TOX_VERSION_MINOR == MINOR) and (TOX_VERSION_PATCH >= PATCH)))) or (((TOX_VERSION_MAJOR == 0) and (MAJOR == 0)) and ((((TOX_VERSION_MINOR > 0) and (TOX_VERSION_MINOR == MINOR)) and (TOX_VERSION_PATCH >= PATCH)) or (((TOX_VERSION_MINOR == 0) and (MINOR == 0)) and (TOX_VERSION_PATCH == PATCH)))))
 
-# /usr/local/include/tox/tox.h: 205
+# /usr/include/tox/tox.h: 218
 TOX_VERSION_IS_ABI_COMPATIBLE = (tox_version_is_compatible (TOX_VERSION_MAJOR, TOX_VERSION_MINOR, TOX_VERSION_PATCH))
 
-# /usr/local/include/tox/tox.h: 220
+# /usr/include/tox/tox.h: 237
 TOX_PUBLIC_KEY_SIZE = 32
 
-# /usr/local/include/tox/tox.h: 225
+# /usr/include/tox/tox.h: 244
 TOX_SECRET_KEY_SIZE = 32
 
-# /usr/local/include/tox/tox.h: 235
-TOX_ADDRESS_SIZE = ((TOX_PUBLIC_KEY_SIZE + sizeof(c_uint32)) + sizeof(c_uint16))
+# /usr/include/tox/tox.h: 251
+TOX_NOSPAM_SIZE = sizeof(c_uint32)
 
-# /usr/local/include/tox/tox.h: 240
+# /usr/include/tox/tox.h: 263
+TOX_ADDRESS_SIZE = ((TOX_PUBLIC_KEY_SIZE + TOX_NOSPAM_SIZE) + sizeof(c_uint16))
+
+# /usr/include/tox/tox.h: 270
 TOX_MAX_NAME_LENGTH = 128
 
-# /usr/local/include/tox/tox.h: 245
+# /usr/include/tox/tox.h: 277
 TOX_MAX_STATUS_MESSAGE_LENGTH = 1007
 
-# /usr/local/include/tox/tox.h: 250
+# /usr/include/tox/tox.h: 284
 TOX_MAX_FRIEND_REQUEST_LENGTH = 1016
 
-# /usr/local/include/tox/tox.h: 255
+# /usr/include/tox/tox.h: 291
 TOX_MAX_MESSAGE_LENGTH = 1372
 
-# /usr/local/include/tox/tox.h: 260
+# /usr/include/tox/tox.h: 298
 TOX_MAX_CUSTOM_PACKET_SIZE = 1373
 
-# /usr/local/include/tox/tox.h: 265
+# /usr/include/tox/tox.h: 305
 TOX_HASH_LENGTH = 32
 
-# /usr/local/include/tox/tox.h: 270
+# /usr/include/tox/tox.h: 312
 TOX_FILE_ID_LENGTH = 32
 
-# /usr/local/include/tox/tox.h: 275
+# /usr/include/tox/tox.h: 319
 TOX_MAX_FILENAME_LENGTH = 255
 
-# /usr/local/include/tox/toxdns.h: 34
+# /usr/include/tox/toxdns.h: 34
 TOXDNS_MAX_RECOMMENDED_NAME_LENGTH = 32
 
-# /usr/local/include/tox/toxav.h: 103
-TOXAV_VERSION_MAJOR = 0
+Tox = struct_Tox # /usr/include/tox/tox.h: 146
 
-# /usr/local/include/tox/toxav.h: 110
-TOXAV_VERSION_MINOR = 0
+Tox_Options = struct_Tox_Options # /usr/include/tox/tox.h: 499
 
-# /usr/local/include/tox/toxav.h: 116
-TOXAV_VERSION_PATCH = 0
-
-# /usr/local/include/tox/toxav.h: 122
-def TOXAV_VERSION_IS_API_COMPATIBLE(MAJOR, MINOR, PATCH):
-    return ((TOXAV_VERSION_MAJOR == MAJOR) and ((TOXAV_VERSION_MINOR > MINOR) or ((TOXAV_VERSION_MINOR == MINOR) and (TOXAV_VERSION_PATCH >= PATCH))))
-
-# /usr/local/include/tox/toxav.h: 139
-TOXAV_VERSION_IS_ABI_COMPATIBLE = (toxav_version_is_compatible (TOXAV_VERSION_MAJOR, TOXAV_VERSION_MINOR, TOXAV_VERSION_PATCH))
-
-# /usr/local/include/tox/toxencryptsave.h: 41
-TOX_PASS_SALT_LENGTH = 32
-
-# /usr/local/include/tox/toxencryptsave.h: 42
-TOX_PASS_KEY_LENGTH = 32
-
-# /usr/local/include/tox/toxencryptsave.h: 43
-TOX_PASS_ENCRYPTION_EXTRA_LENGTH = 80
-
-Tox = struct_Tox # /usr/local/include/tox/tox.h: 130
-
-Tox_Options = struct_Tox_Options # /usr/local/include/tox/tox.h: 391
-
-ToxAV = struct_ToxAV # /usr/local/include/tox/toxav.h: 90
+ToxAV = struct_ToxAV # /usr/include/tox/toxav.h: 88
 
 # No inserted files
 

@@ -11,15 +11,17 @@ from .util import *
 logger = logging.getLogger('TOX')
 
 
+
 class Tox():
 
     _p = None
 
     _fRefs = []
 
+
     def __init__(self,fileName=None, options=None):
 
-    	self.send_buff = (c_ubyte * (1500) )()
+        self.send_buff = (c_ubyte * (1500) )()
         mbuffer = None
         userdata = None
         datalen = 0
@@ -57,6 +59,7 @@ class Tox():
         response = pointer(c_int(9))
         self._p = tox_new(pointer(opt),response)
 
+
         if response.contents.value != TOX_ERR_NEW_OK:
             logger.error("Tox init failed: %s"%response.contents.value)
         self.registerCallbacks()
@@ -71,7 +74,7 @@ class Tox():
             f.write(userdata.raw)
 
     def iterate(self):
-        tox_iterate(self._p)
+        tox_iterate(self._p,None)
 
     def sleepInterval(self):
         return tox_iteration_interval(self._p)
@@ -87,51 +90,51 @@ class Tox():
         logger.debug('Register Callbacks')
         if(self._p != None):
 
-            cb = tox_friend_request_cb(self.friend_request_callback)
+            cb = tox_friend_request_cb(self.get_friend_request_callback())
             self._fRefs.append(cb)
             tox_callback_friend_request(self._p, cb,  py_object(self))
 
-            cb = tox_friend_message_cb(self.friend_message_callback)
+            cb = tox_friend_message_cb(self.get_friend_message_callback())
             self._fRefs.append(cb)
             tox_callback_friend_message(self._p, cb,  py_object(self))
 
-            cb = tox_self_connection_status_cb(self.connection_status_callback)
+            cb = tox_self_connection_status_cb(self.get_connection_status_callback())
             self._fRefs.append(cb)
             tox_callback_self_connection_status(self._p, cb, py_object(self))
 
-            cb = tox_friend_connection_status_cb(self.friend_connection_status_callback)
+            cb = tox_friend_connection_status_cb(self.get_friend_connection_status_callback())
             self._fRefs.append(cb)
             tox_callback_friend_connection_status(self._p, cb, py_object(self))
 
-            cb = tox_friend_status_cb(self.friend_status_callback)
+            cb = tox_friend_status_cb(self.get_friend_status_callback())
             self._fRefs.append(cb)
             tox_callback_friend_status(self._p, cb, py_object(self))
 
-            cb = tox_friend_name_cb(self.friend_name_callback)
+            cb = tox_friend_name_cb(self.get_friend_name_callback())
             self._fRefs.append(cb)
             tox_callback_friend_name(self._p, cb, py_object(self))
 
-            cb = tox_file_recv_control_cb(self.file_recv_control_cb)
+            cb = tox_file_recv_control_cb(self.get_file_recv_control_cb())
             self._fRefs.append(cb)
             tox_callback_file_recv_control(self._p, cb, py_object(self))
 
-            cb = tox_file_recv_cb(self.file_recv_cb)
+            cb = tox_file_recv_cb(self.get_file_recv_cb())
             self._fRefs.append(cb)
             tox_callback_file_recv(self._p, cb, py_object(self))
 
-            cb = tox_file_recv_chunk_cb(self.file_recv_chunk_cb)
+            cb = tox_file_recv_chunk_cb(self.get_file_recv_chunk_cb())
             self._fRefs.append(cb)
             tox_callback_file_recv_chunk(self._p, cb, py_object(self))
 
-            cb = tox_file_chunk_request_cb(self.file_chunk_request_cb)
+            cb = tox_file_chunk_request_cb(self.get_file_chunk_request_cb())
             self._fRefs.append(cb)
             tox_callback_file_chunk_request(self._p, cb, py_object(self))
 
-            cb = tox_friend_lossless_packet_cb(self.friend_lossless_packet_callback)
+            cb = tox_friend_lossless_packet_cb(self.get_friend_lossless_packet_callback())
             self._fRefs.append(cb)
             tox_callback_friend_lossless_packet(self._p, cb, py_object(self))
 
-            cb = tox_friend_lossy_packet_cb(self.friend_lossy_packet_callback)
+            cb = tox_friend_lossy_packet_cb(self.get_friend_lossy_packet_callback())
             self._fRefs.append(cb)
             tox_callback_friend_lossy_packet(self._p, cb, py_object(self))
 
@@ -151,59 +154,57 @@ class Tox():
         logger.debug("Bootstrap done")
         return ret
 
-    @staticmethod
-    def connection_status_callback(tox,connection_status,userdata):
-        logger.debug("Connection Status Changed to: %s"%connection_status)
-        logger.debug("Userdata: %s"%repr(userdata))
-        self = cast(userdata, py_object).value
-        self.on_connection_status(connection_status)
-
     def on_connection_status(self,connection_status):
         pass
 
-    @staticmethod
-    def friend_request_callback(tox, public_key, message, length, userdata):
-        logger.debug("Got Friend request from: %s"%public_key)
-        logger.debug("Message: %s"%message)
-        self = cast(userdata, py_object).value
-        self.on_friend_request(buffer_to_hex(public_key, TOX_PUBLIC_KEY_SIZE), ptr_to_string(message, length))
+    def get_connection_status_callback(self):
+        def on_connection_status_tmp(tox,connection_status,userdata):
+            self.on_connection_status(connection_status)
 
-    @staticmethod
-    def file_recv_control_cb(tox, friend_number, file_number, control, userdata):
-        logger.debug("Got File Recieve Control Callback from: %s Number: %s"%(friend_number, file_number))
-        self = cast(userdata, py_object).value
-        self.on_file_recv_control(friend_number,file_number,control)
+        return on_connection_status_tmp
 
-    @staticmethod
-    def file_recv_cb(tox, friend_number, file_number, kind, file_size, filename, filename_length, userdata):
-        logger.debug("Got File Recieve Callback from: %s Number: %s"%(friend_number, file_number))
-        self = cast(userdata, py_object).value
+    def get_friend_request_callback(self):
+        def on_friend_request_tmp(tox, public_key, message, length, userdata):
+            logger.debug("Got Friend request from: %s"%public_key)
+            logger.debug("Message: %s"%message)
+            self.on_friend_request(buffer_to_hex(public_key, TOX_PUBLIC_KEY_SIZE), ptr_to_string(message, length))
+        return on_friend_request_tmp
 
-        try:
+
+    def get_file_recv_control_cb(self):
+        def get_file_recv_control_cb_tmp(tox, friend_number, file_number, control, userdata):
+            logger.debug("Got File Recieve Control Callback from: %s Number: %s"%(friend_number, file_number))
+            self.on_file_recv_control(friend_number,file_number,control)
+        return get_file_recv_control_cb_tmp
+
+
+    def get_file_recv_cb(self):
+        def get_file_recv_cb_tmp(tox, friend_number, file_number, kind, file_size, filename, filename_length, userdata):
+            logger.debug("Got File Recieve Callback from: %s Number: %s"%(friend_number, file_number))
             self.on_file_recv(friend_number,file_number,kind,file_size,ptr_to_string(filename, filename_length))
-        except Exception as e:
-            logger.debug("Error recieving file bla: " + str(e))
-
-    @staticmethod
-    def file_recv_chunk_cb(tox, friend_number, file_number, position, data, length, userdata):
-        logger.debug("Got File Recieve Chunk Callback from: %s Number: %s Position: %s"%(friend_number, file_number, position))
-        self = cast(userdata, py_object).value
-
-        if(length==0):
-            self.on_file_recv_chunk(friend_number,file_number,position,"")
-            return
-
-        try:
-            self.on_file_recv_chunk(friend_number, file_number, position, ptr_to_buffer(data, length))
-        except Exception as e:
-            logger.debug("Error recieving file chunk: " + str(e))
+        return get_file_recv_cb_tmp
 
 
-    @staticmethod
-    def file_chunk_request_cb(tox, friend_number, file_number, position, length, userdata):
-        logger.debug("Got File Send Chunk Callback from: %s Number: %s Position: %s"%(friend_number, file_number, position))
-        self = cast(userdata, py_object).value
-        self.on_file_chunk_request(friend_number,file_number,position,length)
+    def get_file_recv_chunk_cb(self):
+        def get_file_recv_chunk_cb_tmp(tox, friend_number, file_number, position, data, length, userdata):
+            logger.debug("Got File Recieve Chunk Callback from: %s Number: %s Position: %s"%(friend_number, file_number, position))
+
+            if(length==0):
+                self.on_file_recv_chunk(friend_number,file_number,position,"")
+                return
+
+            try:
+                self.on_file_recv_chunk(friend_number, file_number, position, ptr_to_buffer(data, length))
+            except Exception as e:
+                logger.debug("Error recieving file chunk: " + str(e))
+        return get_file_recv_chunk_cb_tmp
+
+
+    def get_file_chunk_request_cb(self):
+        def get_file_chunk_request_cb(tox, friend_number, file_number, position, length, userdata):
+            logger.debug("Got File Send Chunk Callback from: %s Number: %s Position: %s"%(friend_number, file_number, position))
+            self.on_file_chunk_request(friend_number,file_number,position,length)
+        return get_file_chunk_request_cb
 
 
     def on_friend_request(self,public_key, message):
@@ -281,14 +282,19 @@ class Tox():
         return tox_self_set_status_message(self._p,buffer,len(buffer),None)
 
 
-    @staticmethod
-    def friend_message_callback(tox, friend_id, message_type, message, length, userdata):
-        logger.info('Recieved Message from: %s type: %s length: %s'%(friend_id, message_type, length))
-        self = cast(userdata, py_object).value
-        self.on_friend_message(friend_id,message_type,ptr_to_string(message, length).decode('utf-8'))
+    def get_friend_message_callback(self):
+        def get_friend_message_callback_tmp(tox, friend_id, message_type, message, length, userdata):
+            logger.info('Recieved Message from: %s type: %s length: %s'%(friend_id, message_type, length))
+            self.on_friend_message(friend_id,message_type,ptr_to_string(message, length).decode('utf-8'))
+        return get_friend_message_callback_tmp
 
     def on_friend_message(self,friend_id, message_type,message):
         pass
+
+
+    def AutoBootstrap(self):
+        self.bootstrap("130.133.110.14",33445,"461FA3776EF0FA655F1A05477DF1B3B614F7D6B124F7DB1DD4FE3C08B03B640F")
+        self.bootstrap("104.219.184.206",443,"8CD087E31C67568103E8C2A28653337E90E6B8EDA0D765D57C6B5172B4F1F04C")
 
 
     def get_address(self):
@@ -306,19 +312,19 @@ class Tox():
         return hex_public_key
 
 
-    @staticmethod
-    def friend_connection_status_callback (tox,friendId,connection_status,userdata):
-        logger.debug('Friend Connection (%s) changed to: %s'%(friendId,connection_status))
-        self = cast(userdata, py_object).value
-        self.on_friend_connection_status(friendId,connection_status)
+    def get_friend_connection_status_callback(self):
+        def get_friend_connection_status_callback_tmp(tox,friendId,connection_status,userdata):
+            logger.debug('Friend Connection (%s) changed to: %s'%(friendId,connection_status))
+            self.on_friend_connection_status(friendId,connection_status)
+        return get_friend_connection_status_callback_tmp
 
     def on_friend_connection_status(self,friendId, connection_status):
         pass
 
-    @staticmethod
-    def friend_status_callback (tox,friendId,status,userdata):
-        self = cast(userdata, py_object).value
-        self.on_friend_connection_status(friendId,status)
+    def get_friend_status_callback (self):
+        def get_friend_status_callback_tmp(tox,friendId,status,userdata):
+            self.on_friend_connection_status(friendId,status)
+        return get_friend_status_callback_tmp
 
     def on_friend_lossy_packet_callback(self,friendId,message_type,message):
         pass
@@ -326,25 +332,26 @@ class Tox():
     def on_friend_lossless_packet_callback(self,friendId,message_type,message):
         pass
 
-    @staticmethod
-    def friend_lossless_packet_callback(tox,friendId,message,length,userdata):
-        logger.debug('Recieved Lossless Packet from: %s length: %s'%(friendId,length))
-        self = cast(userdata, py_object).value
-        buffer = ptr_to_buffer(message, length)
-        #first byte is message type
-        message_type = ctypes.c_uint8()
-        ctypes.memmove(addressof(message_type),buffer,1)
-        self.on_friend_lossless_packet_callback(friendId,message_type.value,buffer[1:])
+    def get_friend_lossless_packet_callback(self):
+        def get_friend_lossless_packet_callback_tmp(tox,friendId,message,length,userdata):
+            logger.debug('Recieved Lossless Packet from: %s length: %s'%(friendId,length))
+            buffer = ptr_to_buffer(message, length)
+            #first byte is message type
+            message_type = ctypes.c_uint8()
+            ctypes.memmove(addressof(message_type),buffer,1)
+            self.on_friend_lossless_packet_callback(friendId,message_type.value,buffer[1:])
+        return get_friend_lossless_packet_callback_tmp
 
-    @staticmethod
-    def friend_lossy_packet_callback(tox,friendId,message,length,userdata):
-        logger.debug('Recieved Lossy Packet from: %s length: %s'%(friendId,length))
-        self = cast(userdata, py_object).value
-        buffer = ptr_to_buffer(message, length)
-        #first byte is message type
-        message_type = ctypes.c_uint8()
-        ctypes.memmove(addressof(message_type),buffer,1)
-        self.on_friend_lossy_packet_callback(friendId,message_type.value,buffer[1:])
+
+    def get_friend_lossy_packet_callback(self):
+        def get_friend_lossy_packet_callback(tox,friendId,message,length,userdata):
+            logger.debug('Recieved Lossy Packet from: %s length: %s'%(friendId,length))
+            buffer = ptr_to_buffer(message, length)
+            #first byte is message type
+            message_type = ctypes.c_uint8()
+            ctypes.memmove(addressof(message_type),buffer,1)
+            self.on_friend_lossy_packet_callback(friendId,message_type.value,buffer[1:])
+        return get_friend_lossy_packet_callback
 
     def on_friend_status(self,friendId,status):
         pass
@@ -406,12 +413,14 @@ class Tox():
         logger.debug('Get Own Name: %s'%dec_name)
         return dec_name
 
-    @staticmethod
-    def friend_name_callback(tox,friendId,name,length,userdata):
-        self = cast(userdata, py_object).value
-        name = ptr_to_string(name, length)
-        logger.debug('Friend (%s) changed name to: %s'%(friendId,name))
-        self.on_friend_name(friendId,name)
+
+    def get_friend_name_callback(self):
+        def get_friend_name_callback(tox,friendId,name,length,userdata):
+            name = ptr_to_string(name, length)
+            logger.debug('Friend (%s) changed name to: %s'%(friendId,name))
+            self.on_friend_name(friendId,name)
+        return get_friend_name_callback
+
 
     def on_friend_name(self,friendId,name):
         pass

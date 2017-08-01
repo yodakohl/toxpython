@@ -19,20 +19,17 @@ class CMDLineClient(Tox,Thread):
 
 	def __init__(self,path):
 		Thread.__init__(self)
+		
+		Tox.__init__(self,path)
 		self.datapath = path
-		print("Using data path: " + str(self.datapath))
-		self.init(self.datapath )
 		self.setName("Command Line Client")
 		self.save(self.datapath )
 		self.set_status(TOX_USER_STATUS_NONE)
 		self.fileTransferHandler = FiletransferList(self)
 		print(self.get_address())
 
-		self.bootstrap("195.154.119.113",33445,"E398A69646B8CEACA9F0B84F553726C1C49270558C57DF5F3C368F05A7D71354")
-		if(self.self_get_connection_status() == False):
-			print("Disconnected")
-		else:
-			print("Connected")
+		self.AutoBootstrap()
+
 
 	def on_friend_request(self,public_key, message):
 		#TODO: On friend request ask user if he wants to accept

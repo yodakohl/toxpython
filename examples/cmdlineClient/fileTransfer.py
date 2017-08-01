@@ -21,7 +21,7 @@ class FiletransferList():
 		self.client = toxinstance
 
 	def file_chunk_request(self,friend_number,file_number,position,length):
-		print("File Chunk Request:" + str(position) + " " + str(length))
+		#print("File Chunk Request:" + str(position) + " " + str(length))
 		transfer = self.friendDicts[friend_number][file_number]
 		cur_pos = transfer.filePointer.tell()
 		if not cur_pos == position:
@@ -29,7 +29,7 @@ class FiletransferList():
 			transfer.filePointer.seek(position, 0)
 		data = transfer.filePointer.read(length)
 		self.client.file_send_chunk(friend_number,file_number,position,data)
-		print("Chunk sent")
+		#print("Chunk sent")
 
 	def file_recv_control(self,friend_number, file_number,control):
 		print("On file control recv")
