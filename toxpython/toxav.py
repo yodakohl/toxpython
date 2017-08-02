@@ -69,7 +69,7 @@ class ToxAVC():
 
  
     def get_call_state_callback(self):
-        def get_call_state_callback_tmp(toxav,friend_number,state,userdata)
+        def get_call_state_callback_tmp(toxav,friend_number,state,userdata):
             self.on_call_state(friend_number,state)
         return get_call_state_callback_tmp
 
