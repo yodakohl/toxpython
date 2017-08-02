@@ -81,7 +81,7 @@ class ToxAVC():
 
 
 
-    def get_call_callback():
+    def get_call_callback(self):
         def get_call_callback_tmp(toxav, friend_number, audio_enabled, video_enabled, userdata):
             logger.info('Recieved Call Callback from: %s'%(friend_number))
             self.on_call(friend_number,audio_enabled,video_enabled)
