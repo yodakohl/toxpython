@@ -25,7 +25,7 @@ class ToxAVC():
         logger.info('Register AV Callbacks')
         if(self._av_p != None):
 
-            cb = toxav_call_cb(self.call_callback)
+            cb = toxav_call_cb(self.get_call_callback())
             self._av_fRefs.append(cb)
             toxav_callback_call(self._av_p, cb , py_object(self))
 
