@@ -154,7 +154,7 @@ class ToxAVC():
         toxav_bit_rate_set(self._av_p,friend_number,audio_bit_rate,video_bit_rate, None) #bool 
 
 
-    def on_bit_rate_status(friend_number,audio_bit_rate,video_bit_rate):
+    def on_bit_rate_status(self,friend_number,audio_bit_rate,video_bit_rate):
         pass
 
     def audio_send_frame(self,friend_number,pcm,sample_count,channels,sample_rate):
