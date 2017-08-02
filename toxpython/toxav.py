@@ -75,7 +75,7 @@ class ToxAVC():
 
 
     def get_bit_rate_status_callback(self):
-        def bit_rate_status_callback_tmp(toxav,friend_number,audio_bit_rate,video_bit_rate):
+        def bit_rate_status_callback_tmp(toxav,friend_number,audio_bit_rate,video_bit_rate,user_data):
             self.on_bit_rate_status(friend_number,audio_bit_rate,video_bit_rate)
         return bit_rate_status_callback_tmp
 
