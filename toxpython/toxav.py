@@ -29,19 +29,19 @@ class ToxAVC():
             self._av_fRefs.append(cb)
             toxav_callback_call(self._av_p, cb , py_object(self))
 
-            cb = toxav_video_receive_frame_cb(self.video_recieve_frame_callback)
+            cb = toxav_video_receive_frame_cb(self.get_video_recieve_frame_callback())
             self._av_fRefs.append(cb)
             toxav_callback_video_receive_frame(self._av_p, cb , py_object(self))
 
-            cb = toxav_audio_receive_frame_cb(self.audio_recieve_frame_callback)
+            cb = toxav_audio_receive_frame_cb(self.get_audio_recieve_frame_callback())
             self._av_fRefs.append(cb)
             toxav_callback_audio_receive_frame(self._av_p,cb,py_object(self))
 
-            cb = toxav_bit_rate_status_cb(self.bit_rate_status_callback)
+            cb = toxav_bit_rate_status_cb(self.get_bit_rate_status_callback())
             self._av_fRefs.append(cb)
             toxav_callback_bit_rate_status(self._av_p,cb,py_object(self))
 
-            cb = toxav_call_state_cb(self.call_state_callback)
+            cb = toxav_call_state_cb(self.get_call_state_callback())
             self._av_fRefs.append(cb)
             toxav_callback_call_state(self._av_p,cb,py_object(self))
 
@@ -67,67 +67,71 @@ class ToxAVC():
         print("Answer response" + str(response.contents.value))
         return  response.contents.value
 
-    @staticmethod 
-    def call_state_callback(toxav,friend_number,state,userdata):
-        self = cast(userdata, py_object).value
-        self.on_call_state(friend_number,state)
-
-
-    @staticmethod
-    def bit_rate_status_callback(toxav,friend_number,audio_bit_rate,video_bit_rate,userdata):
-        self = cast(userdata, py_object).value
-        self.on_bit_rate_status(friend_number,audio_bit_rate,video_bit_rate)
-
-
-    @staticmethod
-    def call_callback(toxav, friend_number, audio_enabled, video_enabled, userdata):
-        logger.info('Recieved Call Callback from: %s'%(friend_number))
-        self = cast(userdata, py_object).value
-        self.on_call(friend_number,audio_enabled,video_enabled)
-
-    @staticmethod
-    def video_recieve_frame_callback(toxav,friend_number,width,height,y,u,v,ystride,ustride,vstride,userdata):
-        #print('Recieved Video Frame Callback from: %s'%(friend_number))
-        self = cast(userdata, py_object).value
-
-        Ylen = max(width,   abs(ystride)) *  height
-        Ulen = max(width/2, abs(ustride)) * (height/2) 
-        Vlen = max(width/2, abs(vstride)) * (height/2)
-
-        y_data = np.ctypeslib.as_array(y,shape=(Ylen,))
-        u_data = np.ctypeslib.as_array(u,shape=(Ulen,))
-        v_data = np.ctypeslib.as_array(v,shape=(Vlen,))
  
-        num_frames = height
-        frame_length = width
-        row_stride = ystride
-        col_stride = 1
-        strided_y = stride_tricks.as_strided(y_data,shape=(num_frames,frame_length), strides=(row_stride,col_stride))
-        bufy = strided_y.ravel()
-
-        num_frames = height/2
-        frame_length = width/2
-        row_stride = ustride
-        col_stride = 1
-        strided_u = stride_tricks.as_strided(u_data,shape=(num_frames,frame_length), strides=(row_stride,col_stride))
-        bufu = strided_u.ravel()
-
-        num_frames = height/2
-        frame_length = width/2
-        row_stride = vstride
-        col_stride = 1
-        strided_v = stride_tricks.as_strided(v_data,shape=(num_frames,frame_length), strides=(row_stride,col_stride))
-        bufv = strided_v.ravel()
+    def get_call_state_callback(self):
+        def get_call_state_callback_tmp(toxav,friend_number,state,userdata)
+            self.on_call_state(friend_number,state)
+        return get_call_state_callback_tmp
 
 
-        self.on_video_recieve_frame(friend_number,width,height,bufy,bufu,bufv)
+    def get_bit_rate_status_callback(self):
+        def bit_rate_status_callback_tmp(toxav,friend_number,audio_bit_rate,video_bit_rate):
+            self.on_bit_rate_status(friend_number,audio_bit_rate,video_bit_rate)
+        return bit_rate_status_callback_tmp
 
-    @staticmethod
-    def audio_recieve_frame_callback(toxav,friend_number,pcm, sample_count,channels,sample_rate,userdata):
-         self = cast(userdata, py_object).value
-         framesize = sample_count * channels *2 
-         data = ptr_to_string(pcm,framesize)
-         self.on_audio_recieve_frame(friend_number,data,sample_count,channels,sample_rate)
+
+
+    def get_call_callback():
+        def get_call_callback_tmp(toxav, friend_number, audio_enabled, video_enabled, userdata):
+            logger.info('Recieved Call Callback from: %s'%(friend_number))
+            self.on_call(friend_number,audio_enabled,video_enabled)
+        return get_call_callback_tmp
+
+
+    def get_video_recieve_frame_callback(self):
+
+        def get_video_recieve_frame_callback_tmp(toxav,friend_number,width,height,y,u,v,ystride,ustride,vstride,userdata):
+            Ylen = max(width,   abs(ystride)) *  height
+            Ulen = max(width/2, abs(ustride)) * (height/2) 
+            Vlen = max(width/2, abs(vstride)) * (height/2)
+
+            y_data = np.ctypeslib.as_array(y,shape=(Ylen,))
+            u_data = np.ctypeslib.as_array(u,shape=(Ulen,))
+            v_data = np.ctypeslib.as_array(v,shape=(Vlen,))
+ 
+            num_frames = height
+            frame_length = width
+            row_stride = ystride
+            col_stride = 1
+            strided_y = stride_tricks.as_strided(y_data,shape=(num_frames,frame_length), strides=(row_stride,col_stride))
+            bufy = strided_y.ravel()
+
+            num_frames = height/2
+            frame_length = width/2
+            row_stride = ustride
+            col_stride = 1
+            strided_u = stride_tricks.as_strided(u_data,shape=(num_frames,frame_length), strides=(row_stride,col_stride))
+            bufu = strided_u.ravel()
+
+            num_frames = height/2
+            frame_length = width/2
+            row_stride = vstride
+            col_stride = 1
+            strided_v = stride_tricks.as_strided(v_data,shape=(num_frames,frame_length), strides=(row_stride,col_stride))
+            bufv = strided_v.ravel()
+
+            self.on_video_recieve_frame(friend_number,width,height,bufy,bufu,bufv)
+       return get_video_recieve_frame_callback_tmp
+
+
+    def get_audio_recieve_frame_callback(self):
+         def get_audio_recieve_frame_callback(toxav,friend_number,pcm, sample_count,channels,sample_rate,userdata):
+
+             framesize = sample_count * channels *2 
+             data = ptr_to_string(pcm,framesize)
+             self.on_audio_recieve_frame(friend_number,data,sample_count,channels,sample_rate)
+         return get_audio_recieve_frame_callback
+
 
     def on_call(self,friend_number,audio_enabled,video_enabled):
         pass
