@@ -121,7 +121,7 @@ class ToxAVC():
             bufv = strided_v.ravel()
 
             self.on_video_recieve_frame(friend_number,width,height,bufy,bufu,bufv)
-       return get_video_recieve_frame_callback_tmp
+        return get_video_recieve_frame_callback_tmp
 
 
     def get_audio_recieve_frame_callback(self):
