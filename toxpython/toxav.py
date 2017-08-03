@@ -125,12 +125,11 @@ class ToxAVC():
 
 
     def get_audio_recieve_frame_callback(self):
-         def get_audio_recieve_frame_callback(toxav,friend_number,pcm, sample_count,channels,sample_rate,userdata):
-
+         def get_audio_recieve_frame_callback_tmp(toxav,friend_number,pcm, sample_count,channels,sample_rate,userdata):
              framesize = sample_count * channels *2 
              data = ptr_to_string(pcm,framesize)
              self.on_audio_recieve_frame(friend_number,data,sample_count,channels,sample_rate)
-         return get_audio_recieve_frame_callback
+         return get_audio_recieve_frame_callback_tmp
 
 
     def on_call(self,friend_number,audio_enabled,video_enabled):
